@@ -1,0 +1,2 @@
+{{- /* Section (栏目) pill for a report. Context: dict "page" . "filter" bool */ -}}
+{{- with .page.GetTerms "categories" }}{{ with index . 0 }}<a class="sec-label sec-{{ .Slug }}" href="{{ .RelPermalink }}"{{ if $.filter }} data-pagefind-filter="栏目"{{ end }}>{{ .LinkTitle }}</a>{{ end }}{{ end -}}

@@ -1,13 +1,22 @@
 {{ define "main" }}
+{{- $reports := where site.RegularPages "Section" "reports" -}}
 <div class="site-wrap">
   <header class="site-head">
     <div class="site-kicker">{{ site.Params.subtitle }}</div>
     <h1 class="site-title">{{ site.Title }}</h1>
     <p class="site-desc">{{ site.Params.description }}</p>
-    <div class="site-stats"><span>{{ len (where site.RegularPages "Section" "reports") }} 篇报告</span><span>{{ len site.Taxonomies.tags }} 个标签</span><a href="{{ "search/" | relURL }}">全文搜索 →</a></div>
+    <div class="site-stats"><span>{{ len $reports }} 篇报告</span><span>{{ len site.Params.sections }} 个栏目</span><span>{{ len site.Taxonomies.tags }} 个标签</span><a href="{{ "search/" | relURL }}">全文搜索 →</a></div>
   </header>
-  <section class="r-grid">
-    {{ range (where site.RegularPages "Section" "reports").ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}
+  {{- range site.Params.sections }}{{ with site.GetPage (printf "/categories/%s" .) }}
+  <section class="home-sec" id="sec-{{ .Slug }}">
+    <div class="home-sec-head">
+      <div><span class="home-sec-kicker">{{ .Params.kicker }}</span><h2 class="home-sec-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Pages }}<b>{{ len . }}</b>{{ end }}</h2><p class="home-sec-blurb">{{ .Params.blurb }}</p></div>
+      <a class="home-sec-all" href="{{ .RelPermalink }}">全部 →</a>
+    </div>
+    {{- if .Pages }}
+    <div class="r-grid">{{ range first 6 .Pages.ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}</div>
+    {{- else }}{{ partial "soon.html" . }}{{ end }}
   </section>
+  {{- end }}{{ end }}
 </div>
 {{ end }}

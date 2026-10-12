@@ -1,12 +1,13 @@
 {{ define "main" }}
+{{- $isSec := and (eq .Kind "term") (eq .Data.Plural "categories") -}}
 <div class="site-wrap">
   <header class="site-head small">
-    <div class="site-kicker">{{ if eq .Kind "term" }}标签{{ else }}列表{{ end }}</div>
-    <h1 class="site-title">{{ if eq .Kind "term" }}# {{ end }}{{ .Title }}</h1>
-    <div class="site-stats"><span>{{ len .Pages }} 篇报告</span>{{ if eq .Kind "term" }}<a href="{{ "tags/" | relURL }}">全部标签 →</a>{{ end }}</div>
+    <div class="site-kicker">{{ if $isSec }}{{ .Params.kicker | default "栏目" }}{{ else if eq .Kind "term" }}标签{{ else }}列表{{ end }}</div>
+    <h1 class="site-title">{{ if and (eq .Kind "term") (not $isSec) }}# {{ end }}{{ .Title }}</h1>
+    {{ if $isSec }}<p class="site-desc">{{ .Params.blurb }}</p>{{ end }}
+    <div class="site-stats"><span>{{ len .Pages }} 篇</span>{{ if $isSec }}<a href="{{ "" | relURL }}">全部栏目 →</a>{{ else if eq .Kind "term" }}<a href="{{ "tags/" | relURL }}">全部标签 →</a>{{ end }}</div>
   </header>
-  <section class="r-grid">
-    {{ range .Pages.ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}
-  </section>
+  {{ if .Pages }}<section class="r-grid">{{ range .Pages.ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}</section>
+  {{ else }}{{ partial "soon.html" . }}{{ end }}
 </div>
 {{ end }}

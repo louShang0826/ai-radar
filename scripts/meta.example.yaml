@@ -3,6 +3,10 @@
 # 都没有时日期 = 当天。建议在这里显式写上：
 # title: "报告标题"
 date: "2026-10-10"
+# 栏目（也可用 --section 指定）：research=专题调研 / tracking=追踪对比 / daily=每日 AI 简报 / notes=学习笔记
+section: research
+# 统一话题（从 Agent / 大模型 / 工作流 / 个人 Agent / 基础设施 / 商业化 中选），排在具体标签前
+topics: ["Agent", "工作流"]
 summary: '一两句话的摘要，显示在首页卡片和报告标题下方。'
 tags: ["AI Agent", "行业动态"]
 

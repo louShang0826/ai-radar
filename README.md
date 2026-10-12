@@ -4,8 +4,13 @@
 每篇报告保留单页版的全部样式（Ghost Protocol 配色、亮/暗切换、浮动目录、速览卡片、
 证据标注徽章、产品卡片与时间线、mermaid 图、粘性表头、大厂/初创分组与行筛选）。
 
-- 报告地址：`/reports/<slug>/`
-- 标签：`/tags/`；搜索：`/search/`；RSS：`/index.xml`
+- 报告地址：`/reports/<slug>/`（固定，不随栏目变化）
+- 栏目（按内容形态）：`/research/` 专题调研 · `/tracking/` 追踪对比 · `/daily/` 每日 AI 简报 · `/notes/` 学习笔记
+- 标签（按话题）：`/tags/`；搜索：`/search/`（可按栏目、标签筛选）；关于：`/about/`；RSS：`/index.xml`
+
+栏目用 Hugo 分类法 `categories` 实现（栏目页文案在 `content/categories/<键>/_index.md`），
+报告本身都留在 `content/reports/`，所以换栏目不会改变报告 URL。
+话题标签统一为：Agent、大模型、工作流、个人 Agent、基础设施、商业化（meta.yaml 的 `topics`），具体产品和技术标签照旧写在 `tags`。
 
 ## 目录结构
 
@@ -25,11 +30,13 @@ assets/css, assets/js      报告样式与交互
 准备好 Markdown、`meta.yaml`（参考 `scripts/meta.example.yaml`）和可选的封面 `hero.png`：
 
 ```bash
-python3 scripts/new_report.py 报告.md --slug my-report --meta meta.yaml --hero hero.png --check-build
+python3 scripts/new_report.py 报告.md --slug my-report --section research --meta meta.yaml --hero hero.png --check-build
 git add -A && git commit -m "新增报告：my-report" && git push
 ```
 
 脚本会：
+
+`--section` 取 `research` / `tracking` / `daily` / `notes`，会写进 `reports-src/my-report/meta.yaml` 的 `section`（之后重渲染沿用）。
 
 1. 把三份输入复制到 `reports-src/my-report/`（原文件不动）；
 2. 用与单页版相同的渲染逻辑把正文预渲染成 HTML，写入 `content/reports/my-report/index.html`；

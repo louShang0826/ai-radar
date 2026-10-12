@@ -6,3 +6,6 @@
     window.renderMermaid&&window.renderMermaid();
     document.dispatchEvent(new CustomEvent('themechange',{detail:t}));};
 })();
+/* Keep the active nav item visible when the link strip scrolls (narrow screens). */
+(function(){var n=document.getElementById('navLinks');if(!n)return;var a=n.querySelector('[aria-current]');
+  if(a&&n.scrollWidth>n.clientWidth){n.scrollLeft=a.offsetLeft-(n.clientWidth-a.offsetWidth)/2}})();

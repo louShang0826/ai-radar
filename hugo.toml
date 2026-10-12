@@ -15,9 +15,13 @@ enableRobotsTXT = true
 [permalinks]
   [permalinks.page]
     reports = '/reports/:slug/'
+  # 栏目（categories 分类法）的栏目页直接挂在站点根下：/research/ /tracking/ /daily/ /notes/
+  [permalinks.term]
+    categories = '/:slug/'
 
 [taxonomies]
   tag = 'tags'
+  category = 'categories'   # 栏目：research / tracking / daily / notes（按内容形态分；话题交给 tags）
 
 [outputs]
   home = ['HTML', 'RSS']
@@ -27,6 +31,10 @@ enableRobotsTXT = true
 [params]
   description = 'AI Agent 平台、大模型与个人 Agent 的行业深读：产品拆解、技术实现、证据标注。'
   subtitle = 'Industry Deep Reads'
+  # 栏目顺序（导航、首页分组都按这个顺序）；键对应 content/categories/<键>/_index.md
+  sections = ['research', 'tracking', 'daily', 'notes']
+  # 统一话题标签（与 scripts/new_report.py 的 TOPICS 保持一致）
+  topics = ['Agent', '大模型', '工作流', '个人 Agent', '基础设施', '商业化']
   mermaidURL = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
   # repo = 'https://github.com/USERNAME/REPO'   # 填了会在页脚显示仓库链接
 

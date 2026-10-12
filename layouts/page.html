@@ -1,0 +1,9 @@
+{{ define "main" }}
+<div class="site-wrap narrow">
+  <header class="site-head small">
+    <div class="site-kicker">About</div>
+    <h1 class="site-title">{{ .Title }}</h1>
+  </header>
+  <article class="prose about-prose" data-pagefind-ignore="all">{{ .Content }}</article>
+</div>
+{{ end }}

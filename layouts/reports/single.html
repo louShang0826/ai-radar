@@ -6,10 +6,11 @@
 <header class="article-head">
 {{ .Params.marker_bar_html | safeHTML }}
 <div class="article-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time><span>{{ index (slice "周日" "周一" "周二" "周三" "周四" "周五" "周六") (int .Date.Weekday) }}</span><span>{{ .Params.read_min }} 分钟阅读</span><span>{{ .Params.source_count }} 个信源域名 · {{ .Params.link_count }} 条引用</span></div>
+<div class="article-sec">{{ partial "sec-label.html" (dict "page" . "filter" true) }}</div>
 <h1 class="article-title" data-pagefind-meta="title">{{ .Title }}</h1>
 {{ with .Params.subtitle }}<p class="article-subtitle">{{ . }}</p>{{ end }}
 <p class="article-summary">{{ .Summary | plainify }}</p>
-<div class="tag-row">{{ range $i, $t := .GetTerms "tags" }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .RelPermalink }}" data-pagefind-filter="标签">{{ .LinkTitle }}</a>{{ end }}</div>
+{{ partial "tags.html" (dict "page" . "limit" 0 "filter" true) }}
 {{ with .Resources.GetMatch "hero.*" }}{{ $w := .Resize "1600x webp q86" }}
 <figure class="article-hero"><img src="{{ $w.RelPermalink }}" alt="{{ $.Params.hero_alt }}" width="{{ $w.Width }}" height="{{ $w.Height }}" data-zoom title="点击查看大图" data-pagefind-meta="image[src]">{{ with $.Params.hero_caption }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>
 {{ end }}

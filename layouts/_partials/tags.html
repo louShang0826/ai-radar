@@ -1,0 +1,7 @@
+{{- /* Tag row: unified topic tags first (teal outline), then specific tags. Context: dict "page" "limit" "filter" */ -}}
+{{- $topics := site.Params.topics -}}{{- $n := 0 -}}
+<div class="tag-row">
+{{- range $i, $t := .page.GetTerms "tags" }}{{ if or (not $.limit) (lt $i $.limit) -}}
+<a class="tag {{ if in $topics .LinkTitle }}tag-topic{{ else }}{{ index (slice "tag-amber" "tag-purple" "tag-teal") (mod $i 3) }}{{ end }}" href="{{ .RelPermalink }}"{{ if $.filter }} data-pagefind-filter="标签"{{ end }}>{{ .LinkTitle }}</a>
+{{- end }}{{ end -}}
+</div>

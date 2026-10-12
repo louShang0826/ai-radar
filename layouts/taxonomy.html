@@ -1,12 +1,18 @@
 {{ define "main" }}
+{{- $topics := site.Params.topics -}}
 <div class="site-wrap">
   <header class="site-head small">
-    <div class="site-kicker">Tags</div>
+    <div class="site-kicker">{{ if eq .Data.Plural "tags" }}Tags{{ else }}Sections{{ end }}</div>
     <h1 class="site-title">{{ .Title }}</h1>
-    <div class="site-stats"><span>{{ len .Data.Terms }} 个标签</span></div>
+    <div class="site-stats"><span>{{ len .Data.Terms }} 个{{ if eq .Data.Plural "tags" }}标签{{ else }}栏目{{ end }}</span></div>
   </header>
-  <div class="tag-cloud">
-    {{ range $i, $t := .Data.Terms.ByCount }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<b>{{ .Count }}</b></a>{{ end }}
-  </div>
+  {{ if eq .Data.Plural "tags" }}
+  <h2 class="tag-group-h">话题</h2>
+  <div class="tag-cloud">{{ range $topics }}{{ with site.GetPage (printf "/tags/%s" (urlize .)) }}<a class="tag tag-topic" href="{{ .RelPermalink }}">{{ .LinkTitle }}<b>{{ len .Pages }}</b></a>{{ end }}{{ end }}</div>
+  <h2 class="tag-group-h">具体标签</h2>
+  <div class="tag-cloud">{{ range $i, $t := .Data.Terms.ByCount }}{{ if not (in $topics .Page.LinkTitle) }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<b>{{ .Count }}</b></a>{{ end }}{{ end }}</div>
+  {{ else }}
+  <div class="tag-cloud">{{ range site.Params.sections }}{{ with site.GetPage (printf "/categories/%s" .) }}<a class="tag tag-topic" href="{{ .RelPermalink }}">{{ .Title }}<b>{{ len .Pages }}</b></a>{{ end }}{{ end }}</div>
+  {{ end }}
 </div>
 {{ end }}

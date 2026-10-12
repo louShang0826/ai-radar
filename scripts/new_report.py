@@ -2,9 +2,12 @@
 """新增或更新一篇报告：Markdown + meta.yaml (+ hero.png) -> Hugo 内容包 content/reports/<slug>/。
 
 用法：
-    python3 scripts/new_report.py 报告.md --slug my-report --meta meta.yaml --hero hero.png   # 新增/更新
+    python3 scripts/new_report.py 报告.md --slug my-report --section research --meta meta.yaml --hero hero.png   # 新增/更新
     python3 scripts/new_report.py --rebuild-all                                              # 按 reports-src/ 全部重渲染
     加 --check-build：渲染后跑一次 hugo 构建确认没坏
+    --section：栏目 research=专题调研 / tracking=追踪对比 / daily=每日 AI 简报 / notes=学习笔记
+               （写进 reports-src/<slug>/meta.yaml 的 section；之后 --rebuild-all 沿用）
+    meta.yaml 的 topics：从统一话题 Agent / 大模型 / 工作流 / 个人 Agent / 基础设施 / 商业化 中选，排在具体 tags 前
 
 做的事：
   1. 把源文件、meta.yaml、hero.png 复制到 reports-src/<slug>/（仓库里留一份可重渲染的输入；原文件不动）
@@ -30,6 +33,10 @@ import build as rb  # noqa: E402
 SRC_DIR = REPO / "reports-src"
 CONTENT = REPO / "content" / "reports"
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{1,60}$")
+# 栏目（按内容形态）：键 = URL 段 /research/ 等；栏目页在 content/categories/<键>/_index.md
+SECTIONS = {"research": "专题调研", "tracking": "追踪对比", "daily": "每日 AI 简报", "notes": "学习笔记"}
+# 统一话题标签：meta.yaml 的 topics 只能从这里选，会排在具体标签前面
+TOPICS = ["Agent", "大模型", "工作流", "个人 Agent", "基础设施", "商业化"]
 
 
 def fail(msg, code=1):
@@ -52,6 +59,17 @@ def count_source_markers(md: str, meta: dict) -> tuple[int, list[str]]:
     return n, unknown
 
 
+def set_meta_key(meta_p: Path, key: str, value: str):
+    """Set a top-level scalar in reports-src/<slug>/meta.yaml without reformatting the rest of the file."""
+    txt = meta_p.read_text(encoding="utf-8") if meta_p.exists() else ""
+    line = f"{key}: {value}"
+    if re.search(rf"(?m)^{key}:.*$", txt):
+        txt = re.sub(rf"(?m)^{key}:.*$", line, txt, count=1)
+    else:
+        txt = line + "\n" + txt
+    meta_p.write_text(txt, encoding="utf-8")
+
+
 def render(slug: str) -> dict:
     d = SRC_DIR / slug
     md = d / "report.md"
@@ -69,6 +87,15 @@ def render(slug: str) -> dict:
     if n_badges != n_src:
         fail(f"{slug}：原文按关键词应有 {n_src} 个证据标注，页面只有 {n_badges} 个徽章")
 
+    section = str(meta.get("section") or "")
+    if section not in SECTIONS:
+        fail(f"{slug}：栏目 section 必须是 {list(SECTIONS)} 之一（用 --section 指定，或写进 meta.yaml），现在是 {section!r}")
+    topics = [str(t) for t in (meta.get("topics") or [])]
+    bad = [t for t in topics if t not in TOPICS]
+    if bad:
+        fail(f"{slug}：topics 里有不在统一话题表里的标签 {bad}；可选：{TOPICS}（具体标签请写在 tags）")
+    tags = topics + [t for t in parts["tags"] if t not in topics]
+
     date = parts["date"]
     if len(date) == 10:
         date += "T09:00:00+08:00"
@@ -78,7 +105,8 @@ def render(slug: str) -> dict:
         "slug": slug,
         "summary": str(meta.get("summary", "")),
         "description": str(meta.get("summary", "")),
-        "tags": parts["tags"],
+        "tags": tags,
+        "categories": [section],
         "build": {"publishResources": False},   # only the WebP versions Hugo generates get published
         "params": {
             "subtitle": str(parts["subtitle"]) if parts["subtitle"] else "",
@@ -115,11 +143,14 @@ def main():
     ap.add_argument("--slug")
     ap.add_argument("--meta")
     ap.add_argument("--hero")
+    ap.add_argument("--section", choices=list(SECTIONS), help="栏目：" + "，".join(f"{k}={v}" for k, v in SECTIONS.items()))
     ap.add_argument("--rebuild-all", action="store_true")
     ap.add_argument("--check-build", action="store_true")
     a = ap.parse_args()
 
     if a.rebuild_all:
+        if a.section:
+            fail("--section 只用于单篇；批量重渲染时栏目取各自 meta.yaml 的 section")
         slugs = sorted(p.name for p in SRC_DIR.iterdir() if (p / "report.md").exists())
     else:
         if not a.markdown or not a.slug:
@@ -131,6 +162,8 @@ def main():
         shutil.copy2(a.markdown, d / "report.md")
         if a.meta:
             shutil.copy2(a.meta, d / "meta.yaml")
+        if a.section:
+            set_meta_key(d / "meta.yaml", "section", a.section)
         if a.hero:
             for old in d.glob("hero.*"):
                 old.unlink()
