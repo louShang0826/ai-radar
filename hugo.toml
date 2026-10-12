@@ -1,7 +1,7 @@
 # ⚠️ 部署前只需改这一行：https://<GitHub 用户名>.github.io/<仓库名>/  （结尾要有 /）
 # GitHub Actions 部署时会用 configure-pages 给出的真实地址覆盖它（见 .github/workflows/deploy.yml），
 # 所以这里写错也不会影响线上；它主要用于本地 `hugo` 构建和 RSS 里的绝对链接。
-baseURL = 'https://USERNAME.github.io/REPO/'
+baseURL = 'https://loushang0826.github.io/ai-radar/'
 locale = 'zh-CN'
 defaultContentLanguage = 'zh-cn'
 title = 'Shuang · 行业深读'

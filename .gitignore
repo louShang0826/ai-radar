@@ -6,3 +6,4 @@ resources/_gen/
 __pycache__/
 *.pyc
 report-site-preview.zip
+*.zip

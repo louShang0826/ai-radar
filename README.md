@@ -59,7 +59,7 @@ pip install -r scripts/requirements.txt    # beautifulsoup4、PyYAML
 只看排版（热更新，搜索不可用）：
 
 ```bash
-hugo server            # http://localhost:1313/REPO/ （路径随 hugo.toml 的 baseURL）
+hugo server            # http://localhost:1313/ai-radar/ （路径随 hugo.toml 的 baseURL）
 ```
 
 含搜索的完整预览（Pagefind 索引只在构建后生成）：
@@ -79,9 +79,9 @@ python3 -m http.server 8080 -d public
 2. 仓库 Settings → Pages → Build and deployment → Source 选 **GitHub Actions**。
 3. 之后每次推送 `main`（或在 Actions 页手动 Run workflow）都会：安装 Hugo + Pagefind → `hugo --minify` → `pagefind --site public` → 发布。
 
-baseURL：`hugo.toml` 里是占位符 `https://USERNAME.github.io/REPO/`。CI 会用 Pages 的实际地址覆盖它，
+baseURL：`hugo.toml` 里是 `https://loushang0826.github.io/ai-radar/`。CI 会用 Pages 的实际地址覆盖它，
 所以不改也能正常发布；改成真实地址只影响本地 `hugo server` 的预览路径和 RSS 里的绝对链接。
-站内链接都用相对站点根的路径生成，项目页（带 `/REPO/` 子路径）和自定义域名都能用。
+站内链接都用相对站点根的路径生成，项目页（带 `/ai-radar/` 子路径）和自定义域名都能用。
 
 ## 注意
 
