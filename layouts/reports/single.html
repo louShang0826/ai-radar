@@ -19,6 +19,7 @@
 <article class="prose" id="article" data-pagefind-body>
 {{ .Content }}
 </article>
+{{ partial "comments.html" . }}
 </main>
 <aside class="toc" id="toc" data-open="false" aria-label="目录" data-pagefind-ignore><button class="toc-toggle" id="tocToggle" aria-expanded="false"><span>目录 · CONTENTS</span><span class="prog" id="tocProg">0%</span></button><nav class="toc-body" id="tocBody">{{ .Params.toc_html | safeHTML }}</nav></aside>
 </div>

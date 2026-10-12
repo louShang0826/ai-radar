@@ -1,0 +1,32 @@
+{{- with site.Params.waline }}
+<section class="comments" id="comments" aria-label="评论" data-pagefind-ignore>
+<h2 class="comments-title">评论 · COMMENTS</h2>
+<p class="comments-hint">可以匿名留言（昵称必填），也可以点「登录」用 GitHub 账号评论。</p>
+<div id="waline"></div>
+</section>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+<style>
+.comments{max-width:820px;margin:56px auto 24px;padding:0 20px}
+.comments-title{font-size:1.15rem;color:var(--teal);letter-spacing:.08em;margin:0 0 6px}
+.comments-hint{color:var(--text-muted);font-size:.9rem;margin:0 0 16px}
+#waline{--waline-theme-color:var(--teal);--waline-active-color:var(--amber);--waline-color:var(--text-primary);--waline-bg-color:var(--bg-card);--waline-bg-color-light:var(--bg-surface);--waline-bg-color-hover:var(--bg-elevated);--waline-border-color:var(--border);--waline-disable-bg-color:var(--bg-elevated);--waline-disable-color:var(--text-muted);--waline-code-bg-color:var(--bg-surface);--waline-info-bg-color:var(--bg-surface);--waline-info-color:var(--text-muted);--waline-light-grey:var(--text-muted);--waline-dark-grey:var(--text-secondary);--waline-badge-color:var(--purple);--waline-border:1px solid var(--border);--waline-box-shadow:none}
+</style>
+<script type="module">
+import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+init({
+  el: '#waline',
+  serverURL: '{{ .serverURL }}',
+  path: '{{ $.RelPermalink }}',
+  lang: 'zh-CN',
+  login: 'enable',
+  meta: ['nick', 'mail', 'link'],
+  requiredMeta: ['nick'],
+  dark: 'html[data-theme="dark"]',
+  pageview: false,
+  comment: false,
+  reaction: false,
+  imageUploader: false,
+  search: false,
+});
+</script>
+{{- end }}

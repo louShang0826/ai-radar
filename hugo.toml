@@ -50,3 +50,6 @@ enableRobotsTXT = true
 # 新版 Hugo 默认不允许 HTML 内容文件，这里显式放行 HTML 和 Markdown 两种内容格式。
 [security]
   allowContent = ['^text/html$', '^text/markdown$']
+
+[params.waline]
+  serverURL = "https://ai-radar-comments.vercel.app"
