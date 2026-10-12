@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="site-wrap">
+  <header class="site-head">
+    <div class="site-kicker">{{ site.Params.subtitle }}</div>
+    <h1 class="site-title">{{ site.Title }}</h1>
+    <p class="site-desc">{{ site.Params.description }}</p>
+    <div class="site-stats"><span>{{ len (where site.RegularPages "Section" "reports") }} 篇报告</span><span>{{ len site.Taxonomies.tags }} 个标签</span><a href="{{ "search/" | relURL }}">全文搜索 →</a></div>
+  </header>
+  <section class="r-grid">
+    {{ range (where site.RegularPages "Section" "reports").ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}
+  </section>
+</div>
+{{ end }}

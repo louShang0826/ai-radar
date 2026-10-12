@@ -1,0 +1,12 @@
+{{ define "main" }}
+<div class="site-wrap">
+  <header class="site-head small">
+    <div class="site-kicker">Tags</div>
+    <h1 class="site-title">{{ .Title }}</h1>
+    <div class="site-stats"><span>{{ len .Data.Terms }} 个标签</span></div>
+  </header>
+  <div class="tag-cloud">
+    {{ range $i, $t := .Data.Terms.ByCount }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<b>{{ .Count }}</b></a>{{ end }}
+  </div>
+</div>
+{{ end }}

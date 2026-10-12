@@ -1,0 +1,18 @@
+site_name: "Shuang · 行业深读"
+summary: "截至 2026-10-10：第一梯队是“三强 + 一个挑战者”；“一代三档”成为标准产品形态，中档在 2026 年秋天统一到 $2/$10，缓存价格成了真正的竞争点；开放权重第一梯队几乎全是中国模型，差距约一代。"
+tags: ["大模型", "演进路线图", "模型对比", "API 定价", "缓存价格", "开放权重", "中国模型", "评测体系", "Agent 选型", "合规"]
+hero_alt: "主流大模型演进路线图与对比信息图：AA 智能指数前列、一代三档价格、缓存读价、开放权重格局、OpenRouter 调用热度、分层路由与每任务成本"
+hero_caption: "信息图由报告第 0、4、5、6 节要点排版生成（HTML/CSS 渲染，非 AI 生图）；所有数字与日期均取自原文，榜单数据多来自镜像站 [二手]，每任务成本为原文 §6.3 示意估算。"
+quick:
+  - "<strong>第一梯队是“三强 + 一个挑战者”</strong>：AA Intelligence Index v4.3.2（2026-10-09/10）前列是 Claude Opus 5.5（57.6）、Sonnet 5.5（56.0）、Fable 5.1（53.4）、GPT-6 Astra（52.7）、Gemini 4 Argon（52.6）；挑战者是 Muse Spark 1.3（48.1）和 Grok 4.7（46.4）[二手]。LMArena 文本榜（2026-10-08 数据）第一是 Gemini 4 Argon（1525）[二手]。"
+  - "<strong>“一代三档”成为标准产品形态</strong>：OpenAI Astra $10/$50、Sol $2/$10、Luna $0.10/$0.50；中档（Sol / Sonnet / Argon 首发价）在 2026 年秋天统一到了 $2/$10，而 2023-03 的 GPT-4（8K）是 $30/$60（历史官方定价，本轮未复核【待核实】）。"
+  - "<strong>缓存价格成了真正的竞争点</strong>：缓存读价 GPT-6.1 Sol $0.10、Sonnet 5.5 $0.10、Opus 5.5 $0.20、Haiku 5.5 / Luna $0.01，DeepSeek V4.1-Flash 闲时 $0.003；Anthropic 和 OpenAI 都明说“缓存读是 Agent 成本的大头”。"
+  - "<strong>开放权重的第一梯队几乎全是中国模型</strong>：MiMo-V2.6-Pro（46.3，MIT）、GLM-5.3（44.8）、Step 5 Preview（43.7，权重 10-15 发布）、Kimi K3（43.6）；AA 指数 v4.3.2 上闭源第 1（57.6）与开放第 1（46.3）差约 11 分，落后约一代、3–6 个月 [推断]。"
+  - "<strong>按调用量看，最热的是便宜的中国模型</strong>：OpenRouter 截至 10-09 的一周，第 1 是 DeepSeek V4.1 Flash（37.6T tokens），前 5 还有一个匿名模型、GLM 5.3 Flash、MiMo-V2.6-Flash、Hy4 preview；闭源里用量最高的是 GPT-6 Luna 和 Claude Opus 5.5。"
+  - "<strong>评测体系换代了</strong>：SWE-bench Verified 已被 OpenAI 停用（饱和、污染），主流引用改为 DeepSWE v1.1、Terminal-Bench 4.0、FrontierCode、OSWorld 2.x、AutomationBench、GDPval-AA、HLE 等。"
+  - "<strong>对内部平台：路由和缓存比选哪家更重要</strong> [推断]：主循环用 Sonnet 5.5 / GPT-6.1 Sol，最难的任务升到 Opus 5.5 / Astra，子 Agent 用 Haiku 5.5 / Luna / DeepSeek V4.1-Flash；同一个 50 步任务按标价估算从 $0.1 到 $9 以上都有（§6.3）。"
+card_sections: ["主力模型"]
+topic_sections: ["行业趋势", "选型观察"]
+diagram_label: "张图表"
+show_table_count: true
+footer: "主流大模型演进路线图与关键特性对比 · 信息截至 2026-10-10（北京时间）· 页面由 template/build.py 从 Markdown 生成"

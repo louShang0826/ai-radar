@@ -1,0 +1,3 @@
+# 只有本地运行 scripts/new_report.py 时需要（CI 不需要）；另需系统安装 pandoc 3.x
+beautifulsoup4>=4.12
+PyYAML>=6.0

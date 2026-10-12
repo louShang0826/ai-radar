@@ -1,0 +1,2781 @@
+---
+title: 主流大模型演进路线图与关键特性对比
+date: '2026-10-10T09:00:00+08:00'
+slug: llm-landscape
+summary: 截至 2026-10-10：第一梯队是“三强 + 一个挑战者”；“一代三档”成为标准产品形态，中档在 2026 年秋天统一到 $2/$10，缓存价格成了真正的竞争点；开放权重第一梯队几乎全是中国模型，差距约一代。
+description: 截至 2026-10-10：第一梯队是“三强 + 一个挑战者”；“一代三档”成为标准产品形态，中档在 2026 年秋天统一到 $2/$10，缓存价格成了真正的竞争点；开放权重第一梯队几乎全是中国模型，差距约一代。
+tags:
+- 大模型
+- 演进路线图
+- 模型对比
+- API 定价
+- 缓存价格
+- 开放权重
+- 中国模型
+- 评测体系
+- Agent 选型
+- 合规
+build:
+  publishResources: false
+params:
+  subtitle: 2023 → 2026-10 · 各家当前主力型号 · 价格 / 性能 / 速度 / 开放性 · 对内部 Agent 平台的选型观察
+  read_min: 48
+  link_count: 133
+  source_count: 53
+  has_mermaid: true
+  mermaid_url: https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs
+  hero_alt: 主流大模型演进路线图与对比信息图：AA 智能指数前列、一代三档价格、缓存读价、开放权重格局、OpenRouter 调用热度、分层路由与每任务成本
+  hero_caption: 信息图由报告第 0、4、5、6 节要点排版生成（HTML/CSS 渲染，非 AI 生图）；所有数字与日期均取自原文，榜单数据多来自镜像站 [二手]，每任务成本为原文 §6.3 示意估算。
+  footer: 主流大模型演进路线图与关键特性对比 · 信息截至 2026-10-10（北京时间）· 页面由 template/build.py 从 Markdown 生成
+  marker_bar_html: <div class="marker-bar" aria-label="证据标注统计"><span class="mb-label">证据标注</span><span class="badge badge-verify mb-pill">待核实/未核实<b>34</b></span><span class="badge badge-second mb-pill">二手/非官方<b>33</b></span><span class="badge badge-infer mb-pill">推断<b>11</b></span><span class="badge badge-self mb-pill">厂商自报<b>12</b></span><span class="mb-sep"></span><span class="mb-src">5 张图表 · 30 张表格 · 53 个信源</span></div>
+  quick_html: <section class="quick" id="quick"><div class="quick-h">一分钟速览 <span class="pill">TL;DR</span></div><ul><li><strong>第一梯队是“三强 + 一个挑战者”</strong>：AA Intelligence Index v4.3.2（2026-10-09/10）前列是 Claude Opus 5.5（57.6）、Sonnet 5.5（56.0）、Fable 5.1（53.4）、GPT-6 Astra（52.7）、Gemini 4 Argon（52.6）；挑战者是 Muse Spark 1.3（48.1）和 Grok 4.7（46.4）<span class="badge badge-second" title="二手/非官方">二手</span>。LMArena 文本榜（2026-10-08 数据）第一是 Gemini 4 Argon（1525）<span class="badge badge-second" title="二手/非官方">二手</span>。</li><li><strong>“一代三档”成为标准产品形态</strong>：OpenAI Astra $10/$50、Sol $2/$10、Luna $0.10/$0.50；中档（Sol / Sonnet / Argon 首发价）在 2026 年秋天统一到了 $2/$10，而 2023-03 的 GPT-4（8K）是 $30/$60（历史官方定价，本轮未复核<span class="badge badge-verify" title="待核实/未核实">待核实</span>）。</li><li><strong>缓存价格成了真正的竞争点</strong>：缓存读价 GPT-6.1 Sol $0.10、Sonnet 5.5 $0.10、Opus 5.5 $0.20、Haiku 5.5 / Luna $0.01，DeepSeek V4.1-Flash 闲时 $0.003；Anthropic 和 OpenAI 都明说“缓存读是 Agent 成本的大头”。</li><li><strong>开放权重的第一梯队几乎全是中国模型</strong>：MiMo-V2.6-Pro（46.3，MIT）、GLM-5.3（44.8）、Step 5 Preview（43.7，权重 10-15 发布）、Kimi K3（43.6）；AA 指数 v4.3.2 上闭源第 1（57.6）与开放第 1（46.3）差约 11 分，落后约一代、3–6 个月 <span class="badge badge-infer" title="推断">推断</span>。</li><li><strong>按调用量看，最热的是便宜的中国模型</strong>：OpenRouter 截至 10-09 的一周，第 1 是 DeepSeek V4.1 Flash（37.6T tokens），前 5 还有一个匿名模型、GLM 5.3 Flash、MiMo-V2.6-Flash、Hy4 preview；闭源里用量最高的是 GPT-6 Luna 和 Claude Opus 5.5。</li><li><strong>评测体系换代了</strong>：SWE-bench Verified 已被 OpenAI 停用（饱和、污染），主流引用改为 DeepSWE v1.1、Terminal-Bench 4.0、FrontierCode、OSWorld 2.x、AutomationBench、GDPval-AA、HLE 等。</li><li><strong>对内部平台：路由和缓存比选哪家更重要</strong> <span class="badge badge-infer" title="推断">推断</span>：主循环用 Sonnet 5.5 / GPT-6.1 Sol，最难的任务升到 Opus 5.5 / Astra，子 Agent 用 Haiku 5.5 / Luna / DeepSeek V4.1-Flash；同一个 50 步任务按标价估算从 $0.1 到 $9 以上都有（§6.3）。</li></ul></section>
+  toc_html: <ul><li class="toc-l1"><a href="#sec-0">0 关键结论（先看这里）</a></li><li class="toc-l1"><a href="#sec-1">1 口径说明：本文用了哪些榜单，怎么读</a></li><li class="toc-l1"><a href="#sec-2">2 演进路线图（2023 → 2026-10）</a><ul><li class="toc-l2"><a href="#sec-2-1">2.1 六个阶段</a></li><li class="toc-l2"><a href="#sec-2-2">2.2 总览时间线</a></li><li class="toc-l2"><a href="#sec-2-3">2.3 海外厂商 2026 年发布节奏</a></li><li class="toc-l2"><a href="#sec-2-4">2.4 国内厂商 2026 年发布节奏</a></li><li class="toc-l2"><a href="#sec-2-5">2.5 各家家族谱系（2023 → 2026）</a></li></ul></li><li class="toc-l1"><a href="#sec-3">3 各厂商当前主力模型</a><ul><li class="toc-l2"><a href="#sec-3-1">3.1 OpenAI：GPT-6 家族（Astra / 6.1 Sol / Luna）</a></li><li class="toc-l2"><a href="#sec-3-2">3.2 Anthropic：Claude 5.5 家族 + Fable / Mythos 5.1</a></li><li class="toc-l2"><a href="#sec-3-3">3.3 Google：Gemini 4 Argon（预发布）+ Gemini 3.8 Flash（GA 主力）+ Gemma 4</a></li><li class="toc-l2"><a href="#sec-3-4">3.4 Meta：Muse Spark 1.3（闭源 API）+ Muse Glimmer（开放）</a></li><li class="toc-l2"><a href="#sec-3-5">3.5 SpaceXAI（原 xAI）：Grok 4.7</a></li><li class="toc-l2"><a href="#sec-3-6">3.6 Mistral：Large 4 Preview（&quot;le Chonk&quot;）</a></li><li class="toc-l2"><a href="#sec-3-7">3.7 其他海外厂商</a></li><li class="toc-l2"><a href="#sec-3-8">3.8 DeepSeek：V4.1-Flash</a></li><li class="toc-l2"><a href="#sec-3-9">3.9 阿里：Qwen3.8 家族</a></li><li class="toc-l2"><a href="#sec-3-10">3.10 字节：Doubao-Seed-2.1-pro</a></li><li class="toc-l2"><a href="#sec-3-11">3.11 月之暗面：Kimi K3</a></li><li class="toc-l2"><a href="#sec-3-12">3.12 智谱：GLM-5.3 / GLM-5.3-Flash</a></li><li class="toc-l2"><a href="#sec-3-13">3.13 小米：MiMo-V2.6-Pro / Flash</a></li><li class="toc-l2"><a href="#sec-3-14">3.14 腾讯：Hy4 preview</a></li><li class="toc-l2"><a href="#sec-3-15">3.15 阶跃星辰：Step 5 Preview</a></li><li class="toc-l2"><a href="#sec-3-16">3.16 MiniMax：M3</a></li><li class="toc-l2"><a href="#sec-3-17">3.17 百度：ERNIE 5.1</a></li><li class="toc-l2"><a href="#sec-3-18">3.18 其他值得关注的国内模型</a></li></ul></li><li class="toc-l1"><a href="#sec-4">4 对比表</a><ul><li class="toc-l2"><a href="#sec-4-1">4.1 主力旗舰横向对比（每家取当前最强的可用型号）</a></li><li class="toc-l2"><a href="#sec-4-2">4.2 性价比视图</a></li><li class="toc-l2"><a href="#sec-4-3">4.3 编码与 Agent 能力</a></li><li class="toc-l2"><a href="#sec-4-4">4.4 开放权重模型</a></li><li class="toc-l2"><a href="#sec-4-5">4.5 中国可用性与合规</a></li><li class="toc-l2"><a href="#sec-4-6">4.6 速度与延迟（AA 输出速度，2026-10-10，tok/s）</a></li><li class="toc-l2"><a href="#sec-4-7">4.7 热度：谁在被真正使用</a></li></ul></li><li class="toc-l1"><a href="#sec-5">5 行业趋势</a><ul><li class="toc-l2"><a href="#sec-5-1">5.1 推理模型：从&quot;可选模式&quot;变成&quot;常开 + 可调强度&quot;</a></li><li class="toc-l2"><a href="#sec-5-2">5.2 Agent 与 computer use：从&quot;能用&quot;到&quot;按小时、按天计&quot;</a></li><li class="toc-l2"><a href="#sec-5-3">5.3 价格：两年降一到两个数量级，竞争焦点转到缓存</a></li><li class="toc-l2"><a href="#sec-5-4">5.4 开放与闭源的差距</a></li><li class="toc-l2"><a href="#sec-5-5">5.5 中国与美国</a></li><li class="toc-l2"><a href="#sec-5-6">5.6 MoE 与架构</a></li><li class="toc-l2"><a href="#sec-5-7">5.7 长上下文</a></li><li class="toc-l2"><a href="#sec-5-8">5.8 多模态与全模态</a></li></ul></li><li class="toc-l1"><a href="#sec-6">6 给内部 Agent 平台的选型观察（观察，不是结论）</a><ul><li class="toc-l2"><a href="#sec-6-1">6.1 分层路由：一个可参考的四档</a></li><li class="toc-l2"><a href="#sec-6-2">6.2 哪些模型适合 Agent 循环</a></li><li class="toc-l2"><a href="#sec-6-3">6.3 每任务成本：一个示意估算</a></li><li class="toc-l2"><a href="#sec-6-4">6.4 国内合规选项</a></li><li class="toc-l2"><a href="#sec-6-5">6.5 几条待团队讨论的问题</a></li></ul></li><li class="toc-l1"><a href="#sec-7">7 待核实汇总</a></li><li class="toc-l1"><a href="#sec-x51">附：主要一手来源</a></li></ul>
+  stats:
+    diagrams: 5
+    links: 133
+    domains: 53
+    badges:
+      second: 33
+      infer: 11
+      verify: 34
+      self: 12
+    quick_items: 7
+    read_min: '48'
+    cards: 18
+    topics: 13
+    supplement_cards: 0
+    update_notes: 0
+    heading_notes: 0
+    tables: 30
+    card_blocks: 0
+    roadmaps: 0
+    update_blocks: 0
+    versus_tables: 0
+    row_tags: 0
+    row_tags_inherited: 0
+    row_filters: 0
+    timeline_vendor_cards: 16
+    timeline_stages: 6
+    sources_heading: 附：主要一手来源
+---
+<blockquote class="lead-note">
+<p>本文是《e2e-workflow-landscape.md》《e2e-workflow-deep-dive.md》的姊妹篇，专门回答一个问题：<strong>截至 2026-10-10，各家最热门的模型是哪些，它们的成本、性能、速度和开放程度怎样。</strong></p>
+<p>资料优先取自一手来源：官方模型页、定价页、发布博客、API 文档。性能和热度数据取自 Artificial Analysis（AA）、LMArena、OpenRouter 等榜单，每个数字都尽量标了取数日期。</p>
+<p>标注约定：</p>
+<ul>
+<li><span class="badge badge-second" title="二手/非官方">二手</span>：来自媒体、聚合站或榜单镜像站。</li>
+<li><span class="badge badge-infer" title="推断">推断</span>：作者依据公开信息做的推论或估算。</li>
+<li><span class="badge badge-verify" title="待核实/未核实">待核实</span>：没能找到一手来源，或不同来源互相矛盾。</li>
+<li><span class="badge badge-self" title="厂商自报">厂商自报</span>：厂商发布博客里的成绩，测试设置（harness、effort、是否带工具）各家不同，<strong>不能跨厂商直接比</strong>。</li>
+</ul>
+<p>价格单位：美元 / 百万 tokens（$/M），国内厂商同时给出官方人民币价（¥/M）。文中"约合"美元按 1 USD ≈ 6.9 CNY 粗算<span class="badge badge-verify" title="待核实/未核实">待核实：汇率按小米官方 ¥3 ↔ $0.435 反推</span>。</p>
+<p>信息截至 2026-10-10（北京时间）。</p>
+</blockquote>
+<h2 id="sec-0"><span class="secno">0</span>关键结论（先看这里）</h2>
+<ol class="kc-grid" type="1">
+<li><strong>当前第一梯队是"三强 + 一个挑战者"。</strong>
+<ul>
+<li>综合智能：AA Intelligence Index v4.3.2（2026-10-09/10）前列全是 Anthropic、OpenAI、Google：Claude Opus 5.5（57.6）、Sonnet 5.5（56.0）、Fable 5.1（53.4）、GPT-6 Astra（52.7）、Gemini 4 Argon（52.6）、GPT-6.1 Sol（51.8）。挑战者是 Meta 的 <strong>Muse Spark 1.3（48.1）</strong> 和 SpaceXAI 的 <strong>Grok 4.7（46.4）</strong>。<a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" rel="noopener" target="_blank">AA</a>、<a href="https://models.fru.dev/benchmarks/aa-intelligence-index" rel="noopener" target="_blank">镜像 models.fru.dev</a> <span class="badge badge-second" title="二手/非官方">二手</span></li>
+<li>人类偏好：LMArena 文本榜（2026-10-08 数据）第一是 <strong>Gemini 4 Argon（1525）</strong>，其次 Opus 5.5（1507）。<a href="https://www.benchleader.com/benchmarks/lmarena_text" rel="noopener" target="_blank">BenchLeader 镜像</a> <span class="badge badge-second" title="二手/非官方">二手</span></li>
+<li>编码 Agent：AA Coding Agent Index v1.5 第一是 <strong>Claude Code + Sonnet 5.5（68.4）</strong>，Opus 5.5（66.0）次之，Antigravity + Gemini 4 Argon（63.8）第三。<a href="https://benchlm.ai/benchmarks/aacodingagents" rel="noopener" target="_blank">benchlm 镜像</a> <span class="badge badge-second" title="二手/非官方">二手</span></li>
+</ul></li>
+<li><strong>各家"最热门"型号（2026-10-10）</strong>：OpenAI <strong>GPT-6.1 Sol</strong>（09-29）；Anthropic <strong>Claude Opus 5.5 / Sonnet 5.5</strong>（09-22 / 09-28）；Google <strong>Gemini 3.8 Flash</strong>（GA，09-02），Gemini 4 Argon 已发布但只对受信用户开放；Meta <strong>Muse Spark 1.3</strong>（09-02）；SpaceXAI <strong>Grok 4.7</strong>（09-21）；Mistral <strong>Large 4 Preview</strong>（10-06）；DeepSeek <strong>V4.1-Flash</strong>（09-10）；阿里 <strong>Qwen3.8-Max（0902 快照）</strong>；字节 <strong>Doubao-Seed-2.1-pro（0915）</strong>；月之暗面 <strong>Kimi K3</strong>（07-16）；智谱 <strong>GLM-5.3 / GLM-5.3-Flash</strong>；小米 <strong>MiMo-V2.6-Pro</strong>（09-21）；腾讯 <strong>Hy4 preview</strong>（08-28）；阶跃 <strong>Step 5 Preview</strong>（09-20）；MiniMax <strong>M3</strong>（05-31/06-01）；百度 <strong>ERNIE 5.1</strong>（05-09）。</li>
+<li><strong>"一代三档"成为标准产品形态，价格大幅下探。</strong>
+<ul>
+<li>OpenAI：Astra $10/$50、Sol $2/$10、Luna $0.10/$0.50。</li>
+<li>Anthropic：Fable $10/$50、Opus $4/$20、Sonnet $2/$10、Haiku 5.5 $0.10/$0.50。</li>
+<li>Google：Argon 首发价 $2/$10（之后 $4/$20），3.8 Flash 首发价 $0.75/$3.75。</li>
+<li><strong>中档（Sol / Sonnet / Argon 首发价）在 2026 年秋天统一到了 $2/$10。</strong> 2023 年 GPT-4 是 $30/$60。</li>
+</ul></li>
+<li><strong>缓存价格成了真正的竞争点。</strong> Agent 的输入大部分是缓存命中，所以各家都在砍缓存读价：GPT-6.1 Sol $0.10、Sonnet 5.5 $0.10、Opus 5.5 $0.20、Haiku 5.5 / Luna $0.01，DeepSeek V4.1-Flash 闲时 $0.003。Anthropic 和 OpenAI 的博客都明说"缓存读是 Agent 成本的大头"。</li>
+<li><strong>开放权重的第一梯队几乎全是中国模型，差距约一代。</strong>
+<ul>
+<li>AA 指数前列的开放权重模型：MiMo-V2.6-Pro（46.3，MIT）、Qwen3.8 系列、GLM-5.3（44.8）、Step 5 Preview（43.7，权重 10-15 发布）、Kimi K3（43.6）、GLM-5.3-Flash（41.8，MIT）。</li>
+<li>美欧侧：Mistral Large 4（权重月底发布）、NVIDIA Nemotron 3 Ultra、Meta 的 Muse Glimmer 30B、Google Gemma 4。Meta 承诺开放 Muse Spark 1.2 权重，截至 10-10 尚未兑现。</li>
+<li>闭源头部和开放头部相差约 10 分（AA 指数），大致相当于闭源模型 3–6 个月前的水平 <span class="badge badge-infer" title="推断">推断</span>。</li>
+</ul></li>
+<li><strong>按调用量看，OpenRouter 上最热的是便宜的中国模型。</strong> 截至 10-09 的一周，前 5 名是 DeepSeek V4.1 Flash（37.6T tokens）、一个匿名模型、GLM 5.3 Flash、MiMo-V2.6-Flash、Hy4 preview。闭源模型里用量最高的是 GPT-6 Luna 和 Claude Opus 5.5。<a href="https://openrouter.ai/rankings" rel="noopener" target="_blank">OpenRouter</a></li>
+<li><strong>评测体系换代了。</strong> SWE-bench Verified 已被 OpenAI 停用（饱和、污染），SWE-bench Pro 也被撤回推荐。现在主流引用的是 <strong>DeepSWE v1.1、Terminal-Bench 4.0、FrontierCode、CursorBench 4.0、OSWorld 2.x、AutomationBench、GDPval-AA、AA-Briefcase、HLE</strong>。2025 年报告里常见的 AIME、GPQA 已基本饱和（GPT-6 Astra GPQA 96.0%）。<a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/" rel="noopener" target="_blank">OpenAI</a></li>
+<li><strong>对内部平台最重要的几点 <span class="badge badge-infer" title="推断">推断</span>：</strong>
+<ul>
+<li>Agent 主循环可选 Sonnet 5.5 / GPT-6.1 Sol 这一档，最难的任务升到 Opus 5.5 / Astra，压缩、摘要、子 Agent 用 Haiku 5.5 / Luna / DeepSeek V4.1-Flash。</li>
+<li>同样一个 50 步的 Agent 任务，按标价估算从 $0.1 到 $9 以上都有（§6.3），<strong>路由和缓存设计带来的成本差异比选哪家模型更大</strong>。</li>
+<li>合规上国内对外服务要用已备案模型，私有化部署的现实选项是 Qwen3.8、GLM-5.3 / 5.3-Flash、MiMo-V2.6、DeepSeek V4.1-Flash、Hy4（§4.5）。</li>
+</ul></li>
+</ol>
+<hr/>
+<h2 id="sec-1"><span class="secno">1</span>口径说明：本文用了哪些榜单，怎么读</h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>测什么</th>
+<th>本文取数日期</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AA Intelligence Index v4.3.2</strong></td>
+<td>10 项评测的综合（AA-Briefcase、GDPval-AA、AutomationBench-AA、Terminal-Bench 4.0、SciCode、HLE、GDP.pdf、CritPt、AA-Omniscience、AA-LCR）</td>
+<td>2026-10-09/10</td>
+<td>同一模型不同 effort 分开计分；本文默认取最高档。<a href="https://atlas.kevinhu.io/benchmarks/aa-intelligence-index-v4-3-2" rel="noopener" target="_blank">说明</a> <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td><strong>AA Coding Agent Index v1.5</strong></td>
+<td>DeepSWE v1.1、Terminal-Bench 4.0、SWE-Atlas-QnA 等权平均，测的是"模型 + harness"组合</td>
+<td>2026-10</td>
+<td>评的是系统不是裸模型 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td><strong>LMArena Text</strong></td>
+<td>匿名对战的人类偏好，带风格控制</td>
+<td>2026-10-08 数据</td>
+<td>官方页面当时显示的还是 09-02 快照，本文用 BenchLeader 每日镜像 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td><strong>OpenRouter Rankings</strong></td>
+<td>经 OpenRouter 路由的 token 量</td>
+<td>截至 2026-10-09</td>
+<td>只反映 OpenRouter 用户，偏向开发者和便宜模型；不代表质量</td>
+</tr>
+<tr>
+<td><strong>AA Output Speed</strong></td>
+<td>第一方 API 首 token 之后的中位输出速度（tok/s）</td>
+<td>2026-10-10</td>
+<td>近两周实测中位数 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td><strong>DeepSWE v1.1</strong></td>
+<td>原创、长程的软件工程任务（91 个仓库）</td>
+<td>各厂商发布时</td>
+<td>已替代 SWE-bench Verified 成为主流编码指标 <a href="https://arxiv.org/html/2607.07946" rel="noopener" target="_blank">arXiv</a></td>
+</tr>
+<tr>
+<td><strong>Terminal-Bench 4.0</strong></td>
+<td>终端内的多步专业任务</td>
+<td>各厂商发布时</td>
+<td>2.1 版已接近饱和（多家 85–88%）</td>
+</tr>
+<tr>
+<td><strong>OSWorld 2.0 / 2.1</strong></td>
+<td>长程 computer use</td>
+<td>各厂商发布时</td>
+<td>2.0 / 2.1、offline 子集、partial / strict 计分口径不一，<strong>跨厂商不可比</strong></td>
+</tr>
+<tr>
+<td><strong>HLE</strong></td>
+<td>跨学科专家级问答</td>
+<td>各厂商发布时</td>
+<td>分"带工具 / 不带工具"</td>
+</tr>
+<tr>
+<td><strong>GDPval-AA v2.1、AA-Briefcase v1.1</strong></td>
+<td>44 种职业的真实知识工作、多周期项目交付（Elo）</td>
+<td>AA 测</td>
+<td>最接近"办公 Agent"的指标</td>
+</tr>
+<tr>
+<td><strong>AutomationBench</strong></td>
+<td>Zapier 出品，跨 47 个工具的业务流程</td>
+<td>各厂商发布时</td>
+<td>有 safeguard 回退时各家处理方式不同</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>读数原则 <span class="badge badge-infer" title="推断">推断</span></strong>：同一张表里的分数只在同一来源、同一口径下比较；跨厂商博客的数字只看量级。厂商自报的成绩一律标 <span class="badge badge-self" title="厂商自报">厂商自报</span>。</p>
+<hr/>
+<h2 id="sec-2"><span class="secno">2</span>演进路线图（2023 → 2026-10）</h2>
+<blockquote>
+<p>2023–2025 年的条目来自已知公开发布记录，<strong>本轮没有逐条重新检索</strong>，个别日期可能有 ±数天误差<span class="badge badge-verify" title="待核实/未核实">待核实</span>。2026 年条目均经本轮检索核对，来源见第 3 节各厂商小节。</p>
+</blockquote>
+<h3 id="sec-2-1"><span class="secno">2.1</span>六个阶段</h3>
+<ol class="stage-tl"><li class="stage"><div class="stage-top"><span class="stage-time">2023</span><span class="stage-name">① 对话大模型爆发</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">GPT-4（03）、Claude 2（07）、Llama 2 开放商用（07）、Mistral 7B（09）、Gemini 1.0（12）；国内"百模大战"：文心一言（03）、通义、ChatGLM、混元（09）、Kimi（10）</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">通用对话、8K–32K 上下文</div></div></li><li class="stage"><div class="stage-top"><span class="stage-time">2024 上半年</span><span class="stage-name">② 多模态与长上下文</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">Gemini 1.5（1M 上下文）、Claude 3（03）、Llama 3（04）、GPT-4o（05，原生语音）、DeepSeek V2（05）引发国内价格战</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">百万上下文、实时语音、价格首轮大降</div></div></li><li class="stage"><div class="stage-top"><span class="stage-time">2024-09 → 2025 上半年</span><span class="stage-name">③ 推理模型</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">o1（2024-09）、DeepSeek R1（2025-01，开源推理）、Claude 3.7（混合推理）、Gemini 2.5 Pro、Qwen3（混合思考）、o3</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">测试时计算（thinking）成为标配</div></div></li><li class="stage"><div class="stage-top"><span class="stage-time">2025 下半年</span><span class="stage-name">④ Agent 与编码</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">Claude 4 / Claude Code、Grok 4、GPT-5（08）、Kimi K2、GLM-4.5/4.6、Sonnet 4.5、Gemini 3 Pro、Opus 4.5</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">工具调用、长程编码、computer use</div></div></li><li class="stage"><div class="stage-top"><span class="stage-time">2026 上半年</span><span class="stage-name">⑤ 长程 Agent 与"效率前沿"</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">GPT-5.4/5.5、Claude Opus 4.6–4.8、Gemini 3.1 Pro / 3.5 Flash、DeepSeek V4（1M 上下文）、Qwen3.5–3.7、GLM-5、Kimi K2.5/K2.6、Muse Spark（Meta 转闭源）</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">小时级自主任务、effort 档位、1M 上下文普及</div></div></li><li class="stage"><div class="stage-top"><span class="stage-time">2026-06 → 10</span><span class="stage-name">⑥ 新一代旗舰 + 安全分级发布</span></div><div class="stage-row"><span class="stage-lab">标志事件</span><div class="stage-val">Claude Fable 5 / Mythos 5（06）、Opus 5（07）、GPT-5.6 Sol/Terra/Luna（07）、Kimi K3（07，2.8T 开放）、Qwen3.8-Max（08，2.4T 开放）、GPT-6 Astra（09）、Claude 5.5 家族（09–10）、Gemini 4 Argon（09-30）</div></div><div class="stage-row"><span class="stage-lab">能力跃迁</span><div class="stage-val">天级自主运行、网络安全能力触及"关键"阈值、按风险分级放量</div></div></li></ol>
+<h3 id="sec-2-2"><span class="secno">2.2</span>总览时间线</h3>
+<figure class="diagram" data-src="timeline
+    title 主流大模型关键发布（2023 → 2026-10）
+    2023 : GPT-4 (03) : Claude 2 (07) : Llama 2 开放商用 (07) : Mistral 7B (09) : Gemini 1.0 (12) : 文心一言 / ChatGLM / 混元 / Kimi
+    2024 上半年 : Gemini 1.5 1M 上下文 (02) : Claude 3 (03) : Llama 3 (04) : GPT-4o (05) : DeepSeek V2 引发价格战 (05)
+    2024 下半年 : Claude 3.5 Sonnet (06) : Llama 3.1 405B (07) : o1 推理模型 (09) : Qwen2.5 (09) : DeepSeek V3 (12)
+    2025 上半年 : DeepSeek R1 (01) : Claude 3.7 混合推理 (02) : Gemini 2.5 Pro (03) : Llama 4 (04) : Qwen3 (04) : Claude 4 (05)
+    2025 下半年 : Grok 4 (07) : Kimi K2 (07) : GPT-5 (08) : Sonnet 4.5 (09) : Gemini 3 Pro (11) : Opus 4.5 (11)
+    2026 上半年 : GLM-5 / Grok 4.20 / Gemini 3.1 Pro (02) : GPT-5.4 (03) : Muse Spark (04) : DeepSeek V4 预览 (04) : GPT-5.5 (04)
+    2026 夏 : Claude Fable 5 (06) : GPT-5.6 Sol (07) : Kimi K3 2.8T 开放 (07) : Opus 5 (07) : Qwen3.8-Max 2.4T (08)
+    2026 秋 : GPT-6 Astra (09-03) : DeepSeek V4.1-Flash (09-10) : Opus 5.5 (09-22) : Gemini 4 Argon (09-30) : Haiku 5.5 (10-07)" id="diagram-1"><pre class="mermaid">timeline
+    title 主流大模型关键发布（2023 → 2026-10）
+    2023 : GPT-4 (03) : Claude 2 (07) : Llama 2 开放商用 (07) : Mistral 7B (09) : Gemini 1.0 (12) : 文心一言 / ChatGLM / 混元 / Kimi
+    2024 上半年 : Gemini 1.5 1M 上下文 (02) : Claude 3 (03) : Llama 3 (04) : GPT-4o (05) : DeepSeek V2 引发价格战 (05)
+    2024 下半年 : Claude 3.5 Sonnet (06) : Llama 3.1 405B (07) : o1 推理模型 (09) : Qwen2.5 (09) : DeepSeek V3 (12)
+    2025 上半年 : DeepSeek R1 (01) : Claude 3.7 混合推理 (02) : Gemini 2.5 Pro (03) : Llama 4 (04) : Qwen3 (04) : Claude 4 (05)
+    2025 下半年 : Grok 4 (07) : Kimi K2 (07) : GPT-5 (08) : Sonnet 4.5 (09) : Gemini 3 Pro (11) : Opus 4.5 (11)
+    2026 上半年 : GLM-5 / Grok 4.20 / Gemini 3.1 Pro (02) : GPT-5.4 (03) : Muse Spark (04) : DeepSeek V4 预览 (04) : GPT-5.5 (04)
+    2026 夏 : Claude Fable 5 (06) : GPT-5.6 Sol (07) : Kimi K3 2.8T 开放 (07) : Opus 5 (07) : Qwen3.8-Max 2.4T (08)
+    2026 秋 : GPT-6 Astra (09-03) : DeepSeek V4.1-Flash (09-10) : Opus 5.5 (09-22) : Gemini 4 Argon (09-30) : Haiku 5.5 (10-07)</pre><figcaption>图 1</figcaption></figure>
+<h3 id="sec-2-3"><span class="secno">2.3</span>海外厂商 2026 年发布节奏</h3>
+<figure class="diagram" data-src="gantt
+    title 海外主要厂商 2026 年发布（里程碑）
+    dateFormat YYYY-MM-DD
+    axisFormat %m
+    section OpenAI
+    GPT-5.4            :milestone, 2026-03-05, 0d
+    GPT-5.5            :milestone, 2026-04-23, 0d
+    GPT-5.6 Sol/Terra/Luna GA :milestone, 2026-07-09, 0d
+    GPT-6 Astra        :milestone, 2026-09-03, 0d
+    GPT-6 Sol/Luna     :milestone, 2026-09-22, 0d
+    GPT-6.1 Sol        :milestone, 2026-09-29, 0d
+    section Anthropic
+    Opus 4.6           :milestone, 2026-02-05, 0d
+    Opus 4.7           :milestone, 2026-04-16, 0d
+    Opus 4.8           :milestone, 2026-05-28, 0d
+    Fable 5 / Mythos 5 :milestone, 2026-06-09, 0d
+    Sonnet 5           :milestone, 2026-06-30, 0d
+    Opus 5             :milestone, 2026-07-24, 0d
+    Fable 5.1          :milestone, 2026-09-01, 0d
+    Opus 5.5           :milestone, 2026-09-22, 0d
+    Sonnet 5.5         :milestone, 2026-09-28, 0d
+    Haiku 5.5          :milestone, 2026-10-07, 0d
+    section Google
+    Gemini 3.1 Pro 预览 :milestone, 2026-02-19, 0d
+    Gemini 3.5 Flash GA :milestone, 2026-05-19, 0d
+    Gemma 4 12B        :milestone, 2026-06-03, 0d
+    Gemini 3.6 Flash GA :milestone, 2026-07-21, 0d
+    Gemini 3.7 Flash GA :milestone, 2026-08-13, 0d
+    Gemini 3.8 Flash   :milestone, 2026-09-02, 0d
+    Gemini 4 Argon 公布 :milestone, 2026-09-30, 0d
+    section Meta
+    Muse Spark         :milestone, 2026-04-08, 0d
+    Muse Glimmer 30B 开放 :milestone, 2026-08-10, 0d
+    Muse Spark 1.3     :milestone, 2026-09-02, 0d
+    section SpaceXAI
+    Grok 4.20          :milestone, 2026-02-17, 0d
+    Grok 4.5           :milestone, 2026-07-16, 0d
+    Grok 4.6           :milestone, 2026-08-12, 0d
+    Grok 4.7           :milestone, 2026-09-21, 0d
+    section 其他
+    Command A+ 开放    :milestone, 2026-05-20, 0d
+    Nemotron 3 Ultra 开放 :milestone, 2026-06-04, 0d
+    Mistral Large 4 预览 :milestone, 2026-10-06, 0d" id="diagram-2"><pre class="mermaid">gantt
+    title 海外主要厂商 2026 年发布（里程碑）
+    dateFormat YYYY-MM-DD
+    axisFormat %m
+    section OpenAI
+    GPT-5.4            :milestone, 2026-03-05, 0d
+    GPT-5.5            :milestone, 2026-04-23, 0d
+    GPT-5.6 Sol/Terra/Luna GA :milestone, 2026-07-09, 0d
+    GPT-6 Astra        :milestone, 2026-09-03, 0d
+    GPT-6 Sol/Luna     :milestone, 2026-09-22, 0d
+    GPT-6.1 Sol        :milestone, 2026-09-29, 0d
+    section Anthropic
+    Opus 4.6           :milestone, 2026-02-05, 0d
+    Opus 4.7           :milestone, 2026-04-16, 0d
+    Opus 4.8           :milestone, 2026-05-28, 0d
+    Fable 5 / Mythos 5 :milestone, 2026-06-09, 0d
+    Sonnet 5           :milestone, 2026-06-30, 0d
+    Opus 5             :milestone, 2026-07-24, 0d
+    Fable 5.1          :milestone, 2026-09-01, 0d
+    Opus 5.5           :milestone, 2026-09-22, 0d
+    Sonnet 5.5         :milestone, 2026-09-28, 0d
+    Haiku 5.5          :milestone, 2026-10-07, 0d
+    section Google
+    Gemini 3.1 Pro 预览 :milestone, 2026-02-19, 0d
+    Gemini 3.5 Flash GA :milestone, 2026-05-19, 0d
+    Gemma 4 12B        :milestone, 2026-06-03, 0d
+    Gemini 3.6 Flash GA :milestone, 2026-07-21, 0d
+    Gemini 3.7 Flash GA :milestone, 2026-08-13, 0d
+    Gemini 3.8 Flash   :milestone, 2026-09-02, 0d
+    Gemini 4 Argon 公布 :milestone, 2026-09-30, 0d
+    section Meta
+    Muse Spark         :milestone, 2026-04-08, 0d
+    Muse Glimmer 30B 开放 :milestone, 2026-08-10, 0d
+    Muse Spark 1.3     :milestone, 2026-09-02, 0d
+    section SpaceXAI
+    Grok 4.20          :milestone, 2026-02-17, 0d
+    Grok 4.5           :milestone, 2026-07-16, 0d
+    Grok 4.6           :milestone, 2026-08-12, 0d
+    Grok 4.7           :milestone, 2026-09-21, 0d
+    section 其他
+    Command A+ 开放    :milestone, 2026-05-20, 0d
+    Nemotron 3 Ultra 开放 :milestone, 2026-06-04, 0d
+    Mistral Large 4 预览 :milestone, 2026-10-06, 0d</pre><figcaption>图 2</figcaption></figure>
+<h3 id="sec-2-4"><span class="secno">2.4</span>国内厂商 2026 年发布节奏</h3>
+<figure class="diagram" data-src="gantt
+    title 国内主要厂商 2026 年发布（里程碑）
+    dateFormat YYYY-MM-DD
+    axisFormat %m
+    section DeepSeek
+    V4 预览 Pro/Flash   :milestone, 2026-04-24, 0d
+    V4-Flash API 正式   :milestone, 2026-07-31, 0d
+    V4-Pro 0813 GA      :milestone, 2026-08-13, 0d
+    V4.1-Flash          :milestone, 2026-09-10, 0d
+    section 阿里 Qwen
+    Qwen3.5             :milestone, 2026-02-16, 0d
+    Qwen3.6 开放        :milestone, 2026-04-16, 0d
+    Qwen3.7-Max         :milestone, 2026-05-20, 0d
+    Qwen3.8-Max         :milestone, 2026-08-03, 0d
+    Qwen3.8 权重开放    :milestone, 2026-08-12, 0d
+    Qwen3.8-Max-0902    :milestone, 2026-09-02, 0d
+    section 字节 豆包
+    豆包 2.1 Pro        :milestone, 2026-06-23, 0d
+    Doubao-Seed-2.1-pro 0915 :milestone, 2026-09-15, 0d
+    section 月之暗面
+    Kimi K2.5           :milestone, 2026-01-27, 0d
+    Kimi K2.6           :milestone, 2026-04-20, 0d
+    Kimi K3             :milestone, 2026-07-16, 0d
+    K3 权重开放         :milestone, 2026-07-27, 0d
+    section 智谱
+    GLM-5               :milestone, 2026-02-12, 0d
+    GLM-5.1             :milestone, 2026-04-07, 0d
+    GLM-5.2             :milestone, 2026-06-16, 0d
+    GLM-5.3             :milestone, 2026-08-14, 0d
+    section MiniMax
+    M2.5                :milestone, 2026-02-12, 0d
+    M2.7                :milestone, 2026-03-18, 0d
+    M3                  :milestone, 2026-06-01, 0d
+    M3.1-Flash-Preview  :milestone, 2026-09-27, 0d
+    section 腾讯 混元
+    Hy3 开放            :milestone, 2026-07-06, 0d
+    Hy4 preview 开放    :milestone, 2026-08-28, 0d
+    section 其他
+    ERNIE 5.1           :milestone, 2026-05-09, 0d
+    Step 5 Preview      :milestone, 2026-09-20, 0d
+    MiMo-V2.6           :milestone, 2026-09-21, 0d" id="diagram-3"><pre class="mermaid">gantt
+    title 国内主要厂商 2026 年发布（里程碑）
+    dateFormat YYYY-MM-DD
+    axisFormat %m
+    section DeepSeek
+    V4 预览 Pro/Flash   :milestone, 2026-04-24, 0d
+    V4-Flash API 正式   :milestone, 2026-07-31, 0d
+    V4-Pro 0813 GA      :milestone, 2026-08-13, 0d
+    V4.1-Flash          :milestone, 2026-09-10, 0d
+    section 阿里 Qwen
+    Qwen3.5             :milestone, 2026-02-16, 0d
+    Qwen3.6 开放        :milestone, 2026-04-16, 0d
+    Qwen3.7-Max         :milestone, 2026-05-20, 0d
+    Qwen3.8-Max         :milestone, 2026-08-03, 0d
+    Qwen3.8 权重开放    :milestone, 2026-08-12, 0d
+    Qwen3.8-Max-0902    :milestone, 2026-09-02, 0d
+    section 字节 豆包
+    豆包 2.1 Pro        :milestone, 2026-06-23, 0d
+    Doubao-Seed-2.1-pro 0915 :milestone, 2026-09-15, 0d
+    section 月之暗面
+    Kimi K2.5           :milestone, 2026-01-27, 0d
+    Kimi K2.6           :milestone, 2026-04-20, 0d
+    Kimi K3             :milestone, 2026-07-16, 0d
+    K3 权重开放         :milestone, 2026-07-27, 0d
+    section 智谱
+    GLM-5               :milestone, 2026-02-12, 0d
+    GLM-5.1             :milestone, 2026-04-07, 0d
+    GLM-5.2             :milestone, 2026-06-16, 0d
+    GLM-5.3             :milestone, 2026-08-14, 0d
+    section MiniMax
+    M2.5                :milestone, 2026-02-12, 0d
+    M2.7                :milestone, 2026-03-18, 0d
+    M3                  :milestone, 2026-06-01, 0d
+    M3.1-Flash-Preview  :milestone, 2026-09-27, 0d
+    section 腾讯 混元
+    Hy3 开放            :milestone, 2026-07-06, 0d
+    Hy4 preview 开放    :milestone, 2026-08-28, 0d
+    section 其他
+    ERNIE 5.1           :milestone, 2026-05-09, 0d
+    Step 5 Preview      :milestone, 2026-09-20, 0d
+    MiMo-V2.6           :milestone, 2026-09-21, 0d</pre><figcaption>图 3</figcaption></figure>
+<h3 id="sec-2-5"><span class="secno">2.5</span>各家家族谱系（2023 → 2026）</h3>
+<div class="tl-grid"><article class="tl-card"><div class="tl-vendor"><strong>OpenAI</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">GPT-4、GPT-4 Turbo</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">GPT-4o、o1</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">o3、GPT-4.5、gpt-oss（开放权重）、GPT-5、GPT-5.1/5.2</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">GPT-5.4 → 5.5 → 5.6（Sol / Terra / Luna 三档）→ <strong>GPT-6 Astra / Sol / Luna → 6.1 Sol</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>Anthropic</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Claude 1、2</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Claude 3（Haiku/Sonnet/Opus）、3.5 Sonnet</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">3.7 Sonnet、Claude 4、Opus 4.1、Sonnet 4.5、Haiku 4.5、Opus 4.5</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">Opus 4.6/4.7/4.8 → 新增 <strong>Fable / Mythos</strong> 档 → Sonnet 5、Opus 5 → Fable 5.1 → <strong>Claude 5.5（Opus/Sonnet/Haiku）</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>Google</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Bard、Gemini 1.0</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Gemini 1.5、2.0 Flash；Gemma 1/2</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Gemini 2.5、Gemini 3 Pro / Flash；Gemma 3</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">3.1 Pro → Flash 系列高频迭代（3.5→3.8，6 周 3 版）→ <strong>Gemini 4 Argon</strong>；Gemma 4</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>Meta</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">LLaMA、Llama 2</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Llama 3 / 3.1 / 3.2</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Llama 4（口碑受挫）、成立 MSL</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body"><strong>Muse Spark</strong>（闭源 API）1.1→1.2→1.3；Muse Glimmer 30B 开放</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>xAI → SpaceXAI</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Grok-1</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Grok-1 开放权重、Grok-2</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Grok 3、Grok 4、4.1</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">并入 SpaceX → Grok 4.20 → 4.5 → 4.6 → <strong>4.7</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>Mistral</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Mistral 7B、Mixtral</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Large 2</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Mistral 3 / Large 3<span class="badge badge-verify" title="待核实/未核实">待核实</span></div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body"><strong>Large 4 Preview（1T MoE，权重月底开放）</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>DeepSeek</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">DeepSeek LLM</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">V2（价格战）、V3</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">R1、V3.1、V3.2</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">V4（Pro 1.6T / Flash 284B，1M 上下文）→ <strong>V4.1-Flash</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>阿里 Qwen</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Qwen-7B/14B</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Qwen2、2.5、QwQ</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Qwen3（混合思考）、Qwen3-Max</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">3.5 → 3.6 → 3.7-Max → <strong>3.8-Max（首次开放 Max 级权重）</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>字节</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">云雀</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">豆包大模型（价格战）</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Doubao 1.5、Seed 1.6、Seed-OSS-36B（开放）</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">豆包 2.x → <strong>Doubao-Seed-2.1-pro</strong>（+ evolving 持续版）</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>月之暗面</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">Kimi 长文本</div></li><li class="tl-node tl-empty"><span class="tl-year">2024</span><div class="tl-body">—</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">k1.5、K2（1T 开放）、K2 Thinking</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">K2.5 → K2.6 → <strong>K3（2.8T 开放）</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>智谱</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">ChatGLM</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">GLM-4</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">GLM-4.5 / 4.6</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">GLM-5 → 5.1 → 5.2 → <strong>5.3 / 5.3-Flash</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>MiniMax</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">abab</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">abab 6.5</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">MiniMax-01、M1、M2</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">M2.5 → M2.7 → <strong>M3</strong> → M3.1-Flash-Preview</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>腾讯</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">混元</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Hunyuan-Large（开放）</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">T1、TurboS</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">HY 2.0 Think → Hy3（开放）→ <strong>Hy4 preview（开放）</strong></div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>百度</strong></div><ol class="tl-track"><li class="tl-node"><span class="tl-year">2023</span><div class="tl-body">文心一言、ERNIE 4.0</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">ERNIE 4.0 Turbo</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">ERNIE 4.5 / X1、4.5 开源、ERNIE 5.0</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body"><strong>ERNIE 5.1</strong>（05-09）</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>阶跃星辰</strong></div><ol class="tl-track"><li class="tl-node tl-empty"><span class="tl-year">2023</span><div class="tl-body">—</div></li><li class="tl-node"><span class="tl-year">2024</span><div class="tl-body">Step-1 / Step-2</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">Step-3</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body"><strong>Step 5 Preview</strong>（09-20，10-15 开放权重）</div></li></ol></article><article class="tl-card"><div class="tl-vendor"><strong>小米</strong></div><ol class="tl-track"><li class="tl-node tl-empty"><span class="tl-year">2023</span><div class="tl-body">—</div></li><li class="tl-node tl-empty"><span class="tl-year">2024</span><div class="tl-body">—</div></li><li class="tl-node"><span class="tl-year">2025</span><div class="tl-body">MiMo-7B、MiMo-V2</div></li><li class="tl-node tl-now"><span class="tl-year">2026（截至 10-10）</span><div class="tl-body">V2.5 → <strong>MiMo-V2.6-Pro / Flash（MIT）</strong></div></li></ol></article></div>
+<p class="lead-h"><strong>谱系上看出的几条规律 <span class="badge badge-infer" title="推断">推断</span></strong></p>
+<ul>
+<li>迭代周期从 2023 年的半年到一年，缩短到 2026 年的 <strong>3–8 周一个小版本</strong>（Gemini Flash 6 周 3 版，Anthropic 9–10 月连发 4 个模型）。</li>
+<li>命名普遍从"大小号"（Pro/Flash/mini）转向"<strong>能力档 + 安全档</strong>"：Anthropic 的 Fable 与 Mythos 是同一模型、不同防护等级；Google 和 OpenAI 也给网络安全场景单开受信通道（Fairwind、Daybreak）。</li>
+<li>Meta 从开放权重的旗手转向闭源 API（Muse Spark），开放生态的主导权转到中国厂商手里。</li>
+</ul>
+<hr/>
+<h2 id="sec-3"><span class="secno">3</span>各厂商当前主力模型</h2>
+<p>字段说明：发布日期 · 权重与许可 · 上下文 / 最大输出 · 模态 · 推理模式 · API 价格（输入 / 输出 / 缓存读）· 速度 · 关键评测 · 优劣势。</p>
+<section class="p-card"><h3 id="sec-3-1"><span class="secno">3.1</span><span class="vendor">OpenAI</span><span class="prod">GPT-6 家族（Astra / 6.1 Sol / Luna）</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>GPT-6 Astra（旗舰）</th>
+<th><strong>GPT-6.1 Sol（主力，最热）</strong></th>
+<th>GPT-6 Luna（快 / 便宜）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API ID</td>
+<td><code>gpt-6-astra</code></td>
+<td><code>gpt-6.1-sol</code></td>
+<td><code>gpt-6-luna</code></td>
+</tr>
+<tr>
+<td>发布</td>
+<td>2026-09-03（先对受限组织开放）</td>
+<td>2026-09-29</td>
+<td>2026-09-22</td>
+</tr>
+<tr>
+<td>权重</td>
+<td>闭源</td>
+<td>闭源</td>
+<td>闭源</td>
+</tr>
+<tr>
+<td>上下文 / 最大输入 / 最大输出</td>
+<td>1,050,000 / 922K / 128K</td>
+<td>1,050,000 / 922K / 128K</td>
+<td>1.05M / 922K / 128K <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>模态</td>
+<td>文本 + 图像 → 文本</td>
+<td>文本 + 图像 → 文本</td>
+<td>同左 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>推理档位</td>
+<td>low → max（不支持 none）</td>
+<td>low / medium（默认）/ high / xhigh / max</td>
+<td>支持 none</td>
+</tr>
+<tr>
+<td>价格 $/M（入 / 出 / 缓存读）</td>
+<td>10 / 50 / 1.00；缓存写 12.5；&gt;272K 输入整单 2× 输入、1.5× 输出</td>
+<td><strong>2 / 10 / 0.10</strong></td>
+<td>0.10 / 0.50 / 0.01</td>
+</tr>
+<tr>
+<td>Batch / Flex</td>
+<td>5 折；Fast 模式 2×；另有 Ultrafast</td>
+<td>Ultrafast 即将上线（Codex 内最高 8× 生成速度）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AA 智能指数 v4.3.2</td>
+<td>52.7（max）</td>
+<td>51.8（max）</td>
+<td>38.1（max）</td>
+</tr>
+<tr>
+<td>AA 输出速度</td>
+<td>47 tok/s</td>
+<td>56 tok/s</td>
+<td>139 tok/s</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>Terminal-Bench 4.0 57.9%；DeepSWE v1.1 74.1%；OSWorld 2.0 offline 72.6%；GPQA 96.0%；HLE（带工具）57.2%；ARC-AGI-3 99.9%；AutomationBench 41.4%；MRCR 512K–1M 96.3%</td>
+<td>DeepSWE 与 Astra 持平、成本约 1/5；OSWorld 2.0 距 Astra 2.1 个百分点、成本约 1/7；AutomationBench 比 Opus 5.5（medium）高 2.2 个百分点</td>
+<td>DeepSWE v1.1 66.6%（GPT-6 Luna max，见 Sol/Luna 发布博客）</td>
+</tr>
+<tr>
+<td>突出优势</td>
+<td>computer use、科研、网络安全（达到 Preparedness "Critical"阈值）、长上下文检索</td>
+<td><strong>中档里性价比最高之一</strong>；缓存读 $0.10；Agent 场景（computer use、业务流程）</td>
+<td>极低价，适合大批量抽取、分类、摘要</td>
+</tr>
+<tr>
+<td>短板</td>
+<td>最贵；网络安全类任务有强 safeguard，API 中会直接停；在 LMArena 上排名不高（1475）</td>
+<td>不在 ChatGPT Chat 里（只在 Work / Codex）；不支持 <code>none</code></td>
+<td>AA 测得编码 Agent 指数比 5.6 Luna 退步 2 分</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://openai.com/index/gpt-6-astra/" rel="noopener" target="_blank">GPT-6 Astra 发布</a>、<a href="https://developers.openai.com/api/docs/models/gpt-6-astra" rel="noopener" target="_blank">Astra 模型页</a>、<a href="https://openai.com/index/introducing-gpt-6-1-sol/" rel="noopener" target="_blank">GPT-6.1 Sol 发布</a>、<a href="https://developers.openai.com/api/docs/models/gpt-6.1-sol" rel="noopener" target="_blank">6.1 Sol 模型页</a>、<a href="https://openai.com/index/introducing-gpt-6-sol-and-luna/" rel="noopener" target="_blank">Sol/Luna 发布</a>、<a href="https://developers.openai.com/api/docs/guides/latest-model" rel="noopener" target="_blank">Using GPT-6</a>、<a href="https://artificialanalysis.ai/articles/gpt-6-sol-and-luna-push-the-cost-efficiency-frontier" rel="noopener" target="_blank">AA 评测 Sol/Luna</a></p>
+<p>补充：</p>
+<ul>
+<li>ChatGPT 里的 GPT-6（10-07 起推送，带 "Intelligent UI"）付费档由 GPT-6 Sol 驱动，免费档由 Luna 驱动；Work 和 Codex 用的模型不变。ChatGPT 周活超过 12 亿。<a href="https://openai.com/index/gpt-6-for-everyone/" rel="noopener" target="_blank">OpenAI</a></li>
+<li>GPT-6 API 新能力：异步工具调用、任务中途插话（mid-turn steering）、对话中调整推理强度且不破坏缓存、对 Astra 的异步"失准监控"。</li>
+<li>上一代 GPT-5.6 Sol / Terra / Luna（07-09 GA）仍在服务，Sol 原价 $4/$20。</li>
+</ul>
+</section><section class="p-card"><h3 id="sec-3-2"><span class="secno">3.2</span><span class="vendor">Anthropic</span><span class="prod">Claude 5.5 家族 + Fable / Mythos 5.1</span></h3>
+<div class="table-scroll wide fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>Claude Fable 5.1（最强通用）</th>
+<th><strong>Claude Opus 5.5（最热）</strong></th>
+<th><strong>Claude Sonnet 5.5</strong></th>
+<th>Claude Haiku 5.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API ID</td>
+<td><code>claude-fable-5-1</code></td>
+<td><code>claude-opus-5-5</code></td>
+<td><code>claude-sonnet-5-5</code></td>
+<td><code>claude-haiku-5-5</code></td>
+</tr>
+<tr>
+<td>发布</td>
+<td>2026-09-01</td>
+<td>2026-09-22</td>
+<td>2026-09-28</td>
+<td>2026-10-07</td>
+</tr>
+<tr>
+<td>权重</td>
+<td>闭源</td>
+<td>闭源</td>
+<td>闭源</td>
+<td>闭源</td>
+</tr>
+<tr>
+<td>上下文 / 最大输出</td>
+<td>1M / 128K</td>
+<td>1M / 128K（Batch 可到 300K）</td>
+<td>1M / 128K</td>
+<td>1M / 128K</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>文本 + 图像 → 文本</td>
+<td>同左</td>
+<td>同左</td>
+<td>同左</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>自适应思考，常开，默认 high</td>
+<td>自适应思考，<strong>常开不可关</strong>，默认 medium</td>
+<td>自适应，默认 high；新增 <code>between_tools</code></td>
+<td>自适应，默认 medium；首个可调 effort 的 Haiku</td>
+</tr>
+<tr>
+<td>价格 $/M（入 / 出 / 缓存读）</td>
+<td>10 / 50 / 0.25</td>
+<td><strong>4 / 20 / 0.20</strong>（5 分钟缓存写 $5；Fast 模式 $8/$40）</td>
+<td><strong>2 / 10 / 0.10</strong>（10-07 起缓存读减半）</td>
+<td>≤100K 提示：0.10 / 0.50 / 0.01；&gt;100K：0.50 / 2.50 / 0.05</td>
+</tr>
+<tr>
+<td>AA 智能指数 v4.3.2</td>
+<td>53.4</td>
+<td><strong>57.6（第 1）</strong></td>
+<td>56.0（第 2）</td>
+<td>43.4</td>
+</tr>
+<tr>
+<td>AA 输出速度</td>
+<td>70 tok/s</td>
+<td>96 tok/s</td>
+<td>141 tok/s</td>
+<td>240 tok/s</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>Terminal-Bench 4.0 55.8%（Mythos 60.9%）；HLE 60.9% / 65.0%（不带 / 带工具）；OSWorld 2.0 77.9%（partial）；CursorBench 3.2 73.4%</td>
+<td>Terminal-Bench 4.0 66.4%；FrontierCode 54.4%；CursorBench 4.0 57.8%；GDPval-AA 1846；HLE（带工具）67.7%；OSWorld 2.1 81.8%（partial）；AutomationBench 40.0%</td>
+<td>Terminal-Bench 4.0 70.6%；CursorBench 4.0 55.5%；GDPval-AA 1844；OSWorld 2.1 80.1%；HLE（带工具）64.5%</td>
+<td>Terminal-Bench 4.0 39.2%；OSWorld 2.1 offline 72.4%；GDPval-AA 1620；HLE 45.9% / 57.4%</td>
+</tr>
+<tr>
+<td>突出优势</td>
+<td>研究、长程无人值守任务</td>
+<td><strong>综合第一</strong>；长程编码与迁移、提示注入防御（Gray Swan 并列最低成功率）、写作清晰</td>
+<td>编码 Agent 指数第一（Claude Code + Sonnet 5.5）；性价比</td>
+<td>极便宜、极快；适合压缩、摘要、子 Agent、浏览器操作</td>
+</tr>
+<tr>
+<td>短板</td>
+<td>最贵；生物与网络安全请求会回退到 Opus 4.8 / Opus 5</td>
+<td>思考不可关；网络安全任务大多回退到 Opus 4.8；"防蒸馏"限制改写历史 thinking</td>
+<td>网络安全高风险任务回退到 Sonnet 5</td>
+<td>复杂编码明显弱于 Sonnet / Opus</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.anthropic.com/claude-opus-5-5" rel="noopener" target="_blank">Opus 5.5 发布</a>、<a href="https://platform.claude.com/docs/en/models/opus-5-5/overview" rel="noopener" target="_blank">Opus 5.5 文档</a>、<a href="https://www.anthropic.com/claude-sonnet-5-5" rel="noopener" target="_blank">Sonnet 5.5</a>、<a href="https://www.anthropic.com/claude-haiku-5-5" rel="noopener" target="_blank">Haiku 5.5</a>、<a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" rel="noopener" target="_blank">Fable / Mythos 5.1</a></p>
+<p>补充：</p>
+<ul>
+<li><strong>Mythos 5.1 与 Fable 5.1 是同一个模型</strong>，只是防护等级不同；Mythos 只通过网络安全（CVP）和生命科学（LSVP）验证项目对少数机构开放，目前只限美国组织。</li>
+<li>新推出 <strong>Enterprise Frontier Safeguards（EFS）</strong>：数据存在客户自己的云上，效果等同零数据保留（ZDR），今年秋季分阶段上线。</li>
+<li>为符合欧盟 AI 法案，2026-08-02 之后发布的模型输出带不可见水印。</li>
+<li>所有型号都上了 AWS Bedrock、Google Cloud、Microsoft Foundry。</li>
+</ul>
+</section><section class="p-card"><h3 id="sec-3-3"><span class="secno">3.3</span><span class="vendor">Google</span><span class="prod">Gemini 4 Argon（预发布）+ Gemini 3.8 Flash（GA 主力）+ Gemma 4</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>Gemini 4 Argon（新旗舰，受限）</th>
+<th><strong>Gemini 3.8 Flash（GA 主力，最热）</strong></th>
+<th>Gemma 4（开放权重）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>尚无公开 model ID（截至 10-08）<span class="badge badge-second" title="二手/非官方">二手</span></td>
+<td><code>gemini-3.8-flash</code></td>
+<td>E2B / E4B / 12B / 26B-A4B MoE / 31B</td>
+</tr>
+<tr>
+<td>发布</td>
+<td>2026-09-30 公布，只对 Fairwind 项目和受信测试者开放；下一步开放给付费 API 客户和 AI Ultra 订阅者，<strong>没有日期</strong></td>
+<td>2026-09-02</td>
+<td>12B Unified 版 2026-06-03；家族首发日期<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+<tr>
+<td>权重</td>
+<td>闭源</td>
+<td>闭源</td>
+<td><strong>Apache 2.0</strong></td>
+</tr>
+<tr>
+<td>上下文 / 最大输出</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span>/ <strong>1M 输出</strong>（此前为 64K）</td>
+<td>1,048,576 / 65,536</td>
+<td>依型号</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>多模态（长视频 LVBench 91.7%）</td>
+<td>输入文本、图像、视频、音频、PDF → 文本</td>
+<td>12B Unified 支持文本、图像、音频、视频输入</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>深度推理</td>
+<td>thinking：low / medium / high（不支持 minimal）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>价格 $/M</td>
+<td><strong>首发价 2 / 10</strong>，缓存读打 5% 折（$0.10）；之后 4 / 20</td>
+<td><strong>首发价 0.75 / 3.75（至 2026-12-31）</strong>；2027 起 1.50 / 7.50；缓存价<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>开放权重自部署</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>52.6（high）</td>
+<td>40.9（high）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>—</td>
+<td>125 tok/s</td>
+<td>—</td>
+</tr>
+<tr>
+<td>LMArena</td>
+<td><strong>1525（第 1）</strong></td>
+<td>1497（第 8）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>DeepSWE v1.1 77.9%（自称 SOTA）；AutomationBench 51.3%（自称第 1）；Vals Index 第 1；CWE-bench v1 68%</td>
+<td>HLE-Verified 54.9%；DeepSWE 73.8%、Terminal-Bench 4.0 19.1%（引自 OpenAI 的 Astra 对比表）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>人类偏好第一、长视频和视觉知识工作、网络安全防御、1M 输出</td>
+<td>价格低、速度快、原生多模态（含音频视频）、Computer Use（预览）、Google 搜索与地图 grounding</td>
+<td>端侧和本地部署</td>
+</tr>
+<tr>
+<td>短板</td>
+<td>还用不上</td>
+<td>终端类 Agent 任务弱（TB 4.0 仅 19%）；高 effort 下 token 消耗多</td>
+<td>不是前沿级</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/" rel="noopener" target="_blank">Gemini 4 Argon</a>、<a href="https://trustloud.com/gemini-4-argon-release-date/" rel="noopener" target="_blank">Argon 上线状态（二手）</a>、<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" rel="noopener" target="_blank">Gemini 3.8 Flash 发布</a>、<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash" rel="noopener" target="_blank">3.8 Flash 模型页</a>、<a href="https://ai.google.dev/gemini-api/docs/changelog" rel="noopener" target="_blank">Gemini API changelog</a>、<a href="https://ai.google.dev/gemma/docs/core" rel="noopener" target="_blank">Gemma 4</a></p>
+<p>补充：</p>
+<ul>
+<li>3.7 Flash 和 3.5 Flash 已于 10-08 弃用，请求自动路由到新版。</li>
+<li><strong>Pro 档的现状<span class="badge badge-verify" title="待核实/未核实">待核实</span></strong>：2026 年公开记录里只看到 Gemini 3.1 Pro（02-19 预览），之后 Google 主推 Flash 系列，Argon 是下一代旗舰。</li>
+<li>还有面向网络安全的 <strong>3.8 Flash Cyber</strong>，只通过 Fairwind 项目开放。</li>
+</ul>
+</section><section class="p-card"><h3 id="sec-3-4"><span class="secno">3.4</span><span class="vendor">Meta</span><span class="prod">Muse Spark 1.3（闭源 API）+ Muse Glimmer（开放）</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Muse Spark 1.3</strong></th>
+<th>Muse Glimmer 30B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-09-02（初代 Muse Spark 2026-04-08）</td>
+<td>2026-08-10</td>
+</tr>
+<tr>
+<td>权重</td>
+<td><strong>闭源</strong>，只通过 Meta Model API 提供。Meta 8 月称"即将开放 Muse Spark 1.2 权重"，截至 10-10 <strong>未兑现</strong><span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td><strong>开放，Apache 2.0</strong>，30B dense，面向本地 Agent</td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1M</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+<tr>
+<td>模态</td>
+<td>原生多模态（视频、图像、文档）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>有 max 档</td>
+<td>—</td>
+</tr>
+<tr>
+<td>价格 $/M</td>
+<td>标准档 1.25 / 4.25 / 缓存 0.15；"贡献者档"（数据用于改进产品）0.10 / 0.20 / 0.002</td>
+<td>自部署</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td><strong>48.1（非三巨头里最高）</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td><strong>280 tok/s（全榜第 1）</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>LMArena</td>
+<td>1494</td>
+<td>—</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>GDPval-AA 1754；OSWorld 2.0 66.9%（partial）；DeepSWE v1.1 75.4%；Terminal-Bench 2.1 88.8%；MRCR 512K–1M 98.1%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>定位</td>
+<td>驱动 Meta AI、Muse 个人 Agent 和 Muse Code</td>
+<td>本地 Agent，对标 Gemma</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://dev.meta.ai/models/muse-spark" rel="noopener" target="_blank">Muse Spark 1.3 模型页</a>、<a href="https://dev.meta.ai/docs/pricing-rate-limits" rel="noopener" target="_blank">Meta Model API 定价</a>、<a href="https://ai.meta.com/blog/introducing-muse-spark-msl/" rel="noopener" target="_blank">Muse Spark 初版</a>、<a href="https://officechai.com/ai/mark-zuckerberg-says-meta-will-release-weights-of-muse-spark-1-2-announces-30b-muse-glimmer-model-for-local-use/" rel="noopener" target="_blank">OfficeChai：权重承诺</a> <span class="badge badge-second" title="二手/非官方">二手</span>、<a href="https://www.orcarouter.ai/blog/meta-muse-spark-1-2-explained" rel="noopener" target="_blank">Muse 1.2 权重状态</a> <span class="badge badge-second" title="二手/非官方">二手</span></p>
+<blockquote>
+<p>回答任务里的问题"Muse 由什么驱动"：Meta 的 Muse 个人 Agent 背后是 <strong>Muse Spark 系列</strong>（Meta 超级智能实验室 MSL 出品），不是 Llama。Llama 4（2025-04）之后没有 Llama 5 <span class="badge badge-second" title="二手/非官方">二手</span>。</p>
+</blockquote>
+</section><section class="p-card"><h3 id="sec-3-5"><span class="secno">3.5</span><span class="vendor">SpaceXAI（原 xAI）</span><span class="prod">Grok 4.7</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Grok 4.7</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-09-21</td>
+</tr>
+<tr>
+<td>背景</td>
+<td>xAI 2026 年 2 月并入 SpaceX，之后以 SpaceXAI 品牌发布 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>权重</td>
+<td>闭源</td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>500K；文本 + 图像输入；支持函数调用、Web / X 搜索、代码执行</td>
+</tr>
+<tr>
+<td>价格 $/M</td>
+<td>2 / 6 / 缓存 0.50（输入 &lt;200K）；≥200K 翻倍为 4 / 12 / 1；另有 2 倍速、2 倍价的快速版</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>46.4（xhigh）</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>74 tok/s</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>CursorBench 4.0 46.3%；DeepSWE v1.1 71.0%；Terminal-Bench 4.0 37.6%；EEBench 64.0%；AA-Briefcase 1657</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>输出价低（$6），电子工程和法律类任务表现好；Cursor 首发</td>
+</tr>
+<tr>
+<td>短板</td>
+<td>Terminal-Bench 4.0 明显落后 Anthropic 和 OpenAI 旗舰</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://x.ai/news/grok-4-7" rel="noopener" target="_blank">Grok 4.7</a>、<a href="https://docs.x.ai/developers/models/grok-4.7" rel="noopener" target="_blank">Grok 4.7 文档</a></p>
+</section><section class="p-card"><h3 id="sec-3-6"><span class="secno">3.6</span><span class="vendor">Mistral</span><span class="prod">Large 4 Preview（"le Chonk"）</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Mistral Large 4 Preview</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-10-06 公开预览；<strong>权重月底开放</strong>（具体日期 10-27 或 10-31，说法不一<span class="badge badge-verify" title="待核实/未核实">待核实</span>）</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>约 1T 总参数 / 52B 激活的原生多模态 MoE；在 Mistral 欧洲自有数据中心训练（3,800 张 GB 系列 GPU）</td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1M <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>许可</td>
+<td>尚未公布<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+<tr>
+<td>价格 $/M</td>
+<td>预览价 0.68 / 2.09 / 缓存 0.07；标价 1.36 / 4.18 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>38.4（Preview）</td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>DeepSWE v1.1 61.7%；Terminal-Bench 4 28.3%；AutomationBench 59.9%；Cybench 93%；Lakera B3 93.3%</td>
+</tr>
+<tr>
+<td>定位</td>
+<td>欧洲主权 AI、网络安全（开放权重，不受闭源模型拒答限制）、可本地部署</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://mistral.ai/news/mistral-large-4/" rel="noopener" target="_blank">Mistral Large 4</a>、<a href="https://www.mercatus-ai.com/blog/mistral-large-4-api-pricing" rel="noopener" target="_blank">价格（二手）</a></p>
+</section><section class="p-card"><h3 id="sec-3-7"><span class="secno">3.7</span>其他海外厂商</h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>厂商</th>
+<th>当前型号</th>
+<th>要点</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Amazon</strong></td>
+<td>Nova 2 Lite / Pro（预览）/ Omni（预览）/ Sonic</td>
+<td>Nova 2 Pro $1.25 / $10，Lite $0.30 / $2.50；Nova Premier 已弃用 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+<td><a href="https://aws.amazon.com/nova/models/" rel="noopener" target="_blank">AWS Nova</a></td>
+</tr>
+<tr>
+<td><strong>Microsoft MAI</strong></td>
+<td>MAI-Code-1.1-Flash（10-07）</td>
+<td>137B / 6.8B 激活 MoE 编码模型，256K 上下文，成本为 6 月版的 1/4；可本地运行，在 GitHub Copilot 中实验性推出</td>
+<td><a href="https://microsoft.ai/news/mai-code-1-1-flash-br-better-faster-at-a-quarter-of-the-cost/" rel="noopener" target="_blank">Microsoft AI</a></td>
+</tr>
+<tr>
+<td><strong>Cohere</strong></td>
+<td>Command A+（05-20）</td>
+<td><strong>Apache 2.0 开放</strong>，218B / 25B 激活 MoE，128K 输入 / 64K 输出，48 种语言，单卡 B200 或双卡 H100 可跑</td>
+<td><a href="https://cohere.com/blog/command-a-plus" rel="noopener" target="_blank">Cohere</a></td>
+</tr>
+<tr>
+<td><strong>NVIDIA</strong></td>
+<td>Nemotron 3 Ultra（06-04）</td>
+<td>550B / 55B 激活，Mamba-2 + MoE + 注意力混合架构，1M 上下文；权重、训练数据、配方全开放（OpenMDW 许可）；OpenRouter 免费版周用量第 7</td>
+<td><a href="https://research.nvidia.com/labs/nemotron/Nemotron-3-Ultra/" rel="noopener" target="_blank">NVIDIA</a></td>
+</tr>
+<tr>
+<td><strong>匿名模型</strong></td>
+<td>"Space Bunny Alpha"</td>
+<td>OpenRouter 周用量第 2（16.9T tokens），来源不明<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td><a href="https://openrouter.ai/rankings" rel="noopener" target="_blank">OpenRouter</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section class="p-card"><h3 id="sec-3-8"><span class="secno">3.8</span><span class="vendor">DeepSeek</span><span class="prod">V4.1-Flash</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>DeepSeek-V4.1-Flash（最热）</strong></th>
+<th>DeepSeek-V4-Pro-0813</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API ID</td>
+<td><code>deepseek-flash</code></td>
+<td><code>deepseek-v4-pro</code></td>
+</tr>
+<tr>
+<td>发布</td>
+<td>2026-09-10</td>
+<td>2026-08-13 GA（V4 预览 2026-04-24）</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>552B MoE，新的"因果编码器-解码器"结构：输入侧激活 8B、输出侧激活 16B；KV cache 显存降到 1/4</td>
+<td>1.6T / 49B 激活 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>权重</td>
+<td><strong>开放，MIT</strong></td>
+<td>开放 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>上下文 / 最大输出</td>
+<td>1M / 384K</td>
+<td>1M / 384K</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>原生图文多模态</td>
+<td>不支持视觉</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>思考（默认）/ 非思考两种模式</td>
+<td>同左</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>闲时 $0.15 / $0.60 / 缓存 $0.003；高峰翻倍。人民币：闲时 ¥1 / ¥4 / 缓存 ¥0.02，高峰 ¥2 / ¥8 / ¥0.04</td>
+<td>闲时 $0.66 / $1.98 / $0.022；高峰翻倍</td>
+</tr>
+<tr>
+<td>高峰时段</td>
+<td>工作日 UTC 01:00–04:00、06:00–10:00，即北京时间 9–12 点、14–18 点</td>
+<td>同左</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>39.5</td>
+<td>36.0</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>217 tok/s</td>
+<td>89 tok/s</td>
+</tr>
+<tr>
+<td>热度</td>
+<td><strong>OpenRouter 周用量第 1（37.6T，+56%）、月用量第 1（96.2T）</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>兼容性</td>
+<td>OpenAI 格式、Anthropic 格式、Responses API</td>
+<td>同左</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.deepseek.com/en/news/deepseek-v4-1-flash/" rel="noopener" target="_blank">V4.1-Flash 发布</a>、<a href="https://api-docs.deepseek.com/quick_start/pricing" rel="noopener" target="_blank">定价</a>、<a href="https://www.deepseek.com/en/news/v4-preview/" rel="noopener" target="_blank">V4 预览</a></p>
+<blockquote>
+<p><strong>矛盾点<span class="badge badge-verify" title="待核实/未核实">待核实</span></strong>：V4.1-Flash 发布稿说"09-14 起所有 <code>deepseek-v4-pro</code> 请求路由到 V4.1-Flash，按 Flash 计价，直到 V4.1-Pro 发布"；但当前定价页仍单列 V4-Pro-0813 和它自己的价格。接入前要实测确认。</p>
+</blockquote>
+</section><section class="p-card"><h3 id="sec-3-9"><span class="secno">3.9</span><span class="vendor">阿里</span><span class="prod">Qwen3.8 家族</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Qwen3.8-Max（含 0902 快照）</strong></th>
+<th>Qwen3.8-Flash（API）/ Flash-Next（开放）</th>
+<th>Qwen3.8-27B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-08-03；权重 08-12；0902 快照 09-02</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>2026-08-14</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>2.4T / 95B 激活 MoE</td>
+<td>125B / 6B 激活 MoE + 51B N-gram 表</td>
+<td>dense，多模态</td>
+</tr>
+<tr>
+<td>权重</td>
+<td><strong>首次开放 Max 级权重</strong>（2.4T-A95B）；0902 快照仅 API，许可<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>Flash-Next 开放</td>
+<td>开放</td>
+</tr>
+<tr>
+<td>上下文 / 输出</td>
+<td>1M / 64K（按官方 OpenClaw 配置示例）</td>
+<td>1M</td>
+<td>—</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>reasoning_effort：xhigh（默认）/ medium / low；默认保留思考内容</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>国际版 $2 / $6，隐式缓存 $0.25；百炼国内版 <strong>¥12 / ¥36，缓存命中 ¥1.5</strong>，Batch 半价</td>
+<td>北京 ¥0.8 / ¥2.7</td>
+<td>OpenRouter $0.04 / $1.35 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>45.4（0902）/ 40.2（初版）</td>
+<td>39.8（Flash-Next）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>—</td>
+<td>56 tok/s（Flash-Next）</td>
+<td>46 tok/s</td>
+</tr>
+<tr>
+<td>LMArena</td>
+<td>1483</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>多个 harness（QwenWork / Claude Code / Codex / OpenClaw / Hermes）上表现一致；兼容 OpenAI 和 Anthropic 协议；长程自主（官方演示 16 天自主开发）</td>
+<td>便宜</td>
+<td>可单机部署</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.alibabacloud.com/blog/603421" rel="noopener" target="_blank">Qwen3.8-Max 博客</a>、<a href="https://www.qwencloud.com/models/qwen3.8-max-0902" rel="noopener" target="_blank">QwenCloud 0902</a>、<a href="https://help.aliyun.com/zh/model-studio/qwen3-8-max" rel="noopener" target="_blank">百炼模型页</a>、<a href="https://help.aliyun.com/en/model-studio/qwen3-8-flash" rel="noopener" target="_blank">Qwen3.8-Flash</a></p>
+</section><section class="p-card"><h3 id="sec-3-10"><span class="secno">3.10</span><span class="vendor">字节</span><span class="prod">Doubao-Seed-2.1-pro</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Doubao-Seed-2.1-pro（260915）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>豆包 2.1 Pro 2026-06-23（火山引擎 FORCE 大会）；0915 版 2026-09-15</td>
+</tr>
+<tr>
+<td>权重</td>
+<td>闭源（字节此前开放过 Seed-OSS-36B）</td>
+</tr>
+<tr>
+<td>上下文 / 最大输出</td>
+<td>1M / 256K</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>文本、图像、视频输入（不含音频）→ 文本</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>minimal / low / medium / high（默认 high）</td>
+</tr>
+<tr>
+<td>价格</td>
+<td><strong>¥6 / ¥30，缓存命中 ¥1.2</strong>（1M 窗口内统一价）；2.1 Turbo 为 Pro 的一半</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>TPOT 15–18ms，约 55–65 tok/s <span class="badge badge-infer" title="推断">推断</span></td>
+</tr>
+<tr>
+<td>特色</td>
+<td>另有 <strong>Doubao-Seed-evolving</strong> 持续更新版（每月更新 2–4 次）；接入豆包、TRAE、扣子；兼容 Claude Code、OpenClaw、Codex CLI</td>
+</tr>
+<tr>
+<td>规模</td>
+<td>截至 2026-06，豆包大模型日均 token 调用量超过 180 万亿；IDC 数据显示火山引擎在中国公有云 MaaS 市场份额 49.5%</td>
+</tr>
+<tr>
+<td>评测</td>
+<td>官方称"多项评测优于 Claude Opus 4.6"，未进 AA 指数前 40<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.thepaper.cn/newsDetail_forward_33434649" rel="noopener" target="_blank">澎湃：豆包 2.1 发布</a>、<a href="https://www.volcengine.com/article/2945230" rel="noopener" target="_blank">火山引擎 0915 版解读</a></p>
+</section><section class="p-card"><h3 id="sec-3-11"><span class="secno">3.11</span><span class="vendor">月之暗面</span><span class="prod">Kimi K3</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Kimi K3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-07-16；<strong>权重 07-27 开放</strong></td>
+</tr>
+<tr>
+<td>架构</td>
+<td>2.8T 参数（首个开放的 3T 级模型），896 个专家中激活 16 个；采用 Kimi Delta Attention 和 Attention Residuals；MXFP4 量化感知训练</td>
+</tr>
+<tr>
+<td>许可</td>
+<td>自定义 Kimi K3 License，商用或转售可能需要另签协议 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1,048,576</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>原生视觉</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>首发只有 max 档</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>$3 / $15 / 缓存 $0.30；人民币 <strong>¥20 / ¥100 / 缓存 ¥2</strong>；官方称 Kimi API 在编码负载下缓存命中率超过 90%</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>权重约 1.4TB，建议 64 张以上加速卡</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>43.6</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>41 tok/s（慢）</td>
+</tr>
+<tr>
+<td>LMArena</td>
+<td>1488（开放权重模型最高）</td>
+</tr>
+<tr>
+<td>官方自述局限</td>
+<td>对思考历史回传很敏感，中途从别的模型切过来会不稳定；"过度主动"；体验仍不如 Fable 5 和 GPT-5.6 Sol</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.kimi.com/blog/kimi-k3" rel="noopener" target="_blank">Kimi K3 技术博客</a>、<a href="https://saassentinel.com/2026/07/28/moonshot-ai-releases-kimi-k3-weights-but-enterprises-face-license-and-infrastructure-hurdles/" rel="noopener" target="_blank">许可分析（二手）</a>、<a href="https://www.cnblogs.com/vibecodinghuanzhe/p/22396404" rel="noopener" target="_blank">人民币价格（二手）</a></p>
+</section><section class="p-card"><h3 id="sec-3-12"><span class="secno">3.12</span><span class="vendor">智谱</span><span class="prod">GLM-5.3 / GLM-5.3-Flash</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>GLM-5.3</strong></th>
+<th><strong>GLM-5.3-Flash</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-08-14；权重 08-28</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span>（09 月前后，曾以匿名的 <code>ox-alpha</code> 测试）</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>744B / 40B 激活 MoE（与 GLM-5.2 同一基座，只做了后训练）</td>
+<td>320B / 18B 激活，线性注意力 + 稀疏注意力混合；<strong>首个原生多模态的 GLM-5 系列模型</strong></td>
+</tr>
+<tr>
+<td>许可</td>
+<td>自定义 GLM-5.3 License：一般商用可以；近 12 个月营收超过 100 亿美元的 MaaS 运营方需经智谱安全审查</td>
+<td><strong>MIT</strong></td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1M；仅文本</td>
+<td>1M（按文中 IndexPool 描述）<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+<tr>
+<td>推理</td>
+<td>low / high / max（不能关闭思考）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>$1.40 / $4.40 / 缓存 $0.26；人民币 <strong>¥8 / ¥28 / 缓存 ¥2</strong></td>
+<td>约为 GLM-5.2 的 1/10；跑一遍 AA 指数每任务约 $0.045（折扣价）；具体单价<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>44.8</td>
+<td>41.8</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>83 tok/s</td>
+<td>53 tok/s</td>
+</tr>
+<tr>
+<td>热度</td>
+<td>OpenRouter 周用量第 10</td>
+<td><strong>OpenRouter 周用量第 3（11.2T）</strong></td>
+</tr>
+<tr>
+<td>关键评测 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>DeepSWE v1.1 66.9%；Terminal-Bench 3.0 28.3%；CyberGym 84.5%（自称 SOTA）</td>
+<td>DeepSWE 63.4%；OSWorld 2.0 59.1%；GDPval-AA v2 1773</td>
+</tr>
+<tr>
+<td>特色</td>
+<td>网络安全能力增长快（发现 2,436 个漏洞）；GLM Coding Plan 订阅</td>
+<td><strong>全部推理跑在国产 AI 芯片集群上</strong>，每 token 成本据称与主流 NVIDIA GPU 相当</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://z.ai/blog/glm-5.3" rel="noopener" target="_blank">GLM-5.3</a>、<a href="https://z.ai/blog/glm-5.3-flash" rel="noopener" target="_blank">GLM-5.3-Flash</a>、<a href="https://huggingface.co/zai-org/GLM-5.3/blob/187fb9fff6319062325ff825627ef6db084d9bc6/LICENSE" rel="noopener" target="_blank">GLM-5.3 许可</a>、<a href="https://docs.bigmodel.cn/cn/guide/start/pricing" rel="noopener" target="_blank">BigModel 定价</a></p>
+</section><section class="p-card"><h3 id="sec-3-13"><span class="secno">3.13</span><span class="vendor">小米</span><span class="prod">MiMo-V2.6-Pro / Flash</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>MiMo-V2.6-Pro</strong></th>
+<th>MiMo-V2.6-Flash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-09-21（官方页 09-22 更新）</td>
+<td>同左</td>
+</tr>
+<tr>
+<td>权重</td>
+<td><strong>MIT，全开放</strong>（同时开源技术报告、7K+ 个 RL 环境和训练框架）</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>约 1.02T MoE <span class="badge badge-second" title="二手/非官方">二手</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>原生全模态</td>
+<td>同左</td>
+</tr>
+<tr>
+<td>价格</td>
+<td><strong>¥3 / ¥6 / 缓存 ¥0.025</strong>（约 $0.435 / $0.87 / $0.0036）；Batch 5 折；另有最高 20 倍速的 UltraSpeed 模式</td>
+<td>¥1 / ¥2 / 缓存 ¥0.02</td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td><strong>46.3（开放权重第 1）</strong></td>
+<td>37.9</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>43 tok/s</td>
+<td>58 tok/s</td>
+</tr>
+<tr>
+<td>热度</td>
+<td>—</td>
+<td>OpenRouter 周用量第 4（10.9T）</td>
+</tr>
+<tr>
+<td>官方说法</td>
+<td>"同等智能下价格是海外模型的 1/20 到 1/60"；DeepSWE v1.1 72.6% <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td>DeepSWE 65.7%</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://mimo.mi.com/docs/en-US/news/latest/v2-6" rel="noopener" target="_blank">MiMo-V2.6</a>、<a href="https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go" rel="noopener" target="_blank">价格</a></p>
+</section><section class="p-card"><h3 id="sec-3-14"><span class="secno">3.14</span><span class="vendor">腾讯</span><span class="prod">Hy4 preview</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Hy4 preview</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-08-28，同时开源</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>770B / 49B 激活 MoE</td>
+</tr>
+<tr>
+<td>权重</td>
+<td><strong>Apache 2.0</strong> <span class="badge badge-second" title="二手/非官方">二手：GitHub README</span></td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1M（最大输入 960K，输出 64K）<span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>价格</td>
+<td><strong>¥6 / ¥18 / 缓存命中最低 ¥0.3</strong></td>
+</tr>
+<tr>
+<td>渠道</td>
+<td>腾讯云 TokenHub、OpenRouter；WorkBuddy / CodeBuddy、元宝、ima 首发</td>
+</tr>
+<tr>
+<td>热度</td>
+<td>OpenRouter 周用量第 5（7.96T）</td>
+</tr>
+<tr>
+<td>评测</td>
+<td>内部 163 名专家、203 个工程任务盲测：Hy4 2.99/4，GLM-5.3 2.92，Kimi K3 2.94 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.tencent.com/zh-cn/tencent-releases-and-open-sources-tencent-hy4-preview/" rel="noopener" target="_blank">腾讯</a>、<a href="https://github.com/Tencent-Hunyuan/Hy4-preview" rel="noopener" target="_blank">GitHub</a></p>
+</section><section class="p-card"><h3 id="sec-3-15"><span class="secno">3.15</span><span class="vendor">阶跃星辰</span><span class="prod">Step 5 Preview</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>Step 5 Preview</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-09-20；<strong>权重定于 10-15 开放</strong>（截至 10-10 仓库里还没有可用权重 <span class="badge badge-second" title="二手/非官方">二手</span>）</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>600B / 27B 激活稀疏 MoE</td>
+</tr>
+<tr>
+<td>上下文 / 输出</td>
+<td>1M / 64K</td>
+</tr>
+<tr>
+<td>模态</td>
+<td>文本、图像、视频输入</td>
+</tr>
+<tr>
+<td>推理</td>
+<td>low / medium / high</td>
+</tr>
+<tr>
+<td>价格</td>
+<td><strong>¥7 / ¥20 / 缓存 ¥0.35</strong> <span class="badge badge-second" title="二手/非官方">二手；阿里云百炼也上架了</span></td>
+</tr>
+<tr>
+<td>AA 智能指数</td>
+<td>43.7（官方称开放模型前三）；官方称单任务成本是 Claude Opus 5 的 1/8</td>
+</tr>
+<tr>
+<td>AA 速度</td>
+<td>87 tok/s</td>
+</tr>
+<tr>
+<td>热度</td>
+<td>OpenRouter <strong>周涨幅第 1</strong>；10-09 单日用量第 2（2.59T，+309%）；在 Cline、Kilo 等平台限时免费</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.stepfun.com/news/step-5-preview" rel="noopener" target="_blank">阶跃官方</a>、<a href="https://platform.stepfun.com/docs/zh/guides/models/step-5-preview" rel="noopener" target="_blank">文档</a>、<a href="https://help.aliyun.com/zh/model-studio/step-5-preview" rel="noopener" target="_blank">百炼上架</a></p>
+</section><section class="p-card"><h3 id="sec-3-16"><span class="secno">3.16</span><span class="vendor">MiniMax</span><span class="prod">M3</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>MiniMax M3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-05-31（不同时区记为 06-01）；M3.1-Flash-Preview 09-27（只在 MiniMax Code 和订阅里提供）</td>
+</tr>
+<tr>
+<td>架构</td>
+<td>约 428B / 23B 激活</td>
+</tr>
+<tr>
+<td>权重</td>
+<td>开放，minimax-community 许可</td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>1M，原生多模态（文本、图像、视频）</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>$0.30 / $1.20（≤512K）；人民币标价 ¥4.2 / ¥16.8 / 缓存 ¥0.84，当前标注"永久五折"为 <strong>¥2.1 / ¥8.4 / ¥0.42</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://www.minimax.io/blog/minimax-m3" rel="noopener" target="_blank">MiniMax M3</a>、<a href="https://platform.minimax.cn/docs/pricing/overview" rel="noopener" target="_blank">定价</a>、<a href="https://www.yicai.com/brief/103379438.html" rel="noopener" target="_blank">M3.1-Flash-Preview（一财）</a></p>
+</section><section class="p-card"><h3 id="sec-3-17"><span class="secno">3.17</span><span class="vendor">百度</span><span class="prod">ERNIE 5.1</span></h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th><strong>ERNIE 5.1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布</td>
+<td>2026-05-09；<strong>ERNIE 6 尚未发布</strong></td>
+</tr>
+<tr>
+<td>权重</td>
+<td>未开源 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>上下文 / 输出</td>
+<td>128K（最大输入 119K）/ 65,536</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>≤32K：¥4 / ¥18（每百万，即 ¥0.004 / ¥0.018 每千）；32K–128K：¥6 / ¥22</td>
+</tr>
+<tr>
+<td>评测</td>
+<td>LMArena 1467；未进 AA 指数前列</td>
+</tr>
+<tr>
+<td>特点</td>
+<td>写作和创作见长；总参数是 ERNIE 5.0 的约 1/3</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://ernie.baidu.com/blog/zh/posts/ernie-5.1-0508-release/" rel="noopener" target="_blank">ERNIE 5.1 博客</a>、<a href="https://cloud.baidu.cn/doc/qianfan/s/wmh4sv6ya" rel="noopener" target="_blank">千帆计费</a></p>
+</section><section class="p-card"><h3 id="sec-3-18"><span class="secno">3.18</span>其他值得关注的国内模型</h3>
+<ul>
+<li><strong>蚂蚁 inclusionAI Ling 3.1 Flash</strong>：AA 指数 41.1，输出速度 214 tok/s，OpenRouter 周涨幅前列 <span class="badge badge-second" title="二手/非官方">二手</span>。</li>
+<li><strong>K2 Horizon 375B-A23B</strong>（Institute of Foundation Models）：AA 速度 119 tok/s<span class="badge badge-verify" title="待核实/未核实">待核实：机构背景</span>。</li>
+</ul>
+<hr/>
+</section><h2 id="sec-4"><span class="secno">4</span>对比表</h2>
+<h3 id="sec-4-1"><span class="secno">4.1</span>主力旗舰横向对比（每家取当前最强的可用型号）</h3>
+<div class="table-scroll tall wide fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>厂商</th>
+<th class="num">发布</th>
+<th>开放</th>
+<th class="num">上下文</th>
+<th class="num">价格 $/M 入 / 出 / 缓存</th>
+<th class="num">AA 指数</th>
+<th class="num">AA 速度</th>
+<th class="num">LMArena</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus 5.5</td>
+<td>Anthropic</td>
+<td class="num">09-22</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">4 / 20 / 0.20</td>
+<td class="num"><strong>57.6</strong></td>
+<td class="num">96</td>
+<td class="num">1507</td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td>Anthropic</td>
+<td class="num">09-28</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">2 / 10 / 0.10</td>
+<td class="num">56.0</td>
+<td class="num">141</td>
+<td class="num">1476</td>
+</tr>
+<tr>
+<td>Claude Fable 5.1</td>
+<td>Anthropic</td>
+<td class="num">09-01</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">10 / 50 / 0.25</td>
+<td class="num">53.4</td>
+<td class="num">70</td>
+<td class="num">1501</td>
+</tr>
+<tr>
+<td>GPT-6 Astra</td>
+<td>OpenAI</td>
+<td class="num">09-03</td>
+<td>否</td>
+<td class="num">1.05M</td>
+<td class="num">10 / 50 / 1.00</td>
+<td class="num">52.7</td>
+<td class="num">47</td>
+<td class="num">1475</td>
+</tr>
+<tr>
+<td>Gemini 4 Argon</td>
+<td>Google</td>
+<td class="num">09-30（受限）</td>
+<td>否</td>
+<td class="num">—</td>
+<td class="num">2 / 10 / 0.10（首发价）</td>
+<td class="num">52.6</td>
+<td class="num">—</td>
+<td class="num"><strong>1525</strong></td>
+</tr>
+<tr>
+<td>GPT-6.1 Sol</td>
+<td>OpenAI</td>
+<td class="num">09-29</td>
+<td>否</td>
+<td class="num">1.05M</td>
+<td class="num">2 / 10 / 0.10</td>
+<td class="num">51.8</td>
+<td class="num">56</td>
+<td class="num">1484</td>
+</tr>
+<tr>
+<td>Muse Spark 1.3</td>
+<td>Meta</td>
+<td class="num">09-02</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">1.25 / 4.25 / 0.15</td>
+<td class="num">48.1</td>
+<td class="num"><strong>280</strong></td>
+<td class="num">1494</td>
+</tr>
+<tr>
+<td>Grok 4.7</td>
+<td>SpaceXAI</td>
+<td class="num">09-21</td>
+<td>否</td>
+<td class="num">500K</td>
+<td class="num">2 / 6 / 0.50</td>
+<td class="num">46.4</td>
+<td class="num">74</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>MiMo-V2.6-Pro</td>
+<td>小米</td>
+<td class="num">09-21</td>
+<td>MIT</td>
+<td class="num">—</td>
+<td class="num">0.435 / 0.87 / 0.0036</td>
+<td class="num">46.3</td>
+<td class="num">43</td>
+<td class="num">1480</td>
+</tr>
+<tr>
+<td>Qwen3.8-Max-0902</td>
+<td>阿里</td>
+<td class="num">09-02</td>
+<td>部分</td>
+<td class="num">1M</td>
+<td class="num">2 / 6 / 0.25</td>
+<td class="num">45.4</td>
+<td class="num">—</td>
+<td class="num">1483</td>
+</tr>
+<tr>
+<td>GLM-5.3</td>
+<td>智谱</td>
+<td class="num">08-14</td>
+<td>自定义</td>
+<td class="num">1M</td>
+<td class="num">1.40 / 4.40 / 0.26</td>
+<td class="num">44.8</td>
+<td class="num">83</td>
+<td class="num">1478</td>
+</tr>
+<tr>
+<td>Step 5 Preview</td>
+<td>阶跃</td>
+<td class="num">09-20</td>
+<td>10-15 开放</td>
+<td class="num">1M</td>
+<td class="num">¥7 / ¥20 / ¥0.35</td>
+<td class="num">43.7</td>
+<td class="num">87</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td>月之暗面</td>
+<td class="num">07-16</td>
+<td>自定义</td>
+<td class="num">1M</td>
+<td class="num">3 / 15 / 0.30</td>
+<td class="num">43.6</td>
+<td class="num">41</td>
+<td class="num">1488</td>
+</tr>
+<tr>
+<td>Gemini 3.8 Flash</td>
+<td>Google</td>
+<td class="num">09-02</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">0.75 / 3.75 /<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td class="num">40.9</td>
+<td class="num">125</td>
+<td class="num">1497</td>
+</tr>
+<tr>
+<td>DeepSeek V4.1-Flash</td>
+<td>DeepSeek</td>
+<td class="num">09-10</td>
+<td>MIT</td>
+<td class="num">1M</td>
+<td class="num">0.30 / 1.20 / 0.006（高峰）</td>
+<td class="num">39.5</td>
+<td class="num">217</td>
+<td class="num">1475</td>
+</tr>
+<tr>
+<td>Mistral Large 4 Preview</td>
+<td>Mistral</td>
+<td class="num">10-06</td>
+<td>月底开放</td>
+<td class="num">1M</td>
+<td class="num">0.68 / 2.09 / 0.07</td>
+<td class="num">38.4</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Doubao-Seed-2.1-pro</td>
+<td>字节</td>
+<td class="num">09-15</td>
+<td>否</td>
+<td class="num">1M</td>
+<td class="num">¥6 / ¥30 / ¥1.2</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Hy4 preview</td>
+<td>腾讯</td>
+<td class="num">08-28</td>
+<td>Apache 2.0</td>
+<td class="num">1M</td>
+<td class="num">¥6 / ¥18 / ¥0.3</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>MiniMax M3</td>
+<td>MiniMax</td>
+<td class="num">06-01</td>
+<td>社区许可</td>
+<td class="num">1M</td>
+<td class="num">0.30 / 1.20</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>ERNIE 5.1</td>
+<td>百度</td>
+<td class="num">05-09</td>
+<td>否</td>
+<td class="num">128K</td>
+<td class="num">¥4 / ¥18</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">1467</td>
+</tr>
+</tbody>
+</table></div>
+<p>AA 指数为 v4.3.2，取各型号最高 effort，数据日期 2026-10-09/10；速度为 AA 2026-10-10；LMArena 为 2026-10-08 数据（BenchLeader 镜像）；"—"表示本轮没查到。</p>
+<h3 id="sec-4-2"><span class="secno">4.2</span>性价比视图</h3>
+<p class="lead-h"><strong>(a) 价格分档（2026-10）</strong></p>
+<figure class="diagram" data-src='flowchart LR
+  subgraph P1["超高档：输出 ≥ $40/M"]
+    A1[GPT-6 Astra 10/50]
+    A2[Claude Fable 5.1 10/50]
+  end
+  subgraph P2["高档：输出 $15–20/M"]
+    B1[Claude Opus 5.5 4/20]
+    B2[Kimi K3 3/15]
+  end
+  subgraph P3["中档：输出 $4–10/M"]
+    C1[GPT-6.1 Sol 2/10]
+    C2[Claude Sonnet 5.5 2/10]
+    C3[Gemini 4 Argon 2/10 首发价]
+    C4[Grok 4.7 2/6]
+    C5[Qwen3.8-Max 2/6]
+    C6[GLM-5.3 1.4/4.4]
+    C7[Muse Spark 1.3 1.25/4.25]
+  end
+  subgraph P4["经济档：输出 ≤ $4/M"]
+    D1[Gemini 3.8 Flash 0.75/3.75]
+    D2[Mistral Large 4 0.68/2.09]
+    D3[DeepSeek V4.1-Flash 0.15–0.30/0.6–1.2]
+    D4[MiMo-V2.6-Pro 0.435/0.87]
+    D5[GPT-6 Luna 0.10/0.50]
+    D6[Claude Haiku 5.5 0.10/0.50]
+  end' id="diagram-4"><pre class="mermaid">flowchart LR
+  subgraph P1["超高档：输出 ≥ $40/M"]
+    A1[GPT-6 Astra 10/50]
+    A2[Claude Fable 5.1 10/50]
+  end
+  subgraph P2["高档：输出 $15–20/M"]
+    B1[Claude Opus 5.5 4/20]
+    B2[Kimi K3 3/15]
+  end
+  subgraph P3["中档：输出 $4–10/M"]
+    C1[GPT-6.1 Sol 2/10]
+    C2[Claude Sonnet 5.5 2/10]
+    C3[Gemini 4 Argon 2/10 首发价]
+    C4[Grok 4.7 2/6]
+    C5[Qwen3.8-Max 2/6]
+    C6[GLM-5.3 1.4/4.4]
+    C7[Muse Spark 1.3 1.25/4.25]
+  end
+  subgraph P4["经济档：输出 ≤ $4/M"]
+    D1[Gemini 3.8 Flash 0.75/3.75]
+    D2[Mistral Large 4 0.68/2.09]
+    D3[DeepSeek V4.1-Flash 0.15–0.30/0.6–1.2]
+    D4[MiMo-V2.6-Pro 0.435/0.87]
+    D5[GPT-6 Luna 0.10/0.50]
+    D6[Claude Haiku 5.5 0.10/0.50]
+  end</pre><figcaption>图 4</figcaption></figure>
+<p class="lead-h"><strong>(b) 跑一遍 AA 智能指数的单任务成本（AA 实测）</strong></p>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>每任务成本</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-6 Sol（max）</td>
+<td>$1.06（比 GPT-5.6 Sol 低约 50%）</td>
+<td><a href="https://artificialanalysis.ai/articles/gpt-6-sol-and-luna-push-the-cost-efficiency-frontier" rel="noopener" target="_blank">AA</a></td>
+</tr>
+<tr>
+<td>GPT-6 Luna（max）</td>
+<td>$0.07</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>GLM-5.3-Flash</td>
+<td>约 $0.045（折扣价，口径为 AA v4.1.1）<span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td><a href="https://z.ai/blog/glm-5.3-flash" rel="noopener" target="_blank">Z.ai</a></td>
+</tr>
+<tr>
+<td>Step 5 Preview</td>
+<td>Claude Opus 5 的 1/8 <span class="badge badge-self" title="厂商自报">厂商自报</span></td>
+<td><a href="https://www.stepfun.com/news/step-5-preview" rel="noopener" target="_blank">阶跃</a></td>
+</tr>
+</tbody>
+</table></div>
+<p class="lead-h"><strong>(c) 厂商自报的"同分不同价"</strong></p>
+<ul>
+<li>Opus 5.5（默认 medium）在 FrontierCode 上超过 GPT-6 Astra 最高分，每任务成本约为后者的 20%；Terminal-Bench 4.0 与 Astra 持平，成本约 40%。[Anthropic]</li>
+<li>GPT-6.1 Sol 在 Terminal-Bench Science（max）每任务 $5.47，Opus 5.5 为 $23.21，Astra 为 $23.80。[OpenAI]</li>
+<li>GPT-6 Sol（xhigh）在 AutomationBench 上 33.2%、每任务 $0.27，Opus 5（max）只有 26.9%、成本是其 11.1 倍。[OpenAI]</li>
+<li>两家都拿自己最有利的口径，只能看量级。</li>
+</ul>
+<h3 id="sec-4-3"><span class="secno">4.3</span>编码与 Agent 能力</h3>
+<p class="lead-h"><strong>(a) AA Coding Agent Index v1.5（模型 + harness 组合，2026-10）<span class="badge badge-second" title="二手/非官方">二手</span></strong></p>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>排名</th>
+<th>组合</th>
+<th class="num">分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Claude Code + Sonnet 5.5（max）</td>
+<td class="num">68.4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Claude Code + Opus 5.5（max）</td>
+<td class="num">66.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Antigravity CLI + Gemini 4 Argon（high）</td>
+<td class="num">63.8</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Codex + GPT-6 Sol（max）</td>
+<td class="num">57（AA 9 月数据）</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Mistral Large 4（ML4 官方引用）</td>
+<td class="num">49.8</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://benchlm.ai/benchmarks/aacodingagents" rel="noopener" target="_blank">benchlm 镜像</a>、<a href="https://officechai.com/ai/gemini-4-argon-with-antigravity-places-ahead-of-gpt-6-1-sol-on-codex-on-artificial-analysis-coding-agent-index/" rel="noopener" target="_blank">OfficeChai</a></p>
+<p><strong>(b) 主要 Agent 评测汇总</strong>（全部为厂商自报，各家 harness 不同，只看量级）</p>
+<div class="table-scroll tall wide fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th class="num">DeepSWE v1.1</th>
+<th class="num">Terminal-Bench 4.0</th>
+<th class="num">OSWorld 2.x</th>
+<th class="num">AutomationBench</th>
+<th class="num">HLE（带工具）</th>
+<th class="num">GDPval-AA v2.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus 5.5</td>
+<td class="num">—</td>
+<td class="num">66.4%</td>
+<td class="num">81.8%（2.1 partial）</td>
+<td class="num">40.0%</td>
+<td class="num">67.7%</td>
+<td class="num">1846</td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td class="num">—</td>
+<td class="num"><strong>70.6%</strong></td>
+<td class="num">80.1%（2.1 partial）</td>
+<td class="num">—</td>
+<td class="num">64.5%</td>
+<td class="num">1844</td>
+</tr>
+<tr>
+<td>Claude Fable 5.1</td>
+<td class="num">67.4%（OpenAI 测）</td>
+<td class="num">55.8%</td>
+<td class="num">77.9%（2.0 partial）</td>
+<td class="num">31.4%</td>
+<td class="num">65.0%</td>
+<td class="num">1853（v2）</td>
+</tr>
+<tr>
+<td>GPT-6 Astra</td>
+<td class="num">74.1%</td>
+<td class="num">57.9%</td>
+<td class="num">72.6%（2.0 offline）</td>
+<td class="num">41.4%</td>
+<td class="num">57.2%</td>
+<td class="num">1542（v2.1，Anthropic 引）</td>
+</tr>
+<tr>
+<td>GPT-6 Sol</td>
+<td class="num">68.8%</td>
+<td class="num">~43–44%（AA）</td>
+<td class="num">60.5%（2.0 offline）</td>
+<td class="num">33.2%</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Gemini 4 Argon</td>
+<td class="num"><strong>77.9%</strong></td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num"><strong>51.3%</strong></td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Gemini 3.8 Flash</td>
+<td class="num">73.8%</td>
+<td class="num">19.1%</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Muse Spark 1.3</td>
+<td class="num">75.4%</td>
+<td class="num">—</td>
+<td class="num">66.9%（2.0 partial）</td>
+<td class="num">49.6%</td>
+<td class="num">—</td>
+<td class="num">1754</td>
+</tr>
+<tr>
+<td>Grok 4.7</td>
+<td class="num">71.0%</td>
+<td class="num">37.6%</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>MiMo-V2.6-Pro</td>
+<td class="num">72.6%</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td class="num">67.5%（智谱引）</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">46.7%（智谱引）</td>
+<td class="num">59.8%（智谱引）</td>
+<td class="num">1682</td>
+</tr>
+<tr>
+<td>GLM-5.3</td>
+<td class="num">66.9%</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">48.2%</td>
+<td class="num">62.5%</td>
+<td class="num">1769</td>
+</tr>
+<tr>
+<td>GLM-5.3-Flash</td>
+<td class="num">63.4%</td>
+<td class="num">—</td>
+<td class="num">59.1%（2.0）</td>
+<td class="num">48.8%</td>
+<td class="num">55.3%</td>
+<td class="num">1773</td>
+</tr>
+<tr>
+<td>Mistral Large 4</td>
+<td class="num">61.7%</td>
+<td class="num">28.3%</td>
+<td class="num">—</td>
+<td class="num">59.9%（AA 口径）</td>
+<td class="num">—</td>
+<td class="num">—</td>
+</tr>
+<tr>
+<td>Qwen3.8-Max</td>
+<td class="num">56.6%（智谱引）</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">39.8%（智谱引）</td>
+<td class="num">56.2%（智谱引）</td>
+<td class="num">1739</td>
+</tr>
+</tbody>
+</table></div>
+<p>注意：</p>
+<ul>
+<li>AutomationBench 有两种口径：Zapier 官方版和 AA 版（AutomationBench-AA）。Mistral 59.9%、GPT-6 Sol 62%（AA 测）用的是 AA 版，和 Anthropic、OpenAI 博客里的 30–50% 不是同一口径。</li>
+<li>OSWorld 2.0 和 2.1、offline 和 full、partial 和 strict 计分都不同，跨行不可比。</li>
+</ul>
+<h3 id="sec-4-4"><span class="secno">4.4</span>开放权重模型</h3>
+<div class="table-scroll tall wide fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>厂商</th>
+<th class="num">规模（总 / 激活）</th>
+<th>许可</th>
+<th class="num">上下文</th>
+<th class="num">AA 指数</th>
+<th>部署门槛</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MiMo-V2.6-Pro</strong></td>
+<td>小米</td>
+<td class="num">~1.02T MoE</td>
+<td><strong>MIT</strong></td>
+<td class="num">—</td>
+<td class="num"><strong>46.3</strong></td>
+<td>多机</td>
+</tr>
+<tr>
+<td>Qwen3.8-Max（2.4T-A95B）</td>
+<td>阿里</td>
+<td class="num">2.4T / 95B</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td class="num">1M</td>
+<td class="num">39.9（2.4T-A95B 版）</td>
+<td>超大集群</td>
+</tr>
+<tr>
+<td><strong>GLM-5.3</strong></td>
+<td>智谱</td>
+<td class="num">744B / 40B</td>
+<td>自定义（大型 MaaS 需审查）</td>
+<td class="num">1M</td>
+<td class="num">44.8</td>
+<td>FP8 / BF16 多机</td>
+</tr>
+<tr>
+<td>Step 5 Preview</td>
+<td>阶跃</td>
+<td class="num">600B / 27B</td>
+<td>10-15 开放，许可<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td class="num">1M</td>
+<td class="num">43.7</td>
+<td>多机</td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td>月之暗面</td>
+<td class="num">2.8T / 约 104B</td>
+<td>自定义（商用或转售可能需协议）</td>
+<td class="num">1M</td>
+<td class="num">43.6</td>
+<td>约 1.4TB，64 张以上加速卡</td>
+</tr>
+<tr>
+<td><strong>GLM-5.3-Flash</strong></td>
+<td>智谱</td>
+<td class="num">320B / 18B</td>
+<td><strong>MIT</strong></td>
+<td class="num">1M</td>
+<td class="num">41.8</td>
+<td>单机多卡；已在国产芯片上量产</td>
+</tr>
+<tr>
+<td><strong>DeepSeek V4.1-Flash</strong></td>
+<td>DeepSeek</td>
+<td class="num">552B（激活 8B / 16B）</td>
+<td><strong>MIT</strong></td>
+<td class="num">1M</td>
+<td class="num">39.5</td>
+<td>中等</td>
+</tr>
+<tr>
+<td>Qwen3.8-Flash-Next</td>
+<td>阿里</td>
+<td class="num">125B / 6B</td>
+<td>开放</td>
+<td class="num">1M</td>
+<td class="num">39.8</td>
+<td>单机</td>
+</tr>
+<tr>
+<td>MiMo-V2.6-Flash</td>
+<td>小米</td>
+<td class="num">—</td>
+<td>MIT</td>
+<td class="num">—</td>
+<td class="num">37.9</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Hy4 preview</td>
+<td>腾讯</td>
+<td class="num">770B / 49B</td>
+<td>Apache 2.0</td>
+<td class="num">1M</td>
+<td class="num">—</td>
+<td>多机</td>
+</tr>
+<tr>
+<td>MiniMax M3</td>
+<td>MiniMax</td>
+<td class="num">约 428B / 23B</td>
+<td>minimax-community</td>
+<td class="num">1M</td>
+<td class="num">—</td>
+<td>单机多卡</td>
+</tr>
+<tr>
+<td>Mistral Large 4</td>
+<td>Mistral</td>
+<td class="num">约 1T / 52B</td>
+<td>未公布</td>
+<td class="num">1M</td>
+<td class="num">38.4</td>
+<td>多机，月底开放</td>
+</tr>
+<tr>
+<td>Nemotron 3 Ultra</td>
+<td>NVIDIA</td>
+<td class="num">550B / 55B</td>
+<td>OpenMDW（可商用，数据和配方也开放）</td>
+<td class="num">1M</td>
+<td class="num">—</td>
+<td>多机</td>
+</tr>
+<tr>
+<td>Command A+</td>
+<td>Cohere</td>
+<td class="num">218B / 25B</td>
+<td>Apache 2.0</td>
+<td class="num">128K</td>
+<td class="num">—</td>
+<td>单卡 B200 / 双卡 H100</td>
+</tr>
+<tr>
+<td>Muse Glimmer</td>
+<td>Meta</td>
+<td class="num">30B dense</td>
+<td>Apache 2.0</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td>单卡或 Mac</td>
+</tr>
+<tr>
+<td>Gemma 4（至 31B）</td>
+<td>Google</td>
+<td class="num">E2B–31B</td>
+<td>Apache 2.0</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td>端侧或单卡</td>
+</tr>
+<tr>
+<td>Qwen3.8-27B</td>
+<td>阿里</td>
+<td class="num">27B dense</td>
+<td>开放</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td>单卡</td>
+</tr>
+</tbody>
+</table></div>
+<p class="lead-h"><strong>观察 <span class="badge badge-infer" title="推断">推断</span></strong></p>
+<ul>
+<li>开放权重的前 6 名全部是中国厂商。美国厂商里最强的开放模型（Nemotron 3 Ultra、Muse Glimmer、Gemma 4）都不在 AA 前 25。</li>
+<li>开放模型的规模走向两极：一头是 2–3T 的"开放旗舰"（K3、Qwen3.8-Max），一头是 300–600B、激活 20B 上下的"高效主力"（GLM-5.3-Flash、Step 5、DeepSeek V4.1-Flash）。<strong>企业私有化真正可用的是后者。</strong></li>
+</ul>
+<h3 id="sec-4-5"><span class="secno">4.5</span>中国可用性与合规</h3>
+<div class="table-scroll wide" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>国内直连</th>
+<th>国内公有云 / 渠道</th>
+<th>生成式 AI 备案</th>
+<th>私有化部署</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-6 系列</td>
+<td><strong>不可用</strong>（OpenAI 不支持中国大陆）</td>
+<td>无官方渠道</td>
+<td>未备案</td>
+<td>否</td>
+<td>只能用于境外业务，或通过境外实体经 Azure / Bedrock 使用</td>
+</tr>
+<tr>
+<td>Claude 5.5 系列</td>
+<td><strong>不可用</strong>（Anthropic 限制中国大陆及中资控股实体）<span class="badge badge-second" title="二手/非官方">二手</span></td>
+<td>无</td>
+<td>未备案</td>
+<td>否</td>
+<td>同上；企业内部使用也有账号被封、数据出境风险</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>不可用</td>
+<td>无</td>
+<td>未备案</td>
+<td>否</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>Grok / Muse / Mistral</td>
+<td>不可用 / 未知</td>
+<td>无</td>
+<td>未备案</td>
+<td>Mistral Large 4 开放权重可自部署</td>
+<td>—</td>
+</tr>
+<tr>
+<td>DeepSeek V4.1</td>
+<td>可用</td>
+<td>官方 API + 各大云</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实具体型号</span></td>
+<td><strong>可（MIT）</strong></td>
+<td>有高峰 / 闲时价</td>
+</tr>
+<tr>
+<td>Qwen3.8</td>
+<td>可用</td>
+<td>阿里云百炼</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实具体型号</span></td>
+<td>可（开放型号）</td>
+<td>百炼也上架了 Step 5、MiniMax M3 等第三方模型</td>
+</tr>
+<tr>
+<td>Doubao-Seed-2.1</td>
+<td>可用</td>
+<td>火山方舟</td>
+<td>已备案</td>
+<td>闭源；需专属部署方案<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>国内 MaaS 份额第一</td>
+</tr>
+<tr>
+<td>GLM-5.3 / Flash</td>
+<td>可用</td>
+<td>BigModel 开放平台</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实具体型号</span></td>
+<td>可</td>
+<td>Flash 已在国产芯片上运行</td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td>可用</td>
+<td>官方 API</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>可（许可限制）</td>
+<td>部署门槛高</td>
+</tr>
+<tr>
+<td>Hy4</td>
+<td>可用</td>
+<td>腾讯云 TokenHub</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>可（Apache 2.0）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>MiMo-V2.6</td>
+<td>可用</td>
+<td>小米 MiMo 开放平台</td>
+<td><span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>可（MIT）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Step 5 / MiniMax M3 / ERNIE 5.1</td>
+<td>可用</td>
+<td>官方 + 百炼等</td>
+<td>已备案<span class="badge badge-verify" title="待核实/未核实">待核实</span></td>
+<td>Step 5（10-15 后）、M3 可；ERNIE 不可</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p class="lead-h"><strong>合规要点 <span class="badge badge-second" title="二手/非官方">二手 + 推断</span></strong></p>
+<ul>
+<li>截至 2026-08-31，已有 1,112 款生成式 AI 服务完成备案（见深度版 §0）。<strong>对境内公众或客户提供服务</strong>需要做安全评估和算法备案；直接调用已备案模型的，走登记流程。<a href="https://cloud.tencent.cn/developer/article/2732875" rel="noopener" target="_blank">腾讯云开发者社区</a></li>
+<li>企业<strong>仅内部使用</strong>境外模型一般不触发备案，但仍有个人信息出境、商业秘密和账号可用性的风险。<a href="http://www.pacgatelaw.com/h-nd-411.html" rel="noopener" target="_blank">百宸律所</a></li>
+<li>2026-07-15 起施行的《人工智能拟人化互动服务管理暂行办法》对有"人设"的个人助理类产品也有要求（见深度版补充 F.5）。</li>
+<li>欧盟方面：2026-08-02 起透明度义务生效，Anthropic 已给新模型输出加水印。</li>
+</ul>
+<h3 id="sec-4-6"><span class="secno">4.6</span>速度与延迟（AA 输出速度，2026-10-10，tok/s）</h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>档位</th>
+<th>模型（tok/s）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt; 200</td>
+<td>Muse Spark 1.3（280）、Claude Haiku 5.5（240）、DeepSeek V4 Flash Vision（221）、DeepSeek V4.1 Flash（217）、Ling 3.1 Flash（214）</td>
+</tr>
+<tr>
+<td>100–200</td>
+<td>Claude Sonnet 5.5（141）、GPT-6 Luna（139）、Gemini 3.8 Flash（125）、GPT-5.6 Terra（108）</td>
+</tr>
+<tr>
+<td>50–100</td>
+<td>Claude Opus 5.5（96）、DeepSeek V4 Pro（89）、Step 5 Preview（87）、GLM-5.3（83）、Grok 4.7（74）、Claude Fable 5.1（70）、MiMo-V2.6-Flash（58）、GPT-6.1 Sol（56）、Qwen3.8-Flash-Next（56）、GLM-5.3-Flash（53）</td>
+</tr>
+<tr>
+<td>&lt; 50</td>
+<td>GPT-6 Astra（47）、Qwen3.8-27B（46）、MiMo-V2.6-Pro（43）、Kimi K3（41）</td>
+</tr>
+</tbody>
+</table></div>
+<p>来源：<a href="https://models.fru.dev/benchmarks/aa-speed" rel="noopener" target="_blank">models.fru.dev 镜像</a> <span class="badge badge-second" title="二手/非官方">二手</span></p>
+<p>另有付费加速档：GPT-6 Astra Fast（2 倍速、2 倍价）和 Ultrafast；6.1 Sol Ultrafast（Codex 内最高 8 倍）；Opus 5.5 Fast（2.5 倍速，$8 / $40）；Grok 4.7 快速版（2 倍速、2 倍价）；MiMo-V2.6-Pro UltraSpeed（最高 20 倍）。首 token 延迟（TTFT）本轮没有系统取数<span class="badge badge-verify" title="待核实/未核实">待核实</span>。</p>
+<h3 id="sec-4-7"><span class="secno">4.7</span>热度：谁在被真正使用</h3>
+<p class="lead-h"><strong>OpenRouter 周用量（截至 2026-10-09）</strong></p>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>排名</th>
+<th>模型</th>
+<th class="num">tokens</th>
+<th class="num">周环比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>DeepSeek V4.1 Flash</td>
+<td class="num">37.6T</td>
+<td class="num">+56%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Space Bunny Alpha（匿名）</td>
+<td class="num">16.9T</td>
+<td class="num">−49%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>GLM 5.3 Flash</td>
+<td class="num">11.2T</td>
+<td class="num">+16%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>MiMo-V2.6-Flash</td>
+<td class="num">10.9T</td>
+<td class="num">+17%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Hy4 preview</td>
+<td class="num">7.96T</td>
+<td class="num">+20%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>GPT-6 Luna</td>
+<td class="num">6.94T</td>
+<td class="num">+17%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Nemotron 3 Ultra（免费）</td>
+<td class="num">6.38T</td>
+<td class="num">+7%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>DeepSeek V4 Flash 0731</td>
+<td class="num">5.21T</td>
+<td class="num">−19%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Claude Opus 5.5</td>
+<td class="num">4.32T</td>
+<td class="num">+99%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>GLM 5.3</td>
+<td class="num">3.42T</td>
+<td class="num">+34%</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>按请求数算的作者份额（09-28 那一周）：DeepSeek 21.8%、Google 21.5%、OpenAI 18.2%、匿名 10.5%、Z.ai 6.6%、Qwen 6.2%、Anthropic 2.5%。</li>
+<li>本周新晋：Step 5 Preview、Claude Haiku 5.5、Mistral Large 4。</li>
+<li>来源：<a href="https://openrouter.ai/rankings" rel="noopener" target="_blank">OpenRouter Rankings</a></li>
+</ul>
+<p><strong>怎么读 <span class="badge badge-infer" title="推断">推断</span></strong>：OpenRouter 偏向便宜、开放、有免费额度的模型；Anthropic 和 OpenAI 的流量主要走自家 API 和云厂商，在这里被低估。所以"热度"要分两个维度看：</p>
+<ul>
+<li><strong>能力热度</strong>：AA 指数和 LMArena 前列，是 Claude 5.5、GPT-6、Gemini 4。</li>
+<li><strong>调用热度</strong>：OpenRouter 前列，是 DeepSeek、GLM、MiMo、Hy4 的 Flash 档。</li>
+</ul>
+<hr/>
+<h2 id="sec-5"><span class="secno">5</span>行业趋势</h2>
+<section class="topic"><h3 id="sec-5-1"><span class="secno">5.1</span>推理模型：从"可选模式"变成"常开 + 可调强度"</h3>
+<ul>
+<li>2024-09 的 o1 开启推理模型；2025 年的混合推理（Claude 3.7、Qwen3）让同一个模型可以切换思考 / 不思考。</li>
+<li>到 2026 年，<strong>effort 档位</strong>（low / medium / high / xhigh / max）成为统一接口，而且越来越多旗舰<strong>不再允许关闭思考</strong>：Opus 5.5、GPT-6 Astra / 6.1 Sol、GLM-5.3。</li>
+<li>新方向是<strong>在对话中途调整推理强度而不破坏缓存</strong>（OpenAI 的 <code>configuration_update</code>），以及思考内容在多轮工具调用中保留（Anthropic 的 preserved thinking、Qwen 的 <code>preserve_thinking</code>、豆包的 Remain Think）。</li>
+<li>对平台的含义：<strong>推理 token 记作输出 token，是成本大头</strong>。同一个模型，effort 从 medium 调到 max，每任务成本可能差 3–10 倍（各家 accuracy-vs-cost 图）。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-2"><span class="secno">5.2</span>Agent 与 computer use：从"能用"到"按小时、按天计"</h3>
+<ul>
+<li>厂商宣传的自主时长从 2025 年的"数十分钟"变成了"数小时到数天"：Opus 5.5 有 18 小时无人值守、40 个 PR 的案例；Fable 5.1 有 38 小时实验；Qwen3.8-Max 演示了 16 天自主开发。</li>
+<li>OSWorld 2.x 上前沿模型（partial 分）已达 72–84%。Haiku 5.5 这类小模型也到了 72%（offline 子集），<strong>computer use 正在下沉到便宜模型</strong>。</li>
+<li>新评测关注"交付"和"业务流程"：GDPval-AA、AA-Briefcase、AutomationBench、Agents' Last Exam、DeepSWE。</li>
+<li>模型开始针对特定 harness 训练：Grok 4.7 原生理解 "Grok Bot harness"；Qwen3.8 在多个 harness 上做 RL。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-3"><span class="secno">5.3</span>价格：两年降一到两个数量级，竞争焦点转到缓存</h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>时点</th>
+<th>代表模型</th>
+<th class="num">输入 / 输出 $/M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023-03</td>
+<td>GPT-4（8K）</td>
+<td class="num">30 / 60</td>
+</tr>
+<tr>
+<td>2024-05</td>
+<td>GPT-4o</td>
+<td class="num">5 / 15</td>
+</tr>
+<tr>
+<td>2026-07</td>
+<td>GPT-5.6 Sol</td>
+<td class="num">4 / 20</td>
+</tr>
+<tr>
+<td>2026-09</td>
+<td>GPT-6.1 Sol / Sonnet 5.5 / Argon 首发价</td>
+<td class="num"><strong>2 / 10</strong></td>
+</tr>
+<tr>
+<td>2026-10</td>
+<td>Haiku 5.5 / GPT-6 Luna</td>
+<td class="num">0.10 / 0.50</td>
+</tr>
+<tr>
+<td>2026-10</td>
+<td>DeepSeek V4.1-Flash（闲时）</td>
+<td class="num">0.15 / 0.60</td>
+</tr>
+</tbody>
+</table></div>
+<p>（2023–2024 的价格来自历史官方定价，本轮未复核<span class="badge badge-verify" title="待核实/未核实">待核实</span>）</p>
+<ul>
+<li><strong>前沿旗舰本身并没有变便宜</strong>：Astra 和 Fable 都是 $10 / $50。便宜的是"上一代旗舰的能力"：Sonnet 5.5 在 AA 指数上超过 Fable 5.1，价格只有后者的 1/5。</li>
+<li>价格战已经从标价转向<strong>缓存读价</strong>和<strong>峰谷价</strong>：DeepSeek 闲时 5 折，GLM Coding Plan 闲时 5 折。厂商也开始用"每任务成本"而不是"每 token 价格"来宣传。</li>
+<li>Google 和 Meta 用"首发价 / 贡献者档"补贴拉新：Argon 首发价是正式价的一半；Muse 的贡献者档用数据换低价。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-4"><span class="secno">5.4</span>开放与闭源的差距</h3>
+<ul>
+<li>AA 指数 v4.3.2 上，闭源第 1（57.6）和开放第 1（MiMo-V2.6-Pro 46.3）差约 11 分。开放第 1 大致相当于闭源模型 GPT-5.6 Sol（47.0）和 Grok 4.7（46.4）的水平，也就是<strong>落后约一代、3–6 个月</strong> <span class="badge badge-infer" title="推断">推断</span>。</li>
+<li>开放阵营的格局变了：
+<ul>
+<li>Meta 退出前沿开放（Muse Spark 闭源，1.2 权重的承诺尚未兑现）。</li>
+<li>中国厂商成了开放权重的主力，而且许可越来越宽：MIT（DeepSeek、MiMo、GLM-5.3-Flash）、Apache 2.0（Hy4）。</li>
+<li>欧美靠 Mistral Large 4、Nemotron 3 Ultra、Command A+ 和 Gemma 4 支撑。</li>
+</ul></li>
+<li>闭源厂商在网络安全、生物能力上采取分级放量（Mythos、Fairwind、Daybreak）。Mistral 公开把"开放权重不受拒答限制"作为卖点，这是两种路线的分歧点。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-5"><span class="secno">5.5</span>中国与美国</h3>
+<ul>
+<li><strong>能力</strong>：美国三家占据 AA 前 6；中国最好的是 MiMo-V2.6-Pro（46.3）和 Qwen3.8-Max-0902（45.4），落后约一代。</li>
+<li><strong>成本和调用量</strong>：中国模型在价格（低 5–60 倍）和 OpenRouter 用量上全面领先。</li>
+<li><strong>算力</strong>：智谱 GLM-5.3-Flash 全部推理跑在国产芯片上，称每 token 成本与 NVIDIA 相当；Kimi K3 支持其他 GPGPU；DeepSeek V4.1 把 KV cache 显存降到 1/4。在算力受限下，<strong>架构效率创新主要来自中国</strong> <span class="badge badge-infer" title="推断">推断</span>。</li>
+<li><strong>地缘</strong>：美国厂商对中国大陆不提供服务；Anthropic 公开谈"与中国竞争""防蒸馏"，从 Fable 5.1 起限制改写历史 thinking。海外开发者对"是否要用中国开放模型"也有顾虑，这正是 Meta 和 Mistral 主打"非中国开放模型"的原因。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-6"><span class="secno">5.6</span>MoE 与架构</h3>
+<ul>
+<li>前沿开放模型<strong>全部是 MoE</strong>，稀疏度越来越高：Kimi K3 896 选 16；DeepSeek V4.1 的激活参数只有 8B（输入侧）/ 16B（输出侧）；Qwen3.8-Flash-Next 125B 里只激活 6B。</li>
+<li>注意力层的创新集中在长上下文降本：DeepSeek 稀疏注意力、Kimi Delta Attention、GLM 线性加稀疏混合注意力（IndexPool）、Nemotron 的 Mamba 混合。</li>
+<li>量化感知训练（MXFP4 / NVFP4）成为标配。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-7"><span class="secno">5.7</span>长上下文</h3>
+<ul>
+<li><strong>1M 上下文在 2026 年已经普及</strong>：几乎所有主力模型都是 1M，只有 Grok 4.7（500K）和 ERNIE 5.1（128K）例外。</li>
+<li>新的竞争点是：
+<ul>
+<li><strong>长输出</strong>：Argon 1M 输出；DeepSeek 384K；豆包 256K；Claude Batch 300K。</li>
+<li><strong>超长上下文的检索准确率</strong>：Astra 在 MRCR 512K–1M 上 96.3%，Muse Spark 1.3 98.1%。</li>
+<li><strong>长上下文计价</strong>：GPT-6 Astra 超过 272K 整单加价；Grok 超过 200K 翻倍；Haiku 超过 100K 涨 5 倍；MiniMax 超过 512K 翻倍。</li>
+</ul></li>
+<li>对 Agent 来说，"把 1M 塞满"既贵又慢。OpenAI（跨窗口笔记 + 历史可搜索）和 Anthropic（compaction）都在用<strong>上下文管理</strong>代替"更长窗口"。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-5-8"><span class="secno">5.8</span>多模态与全模态</h3>
+<ul>
+<li>视觉输入已是标配；<strong>视频输入</strong>在 Gemini、Qwen3.8、豆包 2.1、Step 5、Kimi K3、MiniMax M3、MiMo 上普及。</li>
+<li>"视觉进入 Agent 循环"是 2026 年主线：模型渲染出自己的产物，看截图再修改（Qwen3.8、GLM-5.3-Flash、Kimi K3、MiMo）。</li>
+<li><strong>全模态（omni）</strong>：Gemini 3.8 Flash 输入含音频；Gemma 4 12B Unified；Amazon Nova 2 Omni；MiMo-V2.6 原生全模态。生成侧（图像、视频、音乐）大多仍是独立模型，如 Nano Banana 2.1、Seedance 2.5、MAI-Image-2.6。</li>
+</ul>
+<hr/>
+</section><h2 id="sec-6"><span class="secno">6</span>给内部 Agent 平台的选型观察（观察，不是结论）</h2>
+<section class="topic"><h3 id="sec-6-1"><span class="secno">6.1</span>分层路由：一个可参考的四档</h3>
+<figure class="diagram" data-src="flowchart TB
+  IN[用户请求 / 定时任务 / 事件] --&gt; R{路由器&lt;br/&gt;按任务难度、风险、合规域}
+  R --&gt;|难：架构设计、长程迁移、关键决策| T1[T1 旗舰&lt;br/&gt;Opus 5.5 / GPT-6 Astra / 未来 Argon]
+  R --&gt;|主循环：编码、办公、computer use| T2[T2 主力&lt;br/&gt;Sonnet 5.5 / GPT-6.1 Sol]
+  R --&gt;|子 Agent：压缩、摘要、分类、检索、浏览| T3[T3 经济&lt;br/&gt;Haiku 5.5 / GPT-6 Luna / Gemini 3.8 Flash]
+  R --&gt;|国内合规域或私有化| T4[T4 国产&lt;br/&gt;主力：Qwen3.8-Max / GLM-5.3 / 豆包 2.1 Pro&lt;br/&gt;经济：DeepSeek V4.1-Flash / GLM-5.3-Flash / MiMo-V2.6]
+  T1 -.升级.-&gt; T2
+  T2 -.失败或高风险时升级.-&gt; T1
+  T2 -.分派子任务.-&gt; T3" id="diagram-5"><pre class="mermaid">flowchart TB
+  IN[用户请求 / 定时任务 / 事件] --&gt; R{路由器&lt;br/&gt;按任务难度、风险、合规域}
+  R --&gt;|难：架构设计、长程迁移、关键决策| T1[T1 旗舰&lt;br/&gt;Opus 5.5 / GPT-6 Astra / 未来 Argon]
+  R --&gt;|主循环：编码、办公、computer use| T2[T2 主力&lt;br/&gt;Sonnet 5.5 / GPT-6.1 Sol]
+  R --&gt;|子 Agent：压缩、摘要、分类、检索、浏览| T3[T3 经济&lt;br/&gt;Haiku 5.5 / GPT-6 Luna / Gemini 3.8 Flash]
+  R --&gt;|国内合规域或私有化| T4[T4 国产&lt;br/&gt;主力：Qwen3.8-Max / GLM-5.3 / 豆包 2.1 Pro&lt;br/&gt;经济：DeepSeek V4.1-Flash / GLM-5.3-Flash / MiMo-V2.6]
+  T1 -.升级.-&gt; T2
+  T2 -.失败或高风险时升级.-&gt; T1
+  T2 -.分派子任务.-&gt; T3</pre><figcaption>图 5</figcaption></figure>
+<ul>
+<li>这和 Anthropic 官方推荐的"Opus 做领队、Haiku 做子 Agent"（Devin Fusion 也这么用），以及 OpenAI 的"Astra / Sol / Luna 分工"一致。</li>
+<li><strong>同一档里至少保留两家供应商</strong>，因为 safeguard 回退、限流、地区不可用都是常态。例如 Opus 5.5 的网络安全任务会被回退到 Opus 4.8；Fable 在 AutomationBench 上约 40% 的任务触发了回退。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-6-2"><span class="secno">6.2</span>哪些模型适合 Agent 循环</h3>
+<div class="table-scroll fc-nw" tabindex="0"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>观察 <span class="badge badge-infer" title="推断">推断</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长程稳定性</td>
+<td>Claude 5.5 系列和 GPT-6 系列在多小时任务和遵守边界上领先（越界、规避审批的评测分数最低）；Kimi K3 官方自认"过度主动"</td>
+</tr>
+<tr>
+<td>工具调用协议</td>
+<td>主力模型都支持 OpenAI Responses 或 Anthropic Messages 协议，国产（DeepSeek、Qwen、Step、豆包）大多两者都兼容，<strong>平台可以统一用一种协议</strong>。注意 GPT-6 Astra / 6.1 Sol 必须走 Responses 才能调工具</td>
+</tr>
+<tr>
+<td>思考内容回传</td>
+<td>Claude（preserved thinking）、Kimi K3、Qwen3.8 都要求原样回传历史思考，<strong>中途换模型会出问题</strong>。路由器最好"按会话固定模型"，只在子任务边界切换</td>
+</tr>
+<tr>
+<td>可控性</td>
+<td>需要"别擅自行动"的场景，Astra 更倾向于先问再做，Kimi K3 更激进；system prompt 和 AGENTS.md 要相应调整</td>
+</tr>
+<tr>
+<td>安全</td>
+<td>Opus 5.5 和 Fable 5.1 在 Gray Swan 提示注入测试中成功率最低；Argon 自称 IPI 鲁棒性领先；开放模型里 Mistral Large 4 的 B3 防御率 93.3%</td>
+</tr>
+</tbody>
+</table></div>
+</section><section class="topic"><h3 id="sec-6-3"><span class="secno">6.3</span>每任务成本：一个示意估算</h3>
+<p>假设一个典型 Agent 任务：<strong>50 步，每步上下文 60K tokens，缓存命中率 90%，每步输出 1.5K tokens（含思考）</strong>，即总输入 3M（其中缓存读 2.7M、未命中 0.3M）、总输出 75K。按标价计算，不含缓存写入费和工具费，也<strong>假设各模型消耗的 token 数相同</strong>（实际差异很大）。</p>
+<div class="table-scroll tall" tabindex="0"><table>
+<thead>
+<tr>
+<th>模型</th>
+<th class="num">估算每任务成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-6 Astra</td>
+<td class="num">~$9.45</td>
+</tr>
+<tr>
+<td>Claude Fable 5.1</td>
+<td class="num">~$7.42</td>
+</tr>
+<tr>
+<td>Claude Opus 5.5</td>
+<td class="num">~$3.24</td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td class="num">~$2.83（人民币价约 ¥18.9）</td>
+</tr>
+<tr>
+<td>Grok 4.7</td>
+<td class="num">~$2.40</td>
+</tr>
+<tr>
+<td>Qwen3.8-Max（国际价）</td>
+<td class="num">~$1.72（百炼人民币价约 ¥10.4）</td>
+</tr>
+<tr>
+<td>GPT-6.1 Sol / Sonnet 5.5 / Argon 首发价</td>
+<td class="num">~$1.62</td>
+</tr>
+<tr>
+<td>GLM-5.3</td>
+<td class="num">~$1.45（人民币价约 ¥9.9）</td>
+</tr>
+<tr>
+<td>Muse Spark 1.3</td>
+<td class="num">~$1.10</td>
+</tr>
+<tr>
+<td>Doubao-Seed-2.1-pro</td>
+<td class="num">~¥7.3（≈$1.06）</td>
+</tr>
+<tr>
+<td>Gemini 3.8 Flash（首发价，缓存价按 10% 假设）</td>
+<td class="num">~$0.71</td>
+</tr>
+<tr>
+<td>Step 5 Preview</td>
+<td class="num">~¥4.5（≈$0.66）</td>
+</tr>
+<tr>
+<td>Hy4 preview</td>
+<td class="num">~¥4.0（≈$0.57）</td>
+</tr>
+<tr>
+<td>Mistral Large 4 Preview</td>
+<td class="num">~$0.55</td>
+</tr>
+<tr>
+<td>MiniMax M3（五折价）</td>
+<td class="num">~¥2.4（≈$0.35）</td>
+</tr>
+<tr>
+<td>MiMo-V2.6-Pro</td>
+<td class="num">~$0.21</td>
+</tr>
+<tr>
+<td>DeepSeek V4.1-Flash</td>
+<td class="num">~$0.20（高峰）/ ~$0.10（闲时）</td>
+</tr>
+<tr>
+<td>Haiku 5.5 / GPT-6 Luna</td>
+<td class="num">~$0.09</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>缓存命中率的影响</strong>：命中率从 90% 掉到 30% 时，Opus 5.5 从 $3.24 涨到约 $10.1，GPT-6.1 Sol 从 $1.62 涨到约 $5.0，DeepSeek V4.1-Flash 从 $0.20 涨到约 $0.73。<strong>缓存命中率仍是第一成本指标</strong>，与深度版 §2.8 的结论一致。</p>
+<p>厂商博客里也普遍强调"更贵的模型反而更省"：Opus 5.5 用的 token 和步数更少，官方称比 Opus 5 便宜 40%；Astra 宣称单任务 API 成本低于前代。<strong>估算只能当量级参考，必须用自己的任务集实测"每成功任务成本"</strong> <span class="badge badge-infer" title="推断">推断</span>。</p>
+</section><section class="topic"><h3 id="sec-6-4"><span class="secno">6.4</span>国内合规选项</h3>
+<ul>
+<li><strong>对内</strong>（员工助理、研发提效）：可以考虑"海外旗舰 + 国产兜底"双轨。但要评估账号稳定性和数据出境：Anthropic、OpenAI 都不对中国大陆提供服务，企业主体与网络路径要先过法务。</li>
+<li><strong>对外</strong>（面向客户或公众）：优先用<strong>已备案的国产模型 API</strong>（豆包、通义、GLM、DeepSeek、混元、Kimi、阶跃、MiniMax），平台本身按要求做登记或备案。</li>
+<li><strong>私有化 / 数据不出域</strong>的现实选项（按规模）：
+<ul>
+<li>单机级：Qwen3.8-27B、Qwen3.8-Flash-Next、Gemma 4、Muse Glimmer 30B。</li>
+<li>中等：GLM-5.3-Flash（MIT，320B / 18B，已在国产芯片上量产）、DeepSeek V4.1-Flash（MIT）、MiniMax M3。</li>
+<li>大型：GLM-5.3、Hy4（Apache 2.0）、MiMo-V2.6-Pro（MIT）、Step 5（10-15 后）。</li>
+<li>超大：Kimi K3、Qwen3.8-Max。</li>
+</ul></li>
+<li><strong>许可证要逐个看</strong>：GLM-5.3 和 Kimi K3 是自定义许可，Qwen3.8-Max 的许可<span class="badge badge-verify" title="待核实/未核实">待核实</span>；MIT 和 Apache 2.0 的最省事。</li>
+</ul>
+</section><section class="topic"><h3 id="sec-6-5"><span class="secno">6.5</span>几条待团队讨论的问题</h3>
+<ol type="1">
+<li>路由策略按"任务类型"定（编码、办公、浏览），还是按"难度 / 风险"动态升降档？是否需要一个便宜模型先做难度分类？</li>
+<li>是否在平台层统一采用一种工具调用协议（Responses 或 Messages），再用适配层接国产模型？</li>
+<li>评测基线：建议用内部真实任务建一个小型评测集（参考 AutomationBench、GDPval 的形式），每次换模型都跑一遍"成功率 × 每任务成本"。</li>
+<li>各模型的 safeguard 回退和拒答怎么在审计日志里体现（例如 Opus 5.5 的网络安全任务被回退到 Opus 4.8）？</li>
+<li>是否要为"模型下线 / 改名"做抽象：OpenAI、Google、DeepSeek 近期都出现了模型 ID 自动重定向和弃用（3.7 Flash → 3.8 Flash、V4-Flash → V4.1-Flash）。</li>
+</ol>
+<hr/>
+</section><h2 id="sec-7"><span class="secno">7</span>待核实汇总</h2>
+<div class="table-scroll tall" tabindex="0"><table>
+<thead>
+<tr>
+<th>条目</th>
+<th>现状</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023–2025 年历史发布日期、早期价格（GPT-4 $30/$60 等）</td>
+<td>来自已知公开记录，本轮未逐条复核</td>
+</tr>
+<tr>
+<td>Gemini 4 Argon 的上下文长度、正式开放日期、model ID</td>
+<td>官方只公布了 1M 输出和价格</td>
+</tr>
+<tr>
+<td>Gemini 3.8 Flash 缓存价格</td>
+<td>未在官方页取到；估算按输入价的 10%</td>
+</tr>
+<tr>
+<td>Google 当前是否还有比 3.1 Pro 更新的 Pro 档 GA 模型</td>
+<td>只查到 3.1 Pro（02-19 预览）</td>
+</tr>
+<tr>
+<td>Gemma 4 家族首发日期、Muse Glimmer 上下文</td>
+<td>未查到一手来源</td>
+</tr>
+<tr>
+<td>Muse Spark 1.2 开放权重</td>
+<td>Meta 8 月承诺"即将开放"，截至 10-10 未见发布 <span class="badge badge-second" title="二手/非官方">二手</span></td>
+</tr>
+<tr>
+<td>DeepSeek V4-Pro 是否仍独立服务</td>
+<td>V4.1 发布稿说已路由到 Flash，定价页仍单列</td>
+</tr>
+<tr>
+<td>Mistral Large 4 权重日期（10-27 或 10-31）、许可证、上下文</td>
+<td>官方只说"月底"</td>
+</tr>
+<tr>
+<td>Qwen3.8-Max 开放权重的许可证；0902 快照是否开放</td>
+<td>二手来源称 0902 只有 API</td>
+</tr>
+<tr>
+<td>Step 5 Preview 权重（10-15）和许可、官方人民币价</td>
+<td>价格来自二手和百炼</td>
+</tr>
+<tr>
+<td>GLM-5.3-Flash 发布日期和 API 单价</td>
+<td>官方博客未写日期</td>
+</tr>
+<tr>
+<td>Hy4 preview 的 1M / 960K / 64K 规格和 Apache 2.0 许可</td>
+<td>来自 README 和腾讯云文档的二手摘要</td>
+</tr>
+<tr>
+<td>各国产模型具体型号的备案状态</td>
+<td>只确认了厂商整体有备案，具体型号未逐一核对</td>
+</tr>
+<tr>
+<td>Anthropic / OpenAI 对中国大陆的服务限制细节</td>
+<td>依据律所文章和既有政策，未取最新官方条款</td>
+</tr>
+<tr>
+<td>豆包 2.1 Pro 在 AA、LMArena 上的分数</td>
+<td>未在榜单前列找到</td>
+</tr>
+<tr>
+<td>匿名模型 "Space Bunny Alpha" 的来源</td>
+<td>未知</td>
+</tr>
+<tr>
+<td>K2 Horizon 375B（Institute of Foundation Models）机构背景</td>
+<td>未知</td>
+</tr>
+<tr>
+<td>Nova 2 价格、Muse 1.3 OSWorld 等</td>
+<td>二手聚合站</td>
+</tr>
+<tr>
+<td>LMArena 数据</td>
+<td>官方页面显示为 09-02 快照，本文用 BenchLeader 的 10-08 镜像</td>
+</tr>
+<tr>
+<td>汇率 1 USD ≈ 6.9 CNY</td>
+<td>由小米官方双币价反推</td>
+</tr>
+<tr>
+<td>TTFT（首 token 延迟）</td>
+<td>本轮未系统取数</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="sec-x51">附：主要一手来源</h2><div class="sources-block">
+<ul>
+<li>OpenAI：<a href="https://openai.com/index/gpt-6-astra/" rel="noopener" target="_blank">GPT-6 Astra</a> · <a href="https://openai.com/index/introducing-gpt-6-sol-and-luna/" rel="noopener" target="_blank">GPT-6 Sol / Luna</a> · <a href="https://openai.com/index/introducing-gpt-6-1-sol/" rel="noopener" target="_blank">GPT-6.1 Sol</a> · <a href="https://developers.openai.com/api/docs/guides/latest-model" rel="noopener" target="_blank">Using GPT-6</a> · <a href="https://developers.openai.com/api/docs/models/gpt-6-astra" rel="noopener" target="_blank">Astra 模型页</a> · <a href="https://developers.openai.com/api/docs/models/gpt-6.1-sol" rel="noopener" target="_blank">6.1 Sol 模型页</a> · <a href="https://openai.com/index/gpt-6-for-everyone/" rel="noopener" target="_blank">ChatGPT 中的 GPT-6</a> · <a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/" rel="noopener" target="_blank">停用 SWE-bench Verified</a></li>
+<li>Anthropic：<a href="https://www.anthropic.com/claude-opus-5-5" rel="noopener" target="_blank">Opus 5.5</a> · <a href="https://platform.claude.com/docs/en/models/opus-5-5/overview" rel="noopener" target="_blank">Opus 5.5 文档</a> · <a href="https://www.anthropic.com/claude-sonnet-5-5" rel="noopener" target="_blank">Sonnet 5.5</a> · <a href="https://www.anthropic.com/claude-haiku-5-5" rel="noopener" target="_blank">Haiku 5.5</a> · <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" rel="noopener" target="_blank">Fable / Mythos 5.1</a></li>
+<li>Google：<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/" rel="noopener" target="_blank">Gemini 4 Argon</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" rel="noopener" target="_blank">Gemini 3.8 Flash</a> · <a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash" rel="noopener" target="_blank">3.8 Flash 模型页</a> · <a href="https://ai.google.dev/gemini-api/docs/changelog" rel="noopener" target="_blank">API changelog</a> · <a href="https://ai.google.dev/gemma/docs/core" rel="noopener" target="_blank">Gemma 4</a></li>
+<li>Meta：<a href="https://dev.meta.ai/models/muse-spark" rel="noopener" target="_blank">Muse Spark 1.3</a> · <a href="https://dev.meta.ai/docs/pricing-rate-limits" rel="noopener" target="_blank">Meta Model API 定价</a> · <a href="https://ai.meta.com/blog/introducing-muse-spark-msl/" rel="noopener" target="_blank">Muse Spark 初版</a></li>
+<li>SpaceXAI：<a href="https://x.ai/news/grok-4-7" rel="noopener" target="_blank">Grok 4.7</a> · <a href="https://docs.x.ai/developers/models/grok-4.7" rel="noopener" target="_blank">文档</a></li>
+<li>Mistral：<a href="https://mistral.ai/news/mistral-large-4/" rel="noopener" target="_blank">Large 4</a></li>
+<li>其他海外：<a href="https://aws.amazon.com/nova/models/" rel="noopener" target="_blank">Amazon Nova</a> · <a href="https://microsoft.ai/news/mai-code-1-1-flash-br-better-faster-at-a-quarter-of-the-cost/" rel="noopener" target="_blank">MAI-Code-1.1-Flash</a> · <a href="https://cohere.com/blog/command-a-plus" rel="noopener" target="_blank">Cohere Command A+</a> · <a href="https://research.nvidia.com/labs/nemotron/Nemotron-3-Ultra/" rel="noopener" target="_blank">Nemotron 3 Ultra</a></li>
+<li>DeepSeek：<a href="https://www.deepseek.com/en/news/deepseek-v4-1-flash/" rel="noopener" target="_blank">V4.1-Flash</a> · <a href="https://api-docs.deepseek.com/quick_start/pricing" rel="noopener" target="_blank">定价</a> · <a href="https://www.deepseek.com/en/news/v4-preview/" rel="noopener" target="_blank">V4 预览</a></li>
+<li>阿里：<a href="https://www.alibabacloud.com/blog/603421" rel="noopener" target="_blank">Qwen3.8-Max</a> · <a href="https://help.aliyun.com/zh/model-studio/qwen3-8-max" rel="noopener" target="_blank">百炼 qwen3.8-max</a> · <a href="https://www.qwencloud.com/models/qwen3.8-max-0902" rel="noopener" target="_blank">QwenCloud 0902</a></li>
+<li>字节：<a href="https://www.thepaper.cn/newsDetail_forward_33434649" rel="noopener" target="_blank">豆包 2.1 发布（澎湃）</a> · <a href="https://www.volcengine.com/article/2945230" rel="noopener" target="_blank">Doubao-Seed-2.1-pro 0915</a></li>
+<li>月之暗面：<a href="https://www.kimi.com/blog/kimi-k3" rel="noopener" target="_blank">Kimi K3</a></li>
+<li>智谱：<a href="https://z.ai/blog/glm-5.3" rel="noopener" target="_blank">GLM-5.3</a> · <a href="https://z.ai/blog/glm-5.3-flash" rel="noopener" target="_blank">GLM-5.3-Flash</a> · <a href="https://docs.bigmodel.cn/cn/guide/start/pricing" rel="noopener" target="_blank">BigModel 定价</a></li>
+<li>小米：<a href="https://mimo.mi.com/docs/en-US/news/latest/v2-6" rel="noopener" target="_blank">MiMo-V2.6</a> · <a href="https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go" rel="noopener" target="_blank">价格</a></li>
+<li>腾讯：<a href="https://www.tencent.com/zh-cn/tencent-releases-and-open-sources-tencent-hy4-preview/" rel="noopener" target="_blank">Hy4 preview</a></li>
+<li>阶跃：<a href="https://www.stepfun.com/news/step-5-preview" rel="noopener" target="_blank">Step 5 Preview</a> · <a href="https://platform.stepfun.com/docs/zh/guides/models/step-5-preview" rel="noopener" target="_blank">文档</a></li>
+<li>MiniMax：<a href="https://www.minimax.io/blog/minimax-m3" rel="noopener" target="_blank">M3</a> · <a href="https://platform.minimax.cn/docs/pricing/overview" rel="noopener" target="_blank">定价</a></li>
+<li>百度：<a href="https://ernie.baidu.com/blog/zh/posts/ernie-5.1-0508-release/" rel="noopener" target="_blank">ERNIE 5.1</a> · <a href="https://cloud.baidu.cn/doc/qianfan/s/wmh4sv6ya" rel="noopener" target="_blank">千帆计费</a></li>
+<li>榜单：<a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" rel="noopener" target="_blank">AA Intelligence Index</a> · <a href="https://artificialanalysis.ai/leaderboards/models/" rel="noopener" target="_blank">AA 模型榜</a> · <a href="https://openrouter.ai/rankings" rel="noopener" target="_blank">OpenRouter Rankings</a> · <a href="https://lmarena.ai/leaderboard/text" rel="noopener" target="_blank">LMArena</a>（及 <a href="https://www.benchleader.com/benchmarks/lmarena_text" rel="noopener" target="_blank">BenchLeader 镜像</a>） · <a href="https://deepswe.datacurve.ai/blog/deepswe" rel="noopener" target="_blank">DeepSWE</a></li>
+</ul>
+<p>全文共引用 133 条链接、53 个域名（数字为引用次数）：</p><div class="domain-cloud"><span>openai.com<b>10</b></span><span>anthropic.com<b>8</b></span><span>developers.openai.com<b>6</b></span><span>ai.google.dev<b>6</b></span><span>artificialanalysis.ai<b>5</b></span><span>z.ai<b>5</b></span><span>openrouter.ai<b>4</b></span><span>blog.google<b>4</b></span><span>dev.meta.ai<b>4</b></span><span>deepseek.com<b>4</b></span><span>help.aliyun.com<b>4</b></span><span>mimo.mi.com<b>4</b></span><span>stepfun.com<b>3</b></span><span>models.fru.dev<b>2</b></span><span>benchleader.com<b>2</b></span><span>benchlm.ai<b>2</b></span><span>platform.claude.com<b>2</b></span><span>ai.meta.com<b>2</b></span><span>officechai.com<b>2</b></span><span>x.ai<b>2</b></span><span>docs.x.ai<b>2</b></span><span>mistral.ai<b>2</b></span><span>aws.amazon.com<b>2</b></span><span>microsoft.ai<b>2</b></span><span>cohere.com<b>2</b></span><span>research.nvidia.com<b>2</b></span><span>api-docs.deepseek.com<b>2</b></span><span>alibabacloud.com<b>2</b></span><span>qwencloud.com<b>2</b></span><span>thepaper.cn<b>2</b></span><span>volcengine.com<b>2</b></span><span>kimi.com<b>2</b></span><span>docs.bigmodel.cn<b>2</b></span><span>tencent.com<b>2</b></span><span>platform.stepfun.com<b>2</b></span><span>minimax.io<b>2</b></span><span>platform.minimax.cn<b>2</b></span><span>ernie.baidu.com<b>2</b></span><span>cloud.baidu.cn<b>2</b></span><span>atlas.kevinhu.io<b>1</b></span><span>arxiv.org<b>1</b></span><span>trustloud.com<b>1</b></span><span>orcarouter.ai<b>1</b></span><span>mercatus-ai.com<b>1</b></span><span>saassentinel.com<b>1</b></span><span>cnblogs.com<b>1</b></span><span>huggingface.co<b>1</b></span><span>github.com<b>1</b></span><span>yicai.com<b>1</b></span><span>cloud.tencent.cn<b>1</b></span><span>pacgatelaw.com<b>1</b></span><span>lmarena.ai<b>1</b></span><span>deepswe.datacurve.ai<b>1</b></span></div></div>

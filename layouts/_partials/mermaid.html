@@ -1,0 +1,45 @@
+<script type="module">
+
+const figs=[...document.querySelectorAll('figure.diagram')];
+// gantt milestone labels: mermaid sometimes lets an outside label overlap its own diamond;
+// re-anchor every outside label to the on-screen box of its milestone (presentation only)
+function fixGantt(svg){
+  if(!svg||svg.getAttribute('aria-roledescription')!=='gantt')return;
+  const inv=svg.getScreenCTM()&&svg.getScreenCTM().inverse();if(!inv)return;
+  const pt=svg.createSVGPoint();
+  const toSvg=(x,y)=>{pt.x=x;pt.y=y;return pt.matrixTransform(inv);};
+  svg.querySelectorAll('rect.task').forEach(r=>{
+    const t=svg.querySelector('[id="'+r.id+'-text"]');if(!t||!r.id)return;
+    const cls=t.getAttribute('class')||'';const b=r.getBoundingClientRect();
+    if(/taskTextOutsideLeft/.test(cls)){t.setAttribute('x',toSvg(b.left,0).x-5);t.setAttribute('text-anchor','end');t.style.textAnchor='end';}
+    else if(/taskTextOutsideRight/.test(cls)){t.setAttribute('x',toSvg(b.right,0).x+5);t.setAttribute('text-anchor','start');t.style.textAnchor='start';}
+  });
+}
+function fallback(){figs.forEach(f=>{f.classList.add('fallback');const p=f.querySelector('pre.mermaid');p.textContent=f.dataset.src;});document.documentElement.dataset.mermaid='fallback';}
+if(figs.length){
+  let mermaid=null;
+  try{ mermaid=(await import({{ .Params.mermaid_url | default site.Params.mermaidURL | jsonify | safeJS }})).default; }catch(e){ console.warn('mermaid load failed',e); }
+  if(!mermaid){fallback();}
+  else{
+    const css=getComputedStyle(document.documentElement);
+    window.renderMermaid=async function(){
+      const dark=document.documentElement.dataset.theme==='dark';
+      const v=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',fontFamily:"'Noto Serif SC','Noto Serif CJK SC',serif",
+        flowchart:{htmlLabels:true,curve:'basis',useMaxWidth:true},gantt:{useMaxWidth:true,barHeight:18,barGap:5,topPadding:46,leftPadding:96,gridLineStartPadding:30,fontSize:12,sectionFontSize:13,numberSectionStyles:2},timeline:{useMaxWidth:true,disableMulticolor:false},
+        themeVariables:dark?{darkMode:true,background:v('--bg-surface'),primaryColor:'#11312e',primaryTextColor:'#e8eaf0',primaryBorderColor:'#2dd4bf',lineColor:'#8b9ab0',secondaryColor:'#2a2340',tertiaryColor:'#1b2230',clusterBkg:'#0f151e',clusterBorder:'#a78bfa',edgeLabelBackground:'#131920',fontSize:'14px',titleColor:'#e8eaf0',sectionBkgColor:'rgba(45,212,191,.08)',altSectionBkgColor:'rgba(167,139,250,.07)',sectionBkgColor2:'rgba(45,212,191,.08)',taskBkgColor:'#2dd4bf',taskBorderColor:'#2dd4bf',taskTextColor:'#07090f',taskTextOutsideColor:'#e8eaf0',taskTextLightColor:'#e8eaf0',taskTextDarkColor:'#e8eaf0',taskTextClickableColor:'#e8eaf0',activeTaskBkgColor:'#f59e0b',activeTaskBorderColor:'#f59e0b',doneTaskBkgColor:'#5f6b7d',doneTaskBorderColor:'#5f6b7d',gridColor:'rgba(255,255,255,.12)',todayLineColor:'#f87171',cScale0:'#134e4a',cScale1:'#3b2f63',cScale2:'#5a3d0e',cScale3:'#1e3a5f',cScale4:'#134e4a',cScale5:'#3b2f63',cScale6:'#5a3d0e',cScale7:'#1e3a5f',cScale8:'#134e4a',cScale9:'#3b2f63',cScale10:'#5a3d0e',cScale11:'#1e3a5f',cScaleLabel0:'#e8eaf0',cScaleLabel1:'#e8eaf0',cScaleLabel2:'#e8eaf0',cScaleLabel3:'#e8eaf0',cScaleLabel4:'#e8eaf0',cScaleLabel5:'#e8eaf0',cScaleLabel6:'#e8eaf0',cScaleLabel7:'#e8eaf0',cScaleLabel8:'#e8eaf0',cScaleLabel9:'#e8eaf0',cScaleLabel10:'#e8eaf0',cScaleLabel11:'#e8eaf0'}
+          :{primaryColor:'#e6f6f4',primaryTextColor:'#1c1917',primaryBorderColor:'#0d9488',lineColor:'#78716c',secondaryColor:'#f1ecff',tertiaryColor:'#fdf6e7',clusterBkg:'#fdfbf7',clusterBorder:'#6d28d9',edgeLabelBackground:'#faf7f2',fontSize:'14px',titleColor:'#1c1917',sectionBkgColor:'rgba(13,148,136,.07)',altSectionBkgColor:'rgba(109,40,217,.05)',sectionBkgColor2:'rgba(13,148,136,.07)',taskBkgColor:'#0d9488',taskBorderColor:'#0d9488',taskTextColor:'#ffffff',taskTextOutsideColor:'#1c1917',taskTextLightColor:'#1c1917',taskTextDarkColor:'#1c1917',taskTextClickableColor:'#1c1917',activeTaskBkgColor:'#b45309',activeTaskBorderColor:'#b45309',doneTaskBkgColor:'#a8a29e',doneTaskBorderColor:'#a8a29e',gridColor:'rgba(0,0,0,.12)',todayLineColor:'#dc2626',cScale0:'#ccfbf1',cScale1:'#ede9fe',cScale2:'#fef3c7',cScale3:'#e0f2fe',cScale4:'#ccfbf1',cScale5:'#ede9fe',cScale6:'#fef3c7',cScale7:'#e0f2fe',cScale8:'#ccfbf1',cScale9:'#ede9fe',cScale10:'#fef3c7',cScale11:'#e0f2fe',cScaleLabel0:'#1c1917',cScaleLabel1:'#1c1917',cScaleLabel2:'#1c1917',cScaleLabel3:'#1c1917',cScaleLabel4:'#1c1917',cScaleLabel5:'#1c1917',cScaleLabel6:'#1c1917',cScaleLabel7:'#1c1917',cScaleLabel8:'#1c1917',cScaleLabel9:'#1c1917',cScaleLabel10:'#1c1917',cScaleLabel11:'#1c1917'}});
+      for(const f of figs){
+        const p=f.querySelector('pre.mermaid');p.removeAttribute('data-processed');p.textContent=f.dataset.src;
+        try{await mermaid.run({nodes:[p]});f.classList.remove('fallback');
+          fixGantt(p.querySelector('svg'));
+          const svg=p.querySelector('svg'),cw=f.clientWidth-36;
+          if(svg&&svg.viewBox&&svg.viewBox.baseVal&&svg.viewBox.baseVal.width>cw){const nw=svg.viewBox.baseVal.width;svg.style.maxWidth='none';svg.style.width=Math.max(cw,Math.round(nw*0.8))+'px';svg.style.height='auto';f.classList.add('wide');}}
+        catch(e){console.warn('mermaid render failed',f.id,e);f.classList.add('fallback');p.textContent=f.dataset.src;}
+      }
+      document.documentElement.dataset.mermaid='done';
+    };
+    await window.renderMermaid();
+  }
+}else{document.documentElement.dataset.mermaid='done';}
+</script>

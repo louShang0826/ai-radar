@@ -1,0 +1,25 @@
+{{ define "head" }}<link href="{{ "pagefind/pagefind-ui.css" | relURL }}" rel="stylesheet">{{ end }}
+{{ define "main" }}
+<div class="site-wrap">
+  <header class="site-head small">
+    <div class="site-kicker">Search</div>
+    <h1 class="site-title">全文搜索</h1>
+    <p class="site-desc">按词搜索全部报告正文（Pagefind，静态索引，不上传任何查询）。</p>
+  </header>
+  <div id="search" class="pf-wrap"></div>
+  <noscript><p class="site-desc">搜索需要启用 JavaScript。</p></noscript>
+  <p class="pf-note" id="pfNote" hidden>搜索索引还没生成：本地预览请先运行 <code>hugo</code> 再运行 <code>pagefind --site public</code>，然后用静态服务器打开 public/。</p>
+</div>
+{{ end }}
+{{ define "scripts" }}
+<script src="{{ "pagefind/pagefind-ui.js" | relURL }}" onerror="document.getElementById('pfNote').hidden=false"></script>
+<script>
+addEventListener('DOMContentLoaded',function(){
+  if(!window.PagefindUI){document.getElementById('pfNote').hidden=false;return}
+  var q=new URLSearchParams(location.search).get('q')||'';
+  var ui=new PagefindUI({element:'#search',bundlePath:{{ "pagefind/" | relURL }},showImages:false,showSubResults:true,resetStyles:false,
+    translations:{placeholder:'搜索报告，例如：Muse、沙箱、缓存价格',zero_results:'没有找到 “[SEARCH_TERM]”',many_results:'找到 [COUNT] 条结果',one_result:'找到 1 条结果',load_more:'加载更多',filters_label:'筛选',search_label:'搜索'}});
+  if(q)ui.triggerSearch(q);
+});
+</script>
+{{ end }}

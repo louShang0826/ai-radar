@@ -1,0 +1,26 @@
+# 新报告的 meta.yaml 示例。必填：summary、tags；其余可选。
+# 标题默认取自 Markdown 的 front matter title 或唯一的一级标题；日期取自 front matter 的 date，
+# 都没有时日期 = 当天。建议在这里显式写上：
+# title: "报告标题"
+date: "2026-10-10"
+summary: '一两句话的摘要，显示在首页卡片和报告标题下方。'
+tags: ["AI Agent", "行业动态"]
+
+# 封面图说明（配合 --hero hero.png 使用；没有封面时首页显示渐变占位）
+hero_alt: "封面信息图的替代文字"
+hero_caption: "封面图说明：所有数字与日期均取自原文。"
+
+# 速览卡片（可选；不写则不显示速览）。允许少量 HTML。
+quick:
+  - '<strong>要点一</strong>：……'
+
+# 渲染选项（与单页版 build.py 相同，按需开启）
+key_sections: ["关键结论"]        # 这些章节下的要点列表渲染成卡片网格
+# card_sections: ["产品卡片"]     # 这些章节下的 h3/h4 渲染成产品卡片
+# card_heading: h4
+# card_groups: [["大厂", "big", "大厂"], ["初创", "startup", "初创"]]
+# update_blocks: ["状态更正"]
+# extra_markers: [["The Information", "note"]]   # 额外的证据标注关键词 -> 徽章样式
+show_table_count: true
+diagram_label: "张图表"
+footer: "报告名 · 信息截至 YYYY-MM-DD（北京时间）"

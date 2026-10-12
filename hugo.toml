@@ -1,0 +1,44 @@
+# ⚠️ 部署前只需改这一行：https://<GitHub 用户名>.github.io/<仓库名>/  （结尾要有 /）
+# GitHub Actions 部署时会用 configure-pages 给出的真实地址覆盖它（见 .github/workflows/deploy.yml），
+# 所以这里写错也不会影响线上；它主要用于本地 `hugo` 构建和 RSS 里的绝对链接。
+baseURL = 'https://USERNAME.github.io/REPO/'
+locale = 'zh-CN'
+defaultContentLanguage = 'zh-cn'
+title = 'Shuang · 行业深读'
+hasCJKLanguage = true
+timeZone = 'Asia/Shanghai'
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 24
+
+[permalinks]
+  [permalinks.page]
+    reports = '/reports/:slug/'
+
+[taxonomies]
+  tag = 'tags'
+
+[outputs]
+  home = ['HTML', 'RSS']
+  section = ['HTML', 'RSS']
+  term = ['HTML', 'RSS']
+
+[params]
+  description = 'AI Agent 平台、大模型与个人 Agent 的行业深读：产品拆解、技术实现、证据标注。'
+  subtitle = 'Industry Deep Reads'
+  mermaidURL = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
+  # repo = 'https://github.com/USERNAME/REPO'   # 填了会在页脚显示仓库链接
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[imaging]
+  resampleFilter = 'Lanczos'
+  [imaging.webp]
+    quality = 85
+
+# 报告正文是 scripts/new_report.py 预渲染好的 HTML（content/reports/<slug>/index.html），
+# 新版 Hugo 默认不允许 HTML 内容文件，这里显式放行 HTML 和 Markdown 两种内容格式。
+[security]
+  allowContent = ['^text/html$', '^text/markdown$']

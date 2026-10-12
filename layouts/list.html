@@ -1,0 +1,12 @@
+{{ define "main" }}
+<div class="site-wrap">
+  <header class="site-head small">
+    <div class="site-kicker">{{ if eq .Kind "term" }}标签{{ else }}列表{{ end }}</div>
+    <h1 class="site-title">{{ if eq .Kind "term" }}# {{ end }}{{ .Title }}</h1>
+    <div class="site-stats"><span>{{ len .Pages }} 篇报告</span>{{ if eq .Kind "term" }}<a href="{{ "tags/" | relURL }}">全部标签 →</a>{{ end }}</div>
+  </header>
+  <section class="r-grid">
+    {{ range .Pages.ByDate.Reverse }}{{ partial "card.html" . }}{{ end }}
+  </section>
+</div>
+{{ end }}

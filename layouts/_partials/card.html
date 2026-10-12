@@ -1,0 +1,14 @@
+{{- /* Report card for home / list / tag pages. Context: a report page. */ -}}
+{{- $hero := .Resources.GetMatch "hero.*" -}}
+<article class="r-card">
+  <a class="r-thumb" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+    {{- with $hero }}{{ $t := .Fill "720x405 webp q80 Top" }}<img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">
+    {{- else }}<span class="r-thumb-ph"><span>{{ $.Title }}</span></span>{{ end -}}
+  </a>
+  <div class="r-body">
+    <div class="r-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><span>{{ .Params.read_min }} 分钟</span>{{ with .Params.stats }}<span>{{ .diagrams }} 图 · {{ .tables }} 表</span>{{ end }}</div>
+    <h2 class="r-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <p class="r-sum">{{ .Summary | plainify }}</p>
+    <div class="tag-row">{{ range $i, $t := .GetTerms "tags" }}{{ if lt $i 6 }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}{{ end }}</div>
+  </div>
+</article>

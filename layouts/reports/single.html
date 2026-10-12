@@ -1,0 +1,31 @@
+{{ define "bodyclass" }}report{{ end }}
+{{ define "main" }}
+<div class="progress" id="progress"></div>
+<div class="page" id="top">
+<main class="main">
+<header class="article-head">
+{{ .Params.marker_bar_html | safeHTML }}
+<div class="article-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time><span>{{ index (slice "周日" "周一" "周二" "周三" "周四" "周五" "周六") (int .Date.Weekday) }}</span><span>{{ .Params.read_min }} 分钟阅读</span><span>{{ .Params.source_count }} 个信源域名 · {{ .Params.link_count }} 条引用</span></div>
+<h1 class="article-title" data-pagefind-meta="title">{{ .Title }}</h1>
+{{ with .Params.subtitle }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+<p class="article-summary">{{ .Summary | plainify }}</p>
+<div class="tag-row">{{ range $i, $t := .GetTerms "tags" }}<a class="tag {{ index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}" href="{{ .RelPermalink }}" data-pagefind-filter="标签">{{ .LinkTitle }}</a>{{ end }}</div>
+{{ with .Resources.GetMatch "hero.*" }}{{ $w := .Resize "1600x webp q86" }}
+<figure class="article-hero"><img src="{{ $w.RelPermalink }}" alt="{{ $.Params.hero_alt }}" width="{{ $w.Width }}" height="{{ $w.Height }}" data-zoom title="点击查看大图" data-pagefind-meta="image[src]">{{ with $.Params.hero_caption }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>
+{{ end }}
+<div data-pagefind-ignore>{{ .Params.quick_html | safeHTML }}</div>
+</header>
+<article class="prose" id="article" data-pagefind-body>
+{{ .Content }}
+</article>
+</main>
+<aside class="toc" id="toc" data-open="false" aria-label="目录" data-pagefind-ignore><button class="toc-toggle" id="tocToggle" aria-expanded="false"><span>目录 · CONTENTS</span><span class="prog" id="tocProg">0%</span></button><nav class="toc-body" id="tocBody">{{ .Params.toc_html | safeHTML }}</nav></aside>
+</div>
+<div class="img-zoom" id="imgZoom"><img alt="" id="imgZoomImg"></div>
+{{ end }}
+{{ define "footer" }}{{ with .Params.footer }}{{ . }}{{ else }}{{ .Title }}{{ end }} · <a href="{{ "" | relURL }}">返回首页</a>{{ end }}
+{{ define "scripts" }}
+{{- $js := resources.Get "js/report.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}"></script>
+{{ if .Params.has_mermaid }}{{ partial "mermaid.html" . }}{{ end }}
+{{ end }}

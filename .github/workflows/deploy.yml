@@ -1,0 +1,77 @@
+# 推送到 main（或在 Actions 页手动触发）时：构建 Hugo 站点 -> 生成 Pagefind 搜索索引 -> 发布到 GitHub Pages
+# 仓库设置里需把 Settings → Pages → Build and deployment → Source 设为 "GitHub Actions"。
+# 正文已由 scripts/new_report.py 在本地预渲染并提交，CI 里不需要 Python / pandoc。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  HUGO_VERSION: 0.167.0
+  PAGEFIND_VERSION: 1.5.2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Hugo (extended)
+        run: |
+          wget -q -O "${RUNNER_TEMP}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+          hugo version
+
+      - name: Install Pagefind (extended, 含中文分词)
+        run: |
+          wget -q -O- "https://github.com/CloudCannon/pagefind/releases/download/v${PAGEFIND_VERSION}/pagefind_extended-v${PAGEFIND_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
+            | tar -xz -C "${RUNNER_TEMP}"
+          sudo install "${RUNNER_TEMP}/pagefind_extended" /usr/local/bin/pagefind
+          pagefind --version
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Hugo
+        env:
+          HUGO_ENVIRONMENT: production
+          TZ: Asia/Shanghai
+        # baseURL 用 Pages 实际地址覆盖 hugo.toml 里的占位符（项目页形如 https://<user>.github.io/<repo>/）
+        run: hugo --minify --gc --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Build search index (Pagefind)
+        run: pagefind --site public
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

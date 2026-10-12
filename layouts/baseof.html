@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+<meta name="generator" content="Hugo {{ hugo.Version }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){var t="dark";try{t=localStorage.getItem("report-theme")||"dark"}catch(e){}document.documentElement.dataset.theme=t})()</script>
+{{- $css := slice (resources.Get "css/report.css") (resources.Get "css/site.css") | resources.Concat "css/bundle.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+{{- with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
+{{- if not .IsHome }}{{ with site.Home.OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}{{ end }}
+{{ block "head" . }}{{ end }}
+</head>
+<body class="{{ block "bodyclass" . }}{{ end }}">
+<div class="orb-field" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+{{ partial "nav.html" . }}
+{{ block "main" . }}{{ end }}
+<footer>{{ block "footer" . }}{{ site.Title }} · 由 Hugo 生成{{ end }}{{ with site.Params.repo }} · <a href="{{ . }}">源码</a>{{ end }} · <a href="{{ "index.xml" | relURL }}">RSS</a></footer>
+{{- $js := resources.Get "js/site.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}"></script>
+{{ block "scripts" . }}{{ end }}
+</body>
+</html>
