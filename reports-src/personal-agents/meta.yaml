@@ -1,12 +1,12 @@
 site_name: "Shuang · 行业深读"
 date: "2026-10-10"
-summary: '截至 2026-10-10：个人 Agent 的形态已经趋同，初创是先行者，大厂在 2026 年 9 月集中跟进；初创的护城河要么是"入口和体验"，要么是"开放性"；国内的瓶颈是生态墙，不是模型。初创共盘点 26 个候选，纳入 14 个。'
-tags: ["个人 Agent", "大厂", "初创", "Meta Muse", "OpenAI Dots", "Instinct", "Poke", "Genspark Claw", "Manus Cue", "OpenClaw", "托管龙虾", "安全架构", "Agent 身份"]
-hero_alt: "国内外个人 Agent 信息图：海外大厂五家上线时间、海外初创先行与被挤压、初创盘点 26/14/12、两类护城河、国内路线与状态变化、商业模式"
+summary: '截至 2026-10-10：个人 Agent 的形态已经趋同，初创是先行者，大厂在 2026 年 8–9 月集中跟进；初创的护城河要么是"入口和体验"，要么是"开放性"；国内的瓶颈是生态墙，不是模型。初创共盘点 26 个候选，纳入 14 个。'
+tags: ["个人 Agent", "大厂", "初创", "Meta Muse", "OpenAI Dots", "Grok Bot", "Instinct", "Poke", "Genspark Claw", "Manus Cue", "OpenClaw", "托管龙虾", "安全架构", "Agent 身份"]
+hero_alt: "国内外个人 Agent 信息图：海外大厂六家上线时间、海外初创先行与被挤压、初创盘点 26/14/12、两类护城河、国内路线与状态变化、商业模式"
 hero_caption: "信息图由报告第 1、2、4、5 节要点排版生成（HTML/CSS 渲染，非 AI 生图）；所有数字与日期均取自原文，【二手】等标注随数据保留。"
 quick:
-  - '<strong>海外大厂：2026 年 5–10 月，五家都推出了"常驻云端的个人 Agent"</strong>：Google Gemini Spark（05-19）、Meta Muse（09-08）、Anthropic Claude（Cowork 并入所有对话，09-16）、Microsoft Copilot Autopilot（09-25，私测）、OpenAI Dots（09-29）；Apple Siri AI 和 Amazon Alexa+ 走设备或系统助手路线，作为参照。'
-  - '<strong>形态已经趋同，初创是先行者</strong>：一人一机、常驻、主动、IM 或短信入口、敏感操作需审批，这套形态是 OpenClaw、Poke、Lindy、Genspark、Instinct 先跑出来的，大厂在 2026 年 9 月集中跟进（Muse 公开承认"深受 OpenClaw 启发"）。'
+  - '<strong>海外大厂：2026 年 5–10 月，六家都推出了"常驻云端的个人 Agent"</strong>：Google Gemini Spark（05-19）、SpaceXAI / Cursor Grok Bot（08-11，beta）、Meta Muse（09-08）、Anthropic Claude（Cowork 并入所有对话，09-16）、Microsoft Copilot Autopilot（09-25，私测）、OpenAI Dots（09-29）；Apple Siri AI 和 Amazon Alexa+ 走设备或系统助手路线，作为参照。'
+  - '<strong>形态已经趋同，初创是先行者</strong>：一人一机、常驻、主动、IM 或短信入口、敏感操作需审批，这套形态是 OpenClaw、Poke、Lindy、Genspark、Instinct 先跑出来的，大厂在 2026 年 8–9 月集中跟进（Grok Bot、Muse、Dots 等；Muse 公开承认"深受 OpenClaw 启发"）。'
   - '<strong>Muse 和 Dots 上线后，初创公司开始被正面挤压</strong>：Poke 被 Cognition 收购（07 月），The Browser Company 被 Atlassian 收购（Dia 转向工作场景）；Instinct 在 Muse 之后仍拿到 100 亿美元估值（09-28 C 轮融资 10 亿美元）。'
   - '<strong>初创的护城河要么是"入口和体验"，要么是"开放性"</strong>：Poke 和 Instinct 没有 App，只用短信，人格化强；OpenClaw、Hermes、Rabbit OS3 支持自带模型（BYOK）、可以接入第三方 Agent、能控制多台设备；被收购或转向（Poke、Dia、Lindy 转企业）将是常态。'
   - '<strong>国内的瓶颈是生态墙，不是模型</strong>：大厂多在内测、灰度或传闻阶段（Handy Bot 已被官方否认，QClaw 将于 12-24 停运）；初创主要有两条路线，模型公司的"托管龙虾"（MiniMax MaxClaw、Kimi）和系统或终端路线（智谱 AutoGLM、阶跃 Amoo、Today AI），国内还没有一家初创做出 Instinct 或 Poke 那样的爆款消费级个人 Agent。'

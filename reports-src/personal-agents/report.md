@@ -17,8 +17,9 @@
 
 ### 1.1 市场格局
 
-**海外大厂：2026 年 5–10 月，五家都推出了"常驻云端的个人 Agent"。**
+**海外大厂：2026 年 5–10 月，六家都推出了"常驻云端的个人 Agent"。**
 - Google Gemini Spark（05-19）
+- SpaceXAI / Cursor Grok Bot（08-11，beta）
 - Meta Muse（09-08）
 - Anthropic Claude，Cowork 并入所有对话（09-16）
 - Microsoft Copilot Autopilot（09-25，私测）
@@ -48,9 +49,9 @@ Apple Siri AI 和 Amazon Alexa+ 走的是设备或系统助手路线，作为参
 
 ### 1.2 关键判断
 
-1. **形态已经趋同，初创是先行者。** 一人一机、常驻、主动、IM 或短信入口、敏感操作需审批，这套形态是 OpenClaw、Poke、Lindy、Genspark、Instinct 先跑出来的，大厂在 2026 年 9 月集中跟进（Muse 公开承认"深受 OpenClaw 启发"）。各家的差异集中在三点：
+1. **形态已经趋同，初创是先行者。** 一人一机、常驻、主动、IM 或短信入口、敏感操作需审批，这套形态是 OpenClaw、Poke、Lindy、Genspark、Instinct 先跑出来的，大厂在 2026 年 8–9 月集中跟进（Grok Bot、Muse、Dots 等；Muse 公开承认"深受 OpenClaw 启发"）。各家的差异集中在三点：
    - 执行环境：常驻 VM，还是按任务即用即毁。
-   - Agent 有没有独立身份。
+   - Agent 有没有独立身份，以及多 Bot 之间是否隔离（Grok Bot 让多个具名 Bot 共享同一台电脑，官方明确说安全边界在账户级）。
    - 面向消费者还是企业。
 2. **初创的护城河要么是"入口和体验"，要么是"开放性"。**
    - 入口和体验：Poke 和 Instinct 没有 App，只用短信，人格化强；Perplexity 有浏览器。
@@ -346,6 +347,79 @@ flowchart LR
   - 消费者版只是 Cowork 预览。
   - 用量计费的成本难以预测。
 - **来源**：[Microsoft 官方博客 09-25](https://blogs.microsoft.com/blog/2026/09/25/introducing-the-new-copilot-with-home-code-and-autopilot/)、[Copilot Cowork GA](https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/16/copilot-cowork-is-now-generally-available/)、[个人账户变更](https://support.microsoft.com/en-us/microsoft-365-copilot/learning/changes-microsoft-copilot-app)、[MXC](https://blogs.windows.com/windowsdeveloper/2026/10/07/microsoft-execution-containers-policy-driven-containment-for-ai-agents/)
+
+#### SpaceXAI（Cursor）：Grok Bot
+
+- **厂商归属**：
+  - 发布方是 SpaceXAI，由 SpaceXAI 与 Cursor 联合推出。按官方公告和媒体报道：
+    - SpaceX 于 2026-02 并入 xAI。
+    - 2026-04 与 Cursor 签订合作和收购协议。
+    - 2026-08-14 完成对 Cursor 的收购（媒体报道作价 600 亿美元）。
+  - 官方文档说明，Grok Bot 运行在 Cursor 托管的云电脑上，计费和隐私走 Cursor 账户，管理后台在 Cursor dashboard。
+  - 因此本文把它归入**大厂（海外）**。
+  - 官网和文档的署名写作"SpaceXSI"，新闻稿和媒体多写"SpaceXAI"，命名不一致【待核实】。
+- **当前状态/发布时间**：
+  - 2026-08-11（周二）发布早期 beta。日期依据是新闻稿中的"周二"，加上非官方 README【待核实，未找到带日期的官方页】。
+  - 支持 macOS、Windows、Linux、iOS、Android。
+  - 企业版目前是候补名单。
+- **迭代路线**：
+  - 已发布：
+    - 起点是内部原型，公告称在公司内部"迅速推开"。
+    - 公开 beta。
+    - 团队和企业管控（Team Rules、Network Controls、Enforce Auto-review 等，文档更新于 2026-09 至 10 月）。
+    - 可以把编码任务委派给 Cursor Cloud Agents。
+  - 已宣布或传闻：公开渠道未找到路线图【待核实】。
+- **核心定位**：
+  - "AI 队友"（AI teammates）：给 Bot 起名字、定岗位，像同事一样发消息交派工作。
+  - 目标用户：SuperGrok 和 Cursor 付费个人用户、团队；企业用户在候补名单上。
+  - 入口：桌面和手机 App，以及与 Bot 的私聊或群聊。
+  - 场景：
+    - 销售外联和 CRM 更新。
+    - 运营（新员工入职、处理 Gmail 里的发票）。
+    - 营销。
+    - 复现 bug、提工单、修复代码。
+- **主要特点**：
+  - 多 Bot 并行：一个"幕僚长" Bot 统筹多个专职 Bot。Bot 之间可以互相发消息，也可以在群聊里自行协调。
+  - 演示一次即可学会流程：用户做一遍，Bot 跟着学，保存为技能或例行任务（routine），之后自动重跑。
+  - 记忆跨会话累积，随时间变得更主动。
+  - 可以操作没有 API 或 MCP 的网站。
+- **技术实现**（据官方文档和产品界面）：
+  - **执行环境**：
+    - **每个用户一台常驻 Firecracker microVM**，带浏览器、桌面、文件系统和终端，由该用户的所有 Bot 共享。
+    - 每个 Bot 在共享电脑上有自己的屏幕，可以并行操作。
+    - 合上笔记本后 Bot 照常工作；用户可以实时观看、随时接管。
+  - **模型**：文档只写"调用模型提供方"，具体模型未公开【待核实】。
+  - **记忆**：每个 Bot 保留稳定偏好、岗位上下文和工作摘要，对话按 Bot 隔离。Bot 之间通过共享文件、私信、群聊传递上下文。
+  - **工具和连接器**：
+    - MCP 连接器在账户级生效（如 Gmail、Notion、GitHub），可从 Marketplace 安装连接器和打包技能。
+    - 技能库所有 Bot 共用。
+    - 例行任务（routine）可定时触发（间隔至少 5 分钟），也可由事件触发（如 Slack 消息、GitHub 通知），每个 Bot 最多 50 个。
+    - 支持后台子 Agent，以及委派给 Cursor Cloud Agents。
+    - 在用户本机执行动作需要逐项审批。
+  - **安全与权限**：
+    - 对外发送消息先生成**草稿卡片**，由用户确认（人在回路）。
+    - **Auto-review** 自动审查 shell 命令、插件调用、computer use、自动化写操作和子 Agent 委派，结果分为放行、需审批、拒绝三种；企业版可由管理员强制开启并下发规则。
+    - 密码、2FA、验证码、支付确认要交还给用户接管。
+    - 可以用 1Password 填充用户批准过的凭证。
+    - 安全密钥请求的内容会被遮蔽，不进对话记录，也不给模型看。
+    - 文档明确指出，**安全边界在账户级，不同 Bot 之间不构成安全边界**。
+    - 不支持本地部署或自带镜像。
+  - **身份**：代表用户在用户自己的工具里登录和操作；文档未提到 Bot 有独立的对外身份【待核实】。
+- **商业模式**：
+  - 包含在所有 Cursor 付费个人档位和 Cursor Teams 中，也可以关联 SuperGrok、SuperGrok Plus、SuperGrok Heavy。
+  - 用量独立于 Grok 和 Cursor 的原有额度，每周重置；符合条件的账户可按模型和 token 成本加购。
+  - 具体价格见 Cursor 定价页，本文未核实【待核实】。
+- **局限**：
+  - 账户内所有 Bot 共享登录态和文件，权限没法按 Bot 隔离。
+  - 只能用云端托管。
+  - 早期 beta，功能和档位可能变化。
+  - 网站可能封禁自动化或要求验证码。
+  - 不支持旧版隐私模式（Legacy Privacy Mode），必须存储数据。
+- **来源**：
+  - [官方公告](https://x.ai/news/introducing-grok-bot)
+  - 官方文档：[概览](https://docs.x.ai/grok-bot/overview)、[电脑与应用](https://docs.x.ai/grok-bot/computer-and-apps)、[团队与企业](https://docs.x.ai/grok-bot/teams-and-enterprises)、[安全 FAQ](https://docs.x.ai/grok-bot/security-faq)、[审批与隐私](https://docs.x.ai/grok-bot/approvals-security-and-privacy)、[技能与例行任务](https://docs.x.ai/grok-bot/skills-routines-and-automations)、[FAQ](https://docs.x.ai/grok-bot/faq)、[Bot 管理](https://docs.x.ai/grok-bot/bots)
+  - 收购相关：[Cursor 博客：并入 SpaceX](https://cursor.com/blog/joining-spacex)、[9to5Mac](https://9to5mac.com/2026/08/14/spacex-lands-deal-to-likely-purchase-claude-code-and-openai-codex-competitor/)
+  - [USA Today 刊发的新闻稿](https://www.usatoday.com/press-release/story/39819/spacexai-and-cursor-team-up-on-grok-bot-persistent-ai-agents-that-sign-into-your-apps/)（属于新闻稿，不是独立报道）
 
 #### Apple：Siri AI（系统助手路线，作为参照）
 
@@ -861,6 +935,7 @@ flowchart LR
 | Claude（Cowork） | 大厂 | 推出中（Pro/Max） | 知识工作者 | Claude App | 文档、调研、电脑操作 | 订阅 |
 | Gemini Spark | 大厂 | 公开（部分地区） | Google 订阅用户 | Gemini App、Workspace | 定时/触发任务 | AI Pro/Ultra 订阅 |
 | Copilot Autopilot | 大厂 | 私测 | 企业员工 | Teams、Outlook | 多日企业流程 | 用量计费（Credits） |
+| Grok Bot（SpaceXAI/Cursor） | 大厂 | beta（08-11） | SuperGrok/Cursor 付费个人、团队 | 桌面和手机 App、Bot 私聊/群聊 | 多 Bot 团队代办（销售、运营、工程） | 含在 Cursor 和 SuperGrok 订阅中，每周用量 + 按量加购 |
 | Siri AI / Alexa+ | 大厂 | 公开 | 设备用户、家庭 | 系统、音箱 | 个人上下文、家庭 | 硬件/Prime 捆绑 |
 | 字节小豆 / 豆包手机助手 / 豆包工作 | 大厂 | 内测 / 单机型 / 公开 | 消费者、手机用户、办公用户 | 独立 App、系统 AI 键、飞书 | 个人助理、跨 App 操作、办公代办 | 硬件合作 / 未详 |
 | 微信小微 / LightVela | 大厂 | 灰度 / 公开（小众） | 微信用户 / 极客 | 微信首页 / 多 IM | 发消息、小程序办事 / 托管常驻 | 未商业化 / 订阅 |
@@ -888,6 +963,7 @@ flowchart LR
 | Claude Cowork | 本地 VM / 云端会话 | Claude | projects、记忆 | connectors、skills、computer use | 文件夹挂载、凭证留宿主、降权 token | 用户 |
 | Gemini Spark | **每任务一次性 VM**【二手】 | Gemini 3.5 | 技能、偏好 | Workspace + MCP | Agent Gateway + DLP | 用户 |
 | Copilot Autopilot | 租户内托管电脑 | 多模型 | 自有记忆 | Microsoft IQ、插件 | Agent 365、审计 | **独立身份** |
+| Grok Bot | **每用户常驻 Firecracker microVM，账户内多 Bot 共享**（各自屏幕） | 未公开【待核实】 | 每个 Bot 独立记忆 + 共享文件 | MCP 连接器、共享技能库、定时/事件例行任务、子 Agent、Cursor Cloud Agents、本机执行（逐项审批） | 草稿卡片、Auto-review、凭证接管、1Password；**账户级边界** | 代表用户（多个具名 Bot） |
 | 豆包手机助手 | 端侧 GUI + 一方接口 | 豆包 | 本地 | 系统工具、三方 App | SAEP、分层分级 | 用户 |
 | 豆包工作伙伴 | 云端（扣子云电脑/云手机） | 豆包 | 跨渠道共享 | 飞书、Skill | 继承飞书权限 | **独立身份** |
 | 微信小微 | 微信内编排，无 VM | WeLM + DeepSeek【二手】 | 未公开 | 小程序 | 发送和支付前确认 | 用户 |
@@ -931,7 +1007,7 @@ timeline
   2026-05 : Google Gemini Spark
   2026-06 : Copilot Cowork GA : 微信小微灰度
   2026-07 : ChatGPT Work : Poke 被 Cognition 收购 : 阶跃 Amoo 亮相
-  2026-08 : Instinct 邀请制 : 豆包工作 : LightVela 收费 : Lindy Teammate
+  2026-08 : Grok Bot beta（08-11） : SpaceX 完成收购 Cursor（08-14） : Instinct 邀请制 : 豆包工作 : LightVela 收费 : Lindy Teammate
   2026-09 : Meta Muse : 豆包手机助手 : Manus 2.0 和 Cue : Rabbit OS3 : Today AI 中国版 : Copilot Autopilot : OpenAI Dots : Instinct 估值 100 亿美元
   2026-10 : Instinct 群聊 : Nous 融资 : Manus 融资超 5 亿美元 : 腾讯否认 Handy Bot
   待定 : 字节小豆 App : 元宝个人智能体 : STEPX Neo 上市 : Rabbit cyberdeck : Poke 并入 Cognition
@@ -942,7 +1018,7 @@ timeline
 ## 6. 对内部平台的观察
 
 1. **执行环境：常驻还是按需，要有意识地选，或者混合。**
-   - 常驻 VM：Muse、Genspark、LightVela。
+   - 常驻 VM：Muse、Genspark、LightVela、Grok Bot（每用户一台，多 Bot 共享）。
    - 按任务即用即毁：Gemini Spark、ChatGPT Work。
    - 云端大脑 + 本地节点：Rabbit OS3、Perplexity Personal Computer。
    - 建议的组合：常驻的轻量调度器和记忆，重任务按需拉起 VM；同时允许把员工本机注册为执行节点，并统一套上 MXC 类的隔离。
