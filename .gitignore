@@ -5,3 +5,4 @@ resources/_gen/
 .screens/
 __pycache__/
 *.pyc
+report-site-preview.zip
