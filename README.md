@@ -96,3 +96,4 @@ baseURL：`hugo.toml` 里是 `https://loushang0826.github.io/ai-radar/`。CI 会
 - 正文是 HTML 内容文件，`hugo.toml` 里的 `[security] allowContent` 必须保留 `text/html`。
 - 字体（Google Fonts）和 mermaid（jsDelivr）走公共 CDN，个别网络环境下加载慢时正文仍可读，图表会延迟出现。
 - 仓库公开后，`reports-src/` 里的原始 Markdown 也是公开的。
+- 开发小分队流程试跑标记（可删）
